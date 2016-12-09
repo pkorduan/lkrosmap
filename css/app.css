@@ -32,3 +32,12 @@ h1 {
   border-color: #aaa;
   border-width: 1px;
 }
+
+.lkrosmap-map {
+  width: 800px;
+  height: 800px;
+  margin-left: 10%;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 5px;
+}

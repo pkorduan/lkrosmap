@@ -1,0 +1,34 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  display: block;
+  color: #19afdf;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 0 0;
+}
+
+.box {
+  margin-left: 40%;
+  width: 300px;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.clickdiv {
+  cursor: pointer;
+  margin-left: 20px;
+  font-size: 14px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.clickdiv:hover {
+  background-color: #fff;
+  border-style: dashed;
+  border-color: #aaa;
+  border-width: 1px;
+}

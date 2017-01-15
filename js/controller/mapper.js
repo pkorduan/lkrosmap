@@ -70,16 +70,27 @@ LkRosMap.controller.mapper = {
       layerExtent: LkRosMap.config.layerExtent
     });
 
-    function constrainMapToExtend(map,extent){
+    function constrainMapToExtend(map, extent){
       var mapView = map.getView(),
         viewExtent = mapView.calculateExtent(map.getSize()),
         halfWidth = ol.extent.getWidth(viewExtent) / 2.0,
         halfHeight= ol.extent.getHeight(viewExtent) / 2.0,
         newCenterConstraint = [extent[0] + halfWidth, extent[1] + halfHeight, extent[2] - halfWidth, extent[3] - halfHeight];
-      mapView.constraints_.center = ol.View.createCenterConstraint_({extent:newCenterConstraint});
+        
+        console.log('mapView %o', mapView);
+        console.log('mapView.center %o', mapView.getCenter());
+        console.log('viewExtent %o', viewExtent);
+        console.log('layerExtent %o', extent);
+        console.log('constrainCenter %o', mapView.constrainCenter(mapView.getCenter()));
+        console.log('halfidth: ' + halfWidth);
+        console.log('halfHeight: ' + halfHeight);
+        console.log('newCenterConstraint: %o', newCenterConstraint);
+
+        
+  //    mapView.constraints_.center = ol.View.createCenterConstraint_({extent:newCenterConstraint});
       mapView.setCenter(mapView.constrainCenter(mapView.getCenter()));
     };
-
+    console.log('config center: %o', ol.proj.transform(LkRosMap.config.center, LkRosMap.baseProjection, LkRosMap.viewProjection));
     var map = new ol.Map({
       target: 'LkRosMap.map',
       controls: ol.control.defaults().extend([
@@ -98,6 +109,7 @@ LkRosMap.controller.mapper = {
   
     // die map view im LkRosMap Namespace bereitstellen
     LkRosMap.view = map.getView();
+
   
     // den Center Constraint an die Zoom-Stufe anpassen ...
     // ... initial ...
@@ -106,7 +118,8 @@ LkRosMap.controller.mapper = {
     LkRosMap.view.on('change:resolution', function(event){
       constrainMapToExtend(map, LkRosMap.tileLayer.get('layerExtent'));
     });
-  
+
+
     LkRosMap.maxExtent = LkRosMap.view.calculateExtent(map.getSize());
 
     // close the popup on map zoom and pan actions

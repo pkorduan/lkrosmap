@@ -6,7 +6,7 @@ LkRosMap.views.helper.configuration = {
       <h2>Globale Einstellungen</h2> \
       Externen Javascript-Bibliotheken: " + LkRosMap.path3rdParty + "<br> \
       <h2>Einstellungen dieser Karte</h2> \
-      Name der Karte: " + LkRosMap.name + "<br> \
+      Name der Karte: " + LkRosMap.config.name + "<br> \
       baseProjection: " + LkRosMap.config.baseProjection + "<br> \
       viewProjection: " + LkRosMap.config.viewProjection + "<br> \
     </div> \

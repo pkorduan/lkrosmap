@@ -1,0 +1,7 @@
+LkRosMap.views.geocoder.addressSearch = {
+  html: " \
+    <div id=\"LkRosMap.addressSearchBox\" class=\"lkros-address-search\"> \
+      Adresse: <input id=\"LkRosMap.addressSearchField\" type=\"text\" name=\"address\" size=\"50\" value=\"\" placeholder=\"Wo\"> \
+    </div> \
+  "
+}

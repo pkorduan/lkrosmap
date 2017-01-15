@@ -1,5 +1,6 @@
 html, body {
   font-family: Arial, sans-serif;
+	font-size: 12px;
 	height: 100%;
 }
 
@@ -140,4 +141,13 @@ a.lkrosmap-info-overlay-close {
 	font-size: 16px;
 	border: 2px solid #eee;
 	border-radius: 4px;
+}
+
+.lkrosmap-address-search-control {
+	top: 68px;
+	left: 8px;
+}
+
+.lkros-address-search {
+	display: none;
 }

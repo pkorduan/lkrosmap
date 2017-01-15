@@ -33,7 +33,7 @@ LkRosMap.init = function() {
   LkRosMap.baseProjection = LkRosMap.config.baseProjection;
   
 	// Reihenfolge ist zu beachten
-  LkRosMap.controller.helper.init();
   LkRosMap.map = LkRosMap.controller.mapper.init();
+  LkRosMap.controller.helper.init();
 	LkRosMap.controller.geocoder.init();
 };

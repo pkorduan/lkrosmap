@@ -128,26 +128,30 @@ a.lkrosmap-info-overlay-close {
 }
 
 .lkrosmap-mouse-position-control {
-	top: 36px;
-	right: 47px;
+	top: 6px;
+	right: 30px;
 	position: absolute;
 	z-index: 1;
 	background: rgba(0,60,136,.3);
 	margin: 0px;
-	height: 21px;
-	padding: 4 5 0 5;
+	height: 16px;
+	padding: 3 9 0 9;
 	text-align: center;
 	color: #eee;
-	font-size: 16px;
 	border: 2px solid #eee;
 	border-radius: 4px;
 }
 
-.lkrosmap-address-search-control {
-	top: 68px;
-	left: 8px;
-}
-
 .lkros-address-search {
 	display: none;
+}
+
+.lkrosmap-feature-info-control {
+	top: 48px;
+	left: 6px;
+}
+
+.lkrosmap-address-search-control {
+	top: 70px;
+	left: 6px;
 }

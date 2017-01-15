@@ -37,6 +37,7 @@ LkRosMap.controller.helper = {
 	init: function() {
 		this.loadViews();
 		ol.inherits(this.configControl, ol.control.Control);
+		LkRosMap.map.addControl(new this.configControl());
 		this.setEventHandlers();
 	},
 

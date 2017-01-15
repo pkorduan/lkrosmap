@@ -24,10 +24,7 @@ LkRosMap.controller.geocoder = {
     this.loadViews();
 
 		ol.inherits(this.addressSearchControl, ol.control.Control);
-
-		LkRosMap.map.addControl(
-      new this.addressSearchControl()
-    );
+		LkRosMap.map.addControl(new this.addressSearchControl());
 
     this.setEventHandlers();
   },
@@ -46,8 +43,8 @@ LkRosMap.controller.geocoder = {
 		var this_ = this;
 
 		button.click(function() {
-		  $('#LkRosMap\\.addressSearchBox').show();
-    });
+			$('#LkRosMap\\.addressSearchBox').show();
+		});
 
 		var element = $('<div></div>').attr({ class: 'lkrosmap-address-search-control ol-unselectable ol-control'});
 		element.append(button);

@@ -95,8 +95,8 @@ LkRosMap.controller.mapper = {
 					}
 				}).extend([
 					new ol.control.ScaleLine(),
-					new LkRosMap.controller.helper.configControl(),
-					this.mousePositionControl()
+					this.mousePositionControl(),
+					this.featureInfoControl()
 				]),
 			layers: [LkRosMap.tileLayer],
 			view: new ol.View({
@@ -118,7 +118,6 @@ LkRosMap.controller.mapper = {
 		LkRosMap.view.on('change:resolution', function(event){
 			constrainMapToExtend(map, LkRosMap.tileLayer.get('layerExtent'));
 		});
-
 
 		LkRosMap.maxExtent = LkRosMap.view.calculateExtent(map.getSize());
 
@@ -161,9 +160,26 @@ LkRosMap.controller.mapper = {
 			// comment the following two lines to have the mouse position
 			// be placed within the map.
 			className: 'lkrosmap-mouse-position-control',
-			target: 'LkRosMap.coordinates',
-			undefinedHTML: '&nbsp;'
+			undefinedHTML: ''
 		});
 		return mousePositionControl;
+	},
+
+	featureInfoControl: function(opt_options) {
+		var button = $('<button/>').attr({ id: 'LkRosMap.featureInfoButton' }),
+				element = $('<div></div>').attr({ class: 'lkrosmap-feature-info-control ol-unselectable ol-control'});
+		
+		button.html('<i class=\"fa fa-info\"></i>');
+		button.click(function() {
+			$('#LkRosMap\\.addressSearchBox').hide();
+		});
+
+		element.append(button);
+		control = new ol.control.Control({
+			element: element.get(0)}
+		);
+
+		return control
 	}
+
 }

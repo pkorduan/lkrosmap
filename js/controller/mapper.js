@@ -34,6 +34,11 @@ LkRosMap.controller.mapper = {
     // create the ORKA-Map Layer
     LkRosMap.tileLayer = new ol.layer.Tile({
       source: new ol.source.TileImage({
+        attributions: [
+          new ol.Attribution({
+            html: 'Kartenbild &copy; Hansestadt Rostock (CC BY 4.0) | Kartendaten &copy; OpenStreetMap (ODbL) und LkKfS-MV'
+          })
+        ],
         projection: LkRosMap.viewProjection,
         tileGrid: new ol.tilegrid.TileGrid({
         origin: [-464849.38, 5057815.86858],
@@ -70,6 +75,7 @@ LkRosMap.controller.mapper = {
       layerExtent: LkRosMap.config.layerExtent
     });
 
+
     function constrainMapToExtend(map, extent){
       var mapView = map.getView(),
         viewExtent = mapView.calculateExtent(map.getSize()),
@@ -91,9 +97,15 @@ LkRosMap.controller.mapper = {
       mapView.setCenter(mapView.constrainCenter(mapView.getCenter()));
     };
     console.log('config center: %o', ol.proj.transform(LkRosMap.config.center, LkRosMap.baseProjection, LkRosMap.viewProjection));
+
     var map = new ol.Map({
       target: 'LkRosMap.map',
-      controls: ol.control.defaults().extend([
+      controls: ol.control.defaults({
+          attribution: true,
+          attributionOptions: {
+            label: "©"
+          }
+        }).extend([
         new ol.control.ScaleLine(),
         new LkRosMap.controller.helper.configControl(),
         this.mousePositionControl()

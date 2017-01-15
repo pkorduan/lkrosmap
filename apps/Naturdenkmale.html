@@ -2,11 +2,27 @@
   <head>
     <script type="text/javascript" src="../conf/app.js"></script>
     <script>
-
-      LkRosMap.name = 'Naturdenkmale';
-
+      LkRosMap.config = {
+        name: 'Naturdenkmale',
+        viewProjection: 'EPSG:25833',
+        baseProjection: 'EPSG:4326',
+        backgroundlayers: [{
+          name: 'Orka M-V',
+          url: ''
+        }, {
+          name: 'Luftbilder',
+          url: ''
+        }],
+        mapWidth: '700px',
+        mapHeight: '600px',
+        layers: [{
+          name: 'Naturdenkmale',
+          url: ''
+        }],
+        center: [12.17133, 53.91179],
+        layerExtent: [267289, 5933512, 360042, 6023242]
+      };
     </script>
-    <script type="text/javascript" src="../js/loader.js"></script>
     <script type="text/javascript" src="../js/app.js"></script>
   </head>
   <body onload="LkRosMap.init();">

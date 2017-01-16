@@ -46,7 +46,7 @@ LkRosMap.controller.helper = {
 
 		var button = $('<button/>').attr({ id: 'LkRosMap.configButton' });
 
-		button.html('<i class=\"fa fa-cog\"></i>');
+		button.html('<i class=\"fa fa-wrench\"></i>');
 
 		var this_ = this;
 

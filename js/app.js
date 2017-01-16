@@ -15,7 +15,7 @@ LkRosMap.loadHeadFile = function(filename, filetype) {
 }
 
 LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "jQuery-1.12.0/jquery-1.12.0.min.js", "js");
-LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "font-awesome-4.6.3/css/font-awesome.min.css", "css");
+LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "font-awesome-4.7.0/css/font-awesome.min.css", "css");
 LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "OpenLayers/v3.8.2/build/ol-debug.js", "js");
 LkRosMap.loadHeadFile("https://openlayers.org/en/v3.20.1/css/ol.css", "css");
 LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "proj4js/proj4.js", "js");

@@ -19,6 +19,7 @@ LkRosMap.controller.mapper = {
 	},
 	
 	setEventHandlers: function() {
+
 	},
 
 	init: function() {
@@ -104,7 +105,8 @@ LkRosMap.controller.mapper = {
 				minResolution: 0.14929107086948457,
 				center: ol.proj.transform(LkRosMap.config.center, LkRosMap.baseProjection, LkRosMap.viewProjection),
 				zoom: 0
-			})
+			}),
+			logo: false
 		});
 	
 		// die map view im LkRosMap Namespace bereitstellen
@@ -177,9 +179,27 @@ LkRosMap.controller.mapper = {
 		element.append(button);
 		control = new ol.control.Control({
 			element: element.get(0)}
-		);
+		)
 
 		return control
-	}
+	},
 
+  showErrorMsg: function(e, msg) {
+    if (msg == 'Not Found') {
+      msg = 'Der Service zum Suchen von Adressen ist nicht erreichbar. Bitte prüfen Sie ob Sie eine Netzverbindung haben.';
+    }
+    e.errMsgElement.innerHTML = msg;
+    $('#LkRosMap\\.Overlay').fadeIn(200,function(){
+      $('#LkRosMap\\.MessageBox').animate({'top':'20px'},200);
+    });
+  },
+
+  searchAnimation: {
+    show: function() {
+      $('#LkRosMap\\.searchOverlay').show();
+    },
+    hide: function() {
+      $('#LkRosMap\\.searchOverlay').hide();
+    }
+  },
 }

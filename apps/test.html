@@ -1,40 +1,78 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Attributions</title>
-    <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
-    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+<html lang="de">
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../../3rdparty/font-awesome-4.6.3/css/font-awesome.min.css">
+    <script type="text/javascript" src="../../3rdparty/jQuery-1.12.0/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript">
+    function sendRequest(url) {
+      console.log(url);
+      /*
+      // jQuery preflight request
+      $.ajax({
+          type: "GET",
+          headers: {
+            "*": "some value"
+      
+          },
+          url: url
+      }).done(function (data) {
+          console.log(data);
+      });
+*/
+      $.ajax({
+        type: 'GET',
+        url: url,
+        processData: true,
+        data: {},
+        dataType: 'jsonp',
+        success: function (data) {
+          if (data.success) {
+            $('#result').html(JSON.stringify(data)).show();
+          }
+          else {
+            console.log('Request ok, but response.success false');
+            $('#result').html('Fehler bei der Abfrage. Der Parameter q fehlt!').show();
+          }
+        },
+        
+        error: function (xhr, ajaxOptions, thrownError){
+          if(xhr.status==404) {
+            console.log('404 Fehler');
+          }
+
+          $('#result').html('Fehler bei der Abfrage der Seite!' + thrownError).show();
+        },
+
+        error: function (data) {
+
+        }
+        
+      });
+
+    }
+    </script>
   </head>
   <body>
-    <div id="map" class="map"></div>
-    <script>
-      var attribution = new ol.control.Attribution({
-        collapsible: false
-      });
-      var map = new ol.Map({
-        layers: [
-          new ol.layer.Tile({
-            source: new ol.source.OSM()
-          })
-        ],
-        controls: ol.control.defaults({attribution: false}).extend([attribution]),
-        target: 'map',
-        view: new ol.View({
-          center: [0, 0],
-          zoom: 2
-        })
-      });
+    <div class="box">
+      <h1><a href="../index.html">Kartenthemen des Landkreises Rostock</a> / Testseite</h1>
 
-      function checkSize() {
-        var small = map.getSize()[0] < 600;
-        attribution.setCollapsible(small);
-        attribution.setCollapsed(small);
-      }
+      <div class="clickdiv" onclick="sendRequest('http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/?q=Rostock')"><i class="fa fa-map"></i> Abfrage Ort (?q=Rostock)</a></div>
 
-      window.addEventListener('resize', checkSize);
-      checkSize();
-    </script>
+      <div class="clickdiv" onclick="sendRequest('http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/?q=park&type=Gemarkung&crs=EPSG:3857')"><i class="fa fa-map"></i> Abfrage Gemarkung (?q=park&type=Gemarkung&crs=EPSG:3857)</a></div>
+
+      <div class="clickdiv" onclick="sendRequest('http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/')"><i class="fa fa-map"></i> Ohne Parameter</a></div>
+
+      <div id="result" style="
+        border-color: #aaa;
+        border-width: 1px;
+        border-radius: 5px;
+        border-style: dashed;
+        background-color: #fff;
+        padding: 5px;
+        margin-left: 20px;
+        margin-top: 5px;
+        word-break: break-all;
+        display: none;
+      "></div>
+    </div>
   </body>
 </html>

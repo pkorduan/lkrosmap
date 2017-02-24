@@ -12,7 +12,7 @@ LkRosMap.models.searchResult = function(name, lat, lon) {
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
       opacity: 0.75,
-      src: 'images/SearchPoint.png'
+      src: 'img/SearchPoint.png'
     }))
   });
 

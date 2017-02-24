@@ -14,6 +14,16 @@ LkRosMap.controller.geocoder = {
     $(views.addressSearch.html).insertBefore("#LkRosMap\\.map");
   },
   
+	loadLayer: function() {
+		this.layer = new ol.layer.Vector({
+	    opacity: 1,
+	    source: new ol.source.Vector({
+	      features: []
+	    }),
+	    zIndex: 100
+	  })
+	},
+
   setEventHandlers: function() {
     $("#LkRosMap\\.addressSearchField").on(
       'change',
@@ -27,6 +37,7 @@ LkRosMap.controller.geocoder = {
 
     this.loadModels();
     this.loadViews();
+		this.loadLayer();
 
     ol.inherits(this.addressSearchControl, ol.control.Control);
     LkRosMap.map.addControl(new this.addressSearchControl());
@@ -180,28 +191,38 @@ LkRosMap.controller.geocoder = {
   },
 
   addSearchResultFeature: function(display_name, lat, lon) {
-        alert('Show Place: ' + display_name + ' at Position (' + lat + ' ' + lon + ')');
-/*    var searchResultFeature = new LkRosMap.models.searchResult(display_name, lat, lon),
+    console.log('Show Place: ' + display_name + ' at Position (' + lat + ' ' + lon + ')');
+    var searchResultFeature = new LkRosMap.models.searchResult(display_name, lat, lon),
         source = this.layer.getSource(),
-        target = $('#PflegeMap\\.' + search_field);
+        searchField = $('#LkRosMap\\.addressSearchField');
 
+    searchField.val(display_name);
+    searchField[0].setAttribute('coordinates', lat + ', ' + lon);
+    $('#LkRosMap\\.addressSearchFieldResultBox').hide();
 
-    target.val(display_name);
-    target[0].setAttribute('coordinates', lat + ', ' + lon);
-    $('#PflegeMap\\.' + search_field + 'ResultBox').hide();
-
-
-    this.removeSearchResultFeatures(this);
+    this.removeSearchResultFeatures();
 
     source.addFeature( searchResultFeature );
+		debug_f = searchResultFeature;
 
-    PflegeMap.map.getView().fit(
+    LkRosMap.map.getView().fit(
       ol.extent.buffer(
         searchResultFeature.getGeometry().getExtent(),
         300
       ),
-      PflegeMap.map.getSize()
-    );*/
+      LkRosMap.map.getSize()
+    );
+  },
+
+  removeSearchResultFeatures : function() {
+    var source = this.layer.getSource(),
+        features = source.getFeatures();
+
+    if (features != null && features.length > 0) {
+      for (x in features) {
+        source.removeFeature( features[x] );
+      }
+    }
   }
 
 }

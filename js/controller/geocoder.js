@@ -191,7 +191,6 @@ LkRosMap.controller.geocoder = {
   },
 
   addSearchResultFeature: function(display_name, lat, lon) {
-    console.log('Show Place: ' + display_name + ' at Position (' + lat + ' ' + lon + ')');
     var searchResultFeature = new LkRosMap.models.searchResult(display_name, lat, lon),
         source = this.layer.getSource(),
         searchField = $('#LkRosMap\\.addressSearchField');
@@ -203,7 +202,6 @@ LkRosMap.controller.geocoder = {
     this.removeSearchResultFeatures();
 
     source.addFeature( searchResultFeature );
-		debug_f = searchResultFeature;
 
     LkRosMap.map.getView().fit(
       ol.extent.buffer(

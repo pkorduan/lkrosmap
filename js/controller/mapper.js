@@ -14,24 +14,7 @@ LkRosMap.controller.mapper = {
 		);
 	},
 
-	showMap: function () {
-		return this.views.map.html;
-	},
-	
-	setEventHandlers: function() {
-
-	},
-
-	init: function() {
-		var controller = LkRosMap.controller.mapper;
-
-		this.loadViews();
-
-		this.setEventHandlers();
-
-		proj4.defs("EPSG:25833","+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
-		proj4.defs("EPSG:25832","+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
-	
+	createTileLayer : function() {
 		// create the ORKA-Map Layer
 		LkRosMap.tileLayer = new ol.layer.Tile({
 			source: new ol.source.TileImage({
@@ -75,6 +58,63 @@ LkRosMap.controller.mapper = {
 			// user data
 			layerExtent: LkRosMap.config.layerExtent
 		});
+	},
+
+	loadFeatures: function(store, layer) {
+		var source = layer.getSource(),
+				i;
+
+		for (i = 0; i < store.length; i++) {
+			source.addFeature(
+				new LkRosMap.feature(
+					store[i]
+				)
+			);
+		}
+		return layer;
+	}, 
+
+	createVectorLayers: function() {
+		$.each(LkRosMap.config.layers, function(layer_config) {
+			LkRosMap.controller.mapper.loadJSON(layer_config.url, function(response) {
+				var store = JSON.parse(response),
+						layer = new ol.layer.Vector({
+							opacity: 1,
+							source: new ol.source.Vector({
+								projection: PflegeMap.viewProjection,
+								features: []
+							})
+						});
+
+				layer = LkRosMap.controller.mapper.loadFeatures(store, layer);
+
+				layer.setMap(LkRosMap.map);
+
+				LkRosMap.vectorLayers[layer_config.name] = layer;
+			});
+		});
+	},
+
+	showMap: function () {
+		return this.views.map.html;
+	},
+	
+	setEventHandlers: function() {
+
+	},
+
+	init: function() {
+		var controller = LkRosMap.controller.mapper;
+
+		this.loadViews();
+
+		this.setEventHandlers();
+
+		proj4.defs("EPSG:25833","+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+		proj4.defs("EPSG:25832","+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+
+		this.createTileLayer();
+		this.createVectorLayers();
 
 		function constrainMapToExtend(map, extent){
 			var mapView = map.getView(),
@@ -99,7 +139,7 @@ LkRosMap.controller.mapper = {
 					this.mousePositionControl(),
 					this.featureInfoControl()
 				]),
-			layers: [LkRosMap.tileLayer],
+			layers: [LkRosMap.tileLayer].concat(LkRosMap.vectorLayers),
 			view: new ol.View({
 				maxResolution: 152.8740565703524,
 				minResolution: 0.14929107086948457,
@@ -194,6 +234,20 @@ LkRosMap.controller.mapper = {
     });
   },
 
+	loadJSON: function (source, callback) {
+		var xobj = new XMLHttpRequest();
+		xobj.overrideMimeType("application/json");
+		xobj.open('GET', source, false); // true would load asynchronous
+		//xobj.open('GET', '/wfs2json/json/data.json', false); // true would load asynchronous
+		xobj.onreadystatechange = function () {
+			if (xobj.readyState == 4 && xobj.status == "200") {
+				// Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+				callback(xobj.responseText);
+			}
+		};
+		xobj.send(null);
+	},
+
   searchAnimation: {
     show: function() {
       $('#LkRosMap\\.searchOverlay').show();
@@ -201,5 +255,6 @@ LkRosMap.controller.mapper = {
     hide: function() {
       $('#LkRosMap\\.searchOverlay').hide();
     }
-  },
+  }
+
 }

@@ -17,9 +17,35 @@
         mapWidth: '700px',
         mapHeight: '600px',
         layers: [{
-          name: 'Naturdenkmale',
-          url: ''
-        }],
+					index: 0,
+          name: 'Gebietsgrenzen',
+          url: '../wfs2json/json/lkrosmap_Gebietsgrenzen.json'
+        }, {
+					index: 1,
+					name: 'Fluren',
+					url: '../wfs2json/json/LRO_Fluren.json'
+				}, {
+					index: 2,
+					name: 'Gemarkungen',
+					url: '../wfs2json/json/LRO_Gemarkungen.json'
+				}, {
+					index: 3,
+					name: 'Gemeindeteile',
+					url: '../wfs2json/json/LRO_Gemeindeteile.json'
+				}, {
+					index: 4,
+					name: 'Gemeinden',
+					url: '../wfs2json/json/LRO_Gemeinden.json'
+				}, {
+					index: 5,
+					name: 'Gemeindeverbaende',
+					url: '../wfs2json/json/LRO_Gemeindeverbaende.json'
+				}, {
+					index: 5,
+					name: 'Kreise',
+					url: '../wfs2json/json/LRO_Kreise.json'
+				}
+			],
         center: [12.17133, 53.91179],
         layerExtent: [267289, 5933512, 360042, 6023242]
       };

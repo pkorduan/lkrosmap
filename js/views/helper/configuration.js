@@ -11,6 +11,17 @@ LkRosMap.views.helper.configuration = {
       viewProjection: " + LkRosMap.config.viewProjection + "<br> \
       layerExtent: " + LkRosMap.config.layerExtent + "<br> \
       mapSize: " +  LkRosMap.config.mapWidth + 'x' + LkRosMap.config.mapHeight + "<br> \
+      <h2>Layer</h2>" + $.map(
+        LkRosMap.config.layers,
+        function(layer) {
+          return $.map(
+            layer,
+            function(value, key) {
+              return key + ': ' + value
+            }
+          ).join('<br>');
+        }
+      ).join('<hr>') + " \
     </div> \
   "
 }

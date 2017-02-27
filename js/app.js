@@ -25,6 +25,8 @@ LkRosMap.loadHeadFile("../css/app.css", "css");
 LkRosMap.loadHeadFile('../js/controller/helper.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/geocoder.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/mapper.js', 'js');
+LkRosMap.loadHeadFile('../js/models/Feature.js', 'js');
+LkRosMap.loadHeadFile('../js/models/Naturdenkmal.js', 'js');
 
 LkRosMap.init = function() {
   // central setting for the projection of the map view

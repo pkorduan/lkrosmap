@@ -60,37 +60,54 @@ LkRosMap.controller.mapper = {
 		});
 	},
 
-	loadFeatures: function(store, layer) {
+	loadFeatures: function(store, layer, model) {
 		var source = layer.getSource(),
 				i;
 
+		console.log('store: %o', store);
+		console.log('layer: %o', layer);
+		console.log('source: %o', source);
+
 		for (i = 0; i < store.length; i++) {
-			source.addFeature(
-				new LkRosMap.feature(
-					store[i]
-				)
-			);
+			switch (model) {
+				case 'Naturdenkmal': {
+					feature = new LkRosMap.models.Naturdenkmal(store[i]);
+				} break;
+				default: {
+					store[i].icon = 'Default';
+					feature = new LkRosMap.models.Feature(store[i]);
+				}
+			}
+			source.addFeature(feature);
 		}
 		return layer;
 	}, 
 
 	createVectorLayers: function() {
-		$.each(LkRosMap.config.layers, function(layer_config) {
+		$.each(LkRosMap.config.layers, function(index, layer_config) {
 			LkRosMap.controller.mapper.loadJSON(layer_config.url, function(response) {
 				var store = JSON.parse(response),
 						layer = new ol.layer.Vector({
 							opacity: 1,
 							source: new ol.source.Vector({
-								projection: PflegeMap.viewProjection,
+								attributions: [
+									new ol.Attribution({
+										html: layer_config.attribution
+									})
+								],
+								projection: LkRosMap.viewProjection,
 								features: []
 							})
 						});
 
-				layer = LkRosMap.controller.mapper.loadFeatures(store, layer);
+				layer = LkRosMap.controller.mapper.loadFeatures(store, layer, layer_config.model);
 
-				layer.setMap(LkRosMap.map);
+				console.log(layer);
+				debug_l = layer;
+//				layer.setMap(LkRosMap.map);
 
-				LkRosMap.vectorLayers[layer_config.name] = layer;
+//				LkRosMap.vectorLayers[layer_config.name] = layer;
+					LkRosMap.vectorLayers = [layer];
 			});
 		});
 	},
@@ -139,6 +156,7 @@ LkRosMap.controller.mapper = {
 					this.mousePositionControl(),
 					this.featureInfoControl()
 				]),
+//			layers: [LkRosMap.tileLayer],
 			layers: [LkRosMap.tileLayer].concat(LkRosMap.vectorLayers),
 			view: new ol.View({
 				maxResolution: 152.8740565703524,

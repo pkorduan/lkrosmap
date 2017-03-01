@@ -64,10 +64,6 @@ LkRosMap.controller.mapper = {
 		var source = layer.getSource(),
 				i;
 
-		console.log('store: %o', store);
-		console.log('layer: %o', layer);
-		console.log('source: %o', source);
-
 		for (i = 0; i < store.length; i++) {
 			switch (model) {
 				case 'Naturdenkmal': {
@@ -102,8 +98,6 @@ LkRosMap.controller.mapper = {
 
 				layer = LkRosMap.controller.mapper.loadFeatures(store, layer, layer_config.model);
 
-				console.log(layer);
-				debug_l = layer;
 //				layer.setMap(LkRosMap.map);
 
 //				LkRosMap.vectorLayers[layer_config.name] = layer;

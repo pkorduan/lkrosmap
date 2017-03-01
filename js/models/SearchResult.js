@@ -1,20 +1,19 @@
 LkRosMap.models.searchResult = function(name, lat, lon) {
   var feature = new ol.Feature({
-    type: 'SearchResult',
-    geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat], LkRosMap.viewProjection)),
-    name: name,
-    selected: false
-  }),
-  
-  style = new ol.style.Style({
-    image: new ol.style.Icon(({
-      anchor: [0.5, 46],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
-      opacity: 0.75,
-      src: 'img/SearchPoint.png'
-    }))
-  });
+        type: 'SearchResult',
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat], LkRosMap.viewProjection)),
+        name: name,
+        selected: false
+      }),
+      style = new ol.style.Style({
+        image: new ol.style.Icon(({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          opacity: 0.75,
+          src: '../img/SearchPoint.png'
+        }))
+      });
 
   feature.setStyle(style);
 

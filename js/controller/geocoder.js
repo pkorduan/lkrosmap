@@ -18,10 +18,12 @@ LkRosMap.controller.geocoder = {
 		this.layer = new ol.layer.Vector({
 	    opacity: 1,
 	    source: new ol.source.Vector({
+				projection: LkRosMap.viewProjection,
 	      features: []
 	    }),
 	    zIndex: 100
-	  })
+	  });
+    this.layer.setMap(LkRosMap.map);
 	},
 
   setEventHandlers: function() {
@@ -85,8 +87,6 @@ LkRosMap.controller.geocoder = {
   },
 
   searchForAddress: function(event) {
-    console.log('Browser supports CORS: ' + $.support.cors);
-
     var scope = LkRosMap.controller.geocoder,
         queryStr = event.target.value,
         url  = 'http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';
@@ -105,7 +105,6 @@ LkRosMap.controller.geocoder = {
       beforeSend: LkRosMap.controller.mapper.searchAnimation.show,
 
       success: function(response) {
-        console.log(JSON.stringify(response));
         if (response.success) {
           scope.showAddressSearchResults(event, response.places);
         }
@@ -147,7 +146,6 @@ LkRosMap.controller.geocoder = {
   },
 
   showAddressSearchResults: function(event, results) {
-    console.log('event: %o', event);
     $('#' + event.target.id.replace('.', '\\.') + 'ResultBox').html(
       this.searchResultsFormatter(
         event,
@@ -178,7 +176,6 @@ LkRosMap.controller.geocoder = {
   },
 
   getSearchResultCallback: function(event, item) {
-    debug_i = item;
     var lower = item.geobounds_lower.split(','),
         upper = item.geobounds_upper.split(','),
         lat = (parseFloat(lower[0]) + parseFloat(upper[0])) / 2,

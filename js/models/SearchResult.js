@@ -1,6 +1,6 @@
 LkRosMap.models.searchResult = function(name, lat, lon) {
   var feature = new ol.Feature({
-        type: 'SearchResult',
+        type: 'Addresse',
         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat], LkRosMap.viewProjection)),
         name: name,
         selected: false
@@ -41,46 +41,36 @@ LkRosMap.models.searchResult = function(name, lat, lon) {
     return [lnglat[1], lnglat[0]];
   };
 
-  feature.preparePopup = function() {
-    LkRosMap.popup.feature = this;
-    $('#LkRosMap\\.popup').attr('class','pm-popup pm-suchergebnis');
-    $('#LkRosMap\\.popup-title').html('Suchergebnis');
-    $('#LkRosMap\\.popup-data').html(this.data());
-    $('#LkRosMap\\.popup').attr('lat', lat);
-    $('#LkRosMap\\.popup').attr('lon', lon);
-    $('#LkRosMap\\.popup').attr('name', name);
-    $('.pm-popup-function-clear').attr('controller','geocoder');
-    $('.pm-popup-function-clear').show();
-    $('.pm-popup-function-more').hide();
+  feature.dataFormatter = function() {
+    var lines = [];
+
+    lines.push(this.addressText('name'));
+    lines.push('<b>WGS 84:</b><br>' + this.latlng());
+    lines.push('<b>UTM 33:</b><br>' + this.xy());
+
+    return lines.join('<br>');
+  }
+
+  feature.prepareInfoWindow = function() {
+    $('#LkRosMap\\.infoWindow').attr('class','lkrosmap-infowindow');
+    $('#LkRosMap\\.infoWindowTitle').html(this.get('type'));
+    $('#LkRosMap\\.infoWindowData').html(this.dataFormatter());
+    $('#LkRosMap\\.infoWindowRemoveFeature').show();
   };
 
   feature.unselect = function() {
-    if (this.get('selected')) {
-      //console.log('Unselect feature: ' + this.get('name'));
-      // close Popup
-      LkRosMap.popup.setPosition(undefined);
-
-      // set this feature to unselected
-      this.set('selected', false);
-    }
+    LkRosMap.infoWindow.getElement().hide();
+    LkRosMap.selectedFeature = false;
   };
 
   feature.select = function() {
-    if (!this.get('selected')) {
-      //console.log('Select feature: ' + this.get('name'));
+    this.prepareInfoWindow();
 
-      // show popup
-      //console.log('show popup');
-      this.preparePopup();
-      LkRosMap.popup.setPosition(
-        this.getGeometry().getCoordinates()
-      );
-
-      // set this feature to selected
-      this.set('selected', true);
-      //console.log('set this feature: ' + this.get('name') + ' as selected Feature.');
-      LkRosMap.mapper.selectedFeature = this;
-    }
+    LkRosMap.selectedFeature = this;
+    LkRosMap.infoWindow.getElement().show();
+    LkRosMap.infoWindow.setPosition(
+      this.getGeometry().getCoordinates()
+    );
   };
   return feature;
 };

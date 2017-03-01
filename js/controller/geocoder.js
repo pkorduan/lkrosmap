@@ -32,6 +32,16 @@ LkRosMap.controller.geocoder = {
       this,
       this.searchForAddress
     );
+
+    $("#LkRosMap\\.infoWindowRemoveFeatureButton").on(
+      'click',
+      function(evt) {
+        var feature = LkRosMap.selectedFeature;
+        
+        feature.unselect();
+        LkRosMap.controller.geocoder.removeSearchResultFeatures();
+      }
+    );
   },
 
   init: function() {
@@ -134,6 +144,7 @@ LkRosMap.controller.geocoder = {
 
     button.click(function() {
       $('#LkRosMap\\.addressSearchBox').show();
+      $('#LkRosMap\\.addressSearchField').focus();
     });
 
     var element = $('<div></div>').attr({ class: 'lkrosmap-address-search-control ol-unselectable ol-control'});
@@ -153,6 +164,10 @@ LkRosMap.controller.geocoder = {
       )
     );
     $('#' + event.target.id.replace('.', '\\.') + 'ResultBox').show();
+  },
+
+  showErrorMsg: function(event, msg) {
+    console.log('err');
   },
 
   searchResultsFormatter: function(event, results) {
@@ -193,7 +208,8 @@ LkRosMap.controller.geocoder = {
         searchField = $('#LkRosMap\\.addressSearchField');
 
     searchField.val(display_name);
-    searchField[0].setAttribute('coordinates', lat + ', ' + lon);
+    searchField.focus();
+    searchField.attr('coordinates', lat + ', ' + lon);
     $('#LkRosMap\\.addressSearchFieldResultBox').hide();
 
     this.removeSearchResultFeatures();

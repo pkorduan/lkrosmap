@@ -18,5 +18,20 @@ LkRosMap.models.Feature = function(params) {
     return t;
   }*/
 
+  feature.select = function() {
+    this.prepareInfoWindow();
+
+    LkRosMap.selectedFeature = this;
+    LkRosMap.infoWindow.getElement().show();
+    LkRosMap.infoWindow.setPosition(
+      this.getGeometry().getCoordinates()
+    );
+  };
+
+  feature.unselect = function() {
+    LkRosMap.infoWindow.getElement().hide();
+    LkRosMap.selectedFeature = false;
+  };
+
   return feature;
 };

@@ -1,3 +1,8 @@
+LkRosMap.path3rdParty = 'http://gdi-service.de/3rdparty/';
+LkRosMap.models = {};
+LkRosMap.views = {};
+LkRosMap.controller = {};
+
 LkRosMap.loadHeadFile = function(filename, filetype) {
   if (filetype=="js"){ //if filename is a external JavaScript file
     var fileref=document.createElement('script')
@@ -22,11 +27,15 @@ LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "proj4js/proj4.js", "js");
 
 // Die Reihenfolge der Einbindung ist zu beachten
 LkRosMap.loadHeadFile("../css/app.css", "css");
+LkRosMap.loadHeadFile("../css/geocoder.css", "css");
 LkRosMap.loadHeadFile('../js/controller/helper.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/geocoder.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/mapper.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Feature.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Naturdenkmal.js', 'js');
+LkRosMap.loadHeadFile('../js/views/mapper/mapHeader.js', 'js');
+LkRosMap.loadHeadFile('../js/views/mapper/map.js', 'js');
+LkRosMap.loadHeadFile('../js/views/mapper/popup.js', 'js');
 
 LkRosMap.init = function() {
   // central setting for the projection of the map view
@@ -35,7 +44,7 @@ LkRosMap.init = function() {
   LkRosMap.baseProjection = LkRosMap.config.baseProjection;
   
 	// Reihenfolge ist zu beachten
-  LkRosMap.map = LkRosMap.controller.mapper.init();
+  LkRosMap.controller.mapper.init();
   LkRosMap.controller.helper.init();
 	LkRosMap.controller.geocoder.init();
 };

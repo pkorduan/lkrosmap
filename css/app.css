@@ -79,7 +79,7 @@ h2 {
 	z-index: 9990;
 }
 
-.lkrosmap-search-result-box{
+.lkrosmap-search-result-box {
 	padding: 4px;
 	margin-top: 5px;
 	border-radius: 5px;
@@ -179,4 +179,49 @@ a.lkrosmap-info-overlay-close {
 .lkrosmap-address-search-control {
 	top: 70px;
 	left: 6px;
+}
+
+.lkrosmap-infowindow {
+  position: absolute;
+  background-color: white;
+  -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+  padding: 0.7em;
+  padding-right: 2.3em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  bottom: 2px;
+  left: -80px;
+  min-width: 200px;
+  font-size: 1em;
+}
+
+.lkrosmap-infowindow-closer {
+  text-decoration: none;
+  position: absolute;
+  top:   .5ex;
+  right: .7em;
+}
+
+.lkrosmap-infowindow-closer:after {
+  content: "✖";
+}
+
+.lkrosmap-infowindow-title {
+  font-weight: bold;
+  padding-bottom: 2px;
+}
+
+.lkrosmap-infowindow-data {
+  padding-bottom: 10px;
+}
+
+.lkrosmap-infowindow-image {
+  padding-top: 2px;
+  max-width: 200px;
+}
+
+.lkrosmap-infowindow-remove-feature {
+  text-decoration: none;
+  color: black;
 }

@@ -7,12 +7,6 @@ LkRosMap.controller.geocoder = {
   loadModels: function() {
     LkRosMap.loadHeadFile('../js/models/SearchResult.js', 'js');
   },
-
-  loadViews: function() {
-    var views = LkRosMap.views.geocoder;
-
-    $(views.addressSearch.html).insertBefore("#LkRosMap\\.map");
-  },
   
 	loadLayer: function() {
 		this.layer = new ol.layer.Vector({
@@ -27,10 +21,24 @@ LkRosMap.controller.geocoder = {
 	},
 
   setEventHandlers: function() {
-    $("#LkRosMap\\.addressSearchField").on(
-      'change',
+    $("#LkRosMap\\.addressSearchLos").on(
+      'click',
       this,
       this.searchForAddress
+    );
+    
+    $('#LkRosMap\\.addressSearchField').on(
+      'keyup',
+      this,
+      this.toggleAddressSearchClear
+    );
+
+    $("#LkRosMap\\.addressSearchClear").on(
+      'click',
+      this,
+      function() {
+        $('#LkRosMap\\.addressSearchField').val('');
+      }
     );
 
     $("#LkRosMap\\.infoWindowRemoveFeatureButton").on(
@@ -48,7 +56,6 @@ LkRosMap.controller.geocoder = {
     this.errMsgElement = $('#LkRosMap\\.errorMessage');
 
     this.loadModels();
-    this.loadViews();
 		this.loadLayer();
 
     ol.inherits(this.addressSearchControl, ol.control.Control);
@@ -136,19 +143,20 @@ LkRosMap.controller.geocoder = {
   addressSearchControl: function(opt_options) {
     var options = opt_options || {};
 
-    var button = $('<button/>').attr({ id: 'LkRosMap.addressSearchButton' });
+    var button = $('<button class="lkrosmap-address-search-button"/>').attr({ id: 'LkRosMap.addressSearchButton' });
 
     button.html('<i class=\"fa fa-search\"></i>');
 
     var this_ = this;
 
     button.click(function() {
-      $('#LkRosMap\\.addressSearchBox').show();
+      $('#LkRosMap\\.addressSearchBox').toggle();
       $('#LkRosMap\\.addressSearchField').focus();
     });
 
     var element = $('<div></div>').attr({ class: 'lkrosmap-address-search-control ol-unselectable ol-control'});
     element.append(button);
+    element.append(LkRosMap.controller.geocoder.views.addressSearch.html);
 
     ol.control.Control.call(this, {
       element: element.get(0),
@@ -157,13 +165,13 @@ LkRosMap.controller.geocoder = {
   },
 
   showAddressSearchResults: function(event, results) {
-    $('#' + event.target.id.replace('.', '\\.') + 'ResultBox').html(
+    $('#LkRosMap\\.addressSearchFieldResultBox').html(
       this.searchResultsFormatter(
         event,
         results
       )
-    );
-    $('#' + event.target.id.replace('.', '\\.') + 'ResultBox').show();
+    ).show();
+    $('#LkRosMap\\.addressSearchField').focus();
   },
 
   showErrorMsg: function(event, msg) {
@@ -223,6 +231,8 @@ LkRosMap.controller.geocoder = {
       ),
       LkRosMap.map.getSize()
     );
+    $('#LkRosMap\\.addressSearchBox').hide();
+    searchResultFeature.select();
   },
 
   removeSearchResultFeatures : function() {
@@ -233,6 +243,15 @@ LkRosMap.controller.geocoder = {
       for (x in features) {
         source.removeFeature( features[x] );
       }
+    }
+  },
+  
+  toggleAddressSearchClear: function(evt) {
+    if (evt.target.value.length > 0) {
+      $('#LkRosMap\\.addressSearchClear').show();
+    }
+    else {
+      $('#LkRosMap\\.addressSearchClear').hide();
     }
   }
 

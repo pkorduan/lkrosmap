@@ -1,0 +1,18 @@
+.lkrosmap-mapper-scale-line {
+  border: 2px solid rgba(255, 255, 255, .4);
+  background: rgb(0, 60, 136, .7);
+}
+
+.lkrosmap-mapper-scale-line-inner {
+  margin: 2px;
+  background: none;
+  border: 2px solid white;
+  border-radius: 0px;
+  border-top: none;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  will-change: contents,width;
+  position: static; 
+}

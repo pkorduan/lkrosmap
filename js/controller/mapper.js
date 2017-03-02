@@ -175,7 +175,9 @@ LkRosMap.controller.mapper = {
             label: "©"
           }
         }).extend([
-          new ol.control.ScaleLine(),
+          new ol.control.ScaleLine({
+            className: 'ol-scale-line lkrosmap-mapper-scale-line'
+          }),
           this.mousePositionControl(),
           this.featureInfoControl()
         ]),

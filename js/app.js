@@ -27,6 +27,7 @@ LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "proj4js/proj4.js", "js");
 
 // Die Reihenfolge der Einbindung ist zu beachten
 LkRosMap.loadHeadFile("../css/app.css", "css");
+LkRosMap.loadHeadFile("../css/mapper.css", "css");
 LkRosMap.loadHeadFile("../css/geocoder.css", "css");
 LkRosMap.loadHeadFile('../js/controller/helper.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/geocoder.js', 'js');

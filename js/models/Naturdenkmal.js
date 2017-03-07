@@ -10,7 +10,38 @@ LkRosMap.models.Naturdenkmal = function(store) {
     rechtsquelle: store.rechtsquelle,
     bild: store.bild,
     geometry: new ol.geom.Point([Number(store.x), Number(store.y)]),
-    icon: (store.typ == 'B' ? 'nd_baum' : 'nd_stein')
+    classItem: 'typ',
+    classes: [{
+      name: 'Baum',
+      expression: function(value) {
+        result = $.inArray(value, [
+          'B',
+          'Baum',
+          'Kastanien-',
+          'Eichenallee'
+        ]);
+        return result > -1;
+      },
+      icon: 'nd_baum'
+    }, {
+      name: 'Stein',
+      expression: function(value) {
+        result = $.inArray(value, [
+          'Andere',
+          'F',
+          'Findling',
+          'HG',
+          'HS',
+          'P',
+          'S',
+          'Stein',
+          'WG',
+          ''
+        ]);
+        return result > -1;
+      },
+      icon: 'nd_stein'
+    }],
   },
 
   feature = new LkRosMap.models.Feature(params);

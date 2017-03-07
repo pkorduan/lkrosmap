@@ -38,6 +38,8 @@ LkRosMap.controller.geocoder = {
       this,
       function() {
         $('#LkRosMap\\.addressSearchField').val('');
+        $('#LkRosMap\\.addressSearchField').focus();
+        $('#LkRosMap\\.addressSearchFieldResultBox').hide();
       }
     );
 

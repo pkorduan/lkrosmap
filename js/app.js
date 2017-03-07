@@ -32,6 +32,7 @@ LkRosMap.loadHeadFile("../css/geocoder.css", "css");
 LkRosMap.loadHeadFile('../js/controller/helper.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/geocoder.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/mapper.js', 'js');
+LkRosMap.loadHeadFile('../js/models/LayerSwitchControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Feature.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Naturdenkmal.js', 'js');
 LkRosMap.loadHeadFile('../js/views/mapper/mapHeader.js', 'js');

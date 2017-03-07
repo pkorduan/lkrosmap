@@ -14,6 +14,7 @@ LkRosMap.controller.mapper = {
   createTileLayer : function() {
     // create the ORKA-Map Layer
     LkRosMap.tileLayer = new ol.layer.Tile({
+      name: 'ORKA',
       source: new ol.source.TileImage({
         attributions: [
           new ol.Attribution({
@@ -80,6 +81,7 @@ LkRosMap.controller.mapper = {
       LkRosMap.controller.mapper.loadJSON(layer_config.url, function(response) {
         var store = JSON.parse(response),
             layer = new ol.layer.Vector({
+              name: layer_config.name,
               opacity: 1,
               source: new ol.source.Vector({
                 attributions: [
@@ -143,6 +145,12 @@ LkRosMap.controller.mapper = {
       }
     );
 
+    $('#LkRosMap\\.layerSwitcherButton').on(
+      'click',
+      function(evt) {
+        $('#LkRosMap\\.layerSwitch').toggle();
+      }
+   );
   },
 
   init: function() {
@@ -179,7 +187,11 @@ LkRosMap.controller.mapper = {
             className: 'ol-scale-line lkrosmap-mapper-scale-line'
           }),
           this.mousePositionControl(),
-          this.featureInfoControl()
+          this.featureInfoControl(),
+          new LkRosMap.models.layerSwitchControl({
+            radioLayers: [LkRosMap.tileLayer],
+            checkLayers: LkRosMap.vectorLayers
+          })
         ]),
 //      layers: [LkRosMap.tileLayer],
       layers: [LkRosMap.tileLayer].concat(LkRosMap.vectorLayers),

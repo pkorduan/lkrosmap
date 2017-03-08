@@ -107,7 +107,7 @@ LkRosMap.controller.geocoder = {
 
   searchForAddress: function(event) {
     var scope = LkRosMap.controller.geocoder,
-        queryStr = event.target.value,
+        queryStr = $('#LkRosMap\\.addressSearchField').val(),
         url  = 'http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';
 
     $.ajax(url, {

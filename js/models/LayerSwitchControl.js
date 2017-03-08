@@ -12,7 +12,7 @@ LkRosMap.models.layerSwitchControl = function(params) {
 
   layersElement.append(
     $.map(radioLayers, function(layer, index) {
-      var html = '<input type="radio" name="radioLayerSwitch_' + index + '" value="1" checked> ' + layer.get('name');
+      var html = '<input type="radio" name="radioLayerSwitch_' + index + '" value="' + index + '"' + (index == 0 ? ' checked' : '') + '> ' + layer.get('name');
       return html;
     }).join('<br>')
   );
@@ -23,11 +23,13 @@ LkRosMap.models.layerSwitchControl = function(params) {
   layersElement.append('<h2>Angebote</h2>');
   layersElement.append(
     $.map(checkLayers, function(layer, index) {
-      var html = '<input type="checkbox" name="checkLayerSwitch_' + index + '" value="1" checked> ' + layer.get('name');
-      
-      html += '<br>' + $.map(layer.getSource().getFeatures()[0].get('classes'), function(c, i) {
+      var html = '<input type="checkbox" name="checkLayerSwitch_' + index + '" value="' + index + '" class="lkrosmap-check-layer-switch" checked> ' + layer.get('name');
+
+      html += '<div id="LkRosMap.checkLayerClasses' + index + '">';
+      html += $.map(layer.getSource().getFeatures()[0].get('classes'), function(c, i) {
         return '<img src="../img/' + c.icon + '.png" width="15" style="margin-left: 20px"> ' + c.name;
       }).join('<br>');
+      html += '</div>';
 
       return html;
     }).join('<br>')

@@ -151,6 +151,16 @@ LkRosMap.controller.mapper = {
         $('#LkRosMap\\.layerSwitch').toggle();
       }
    );
+
+   $.each($('#LkRosMap\\.checkLayerSwitch').children().filter(':input'), function(i, checkbox) {
+     $(checkbox).on(
+       'click',
+       function(evt) {
+         LkRosMap.controller.mapper.toggleCheckLayer(evt);
+       }
+     );
+   })
+
   },
 
   init: function() {
@@ -327,6 +337,20 @@ LkRosMap.controller.mapper = {
   
     LkRosMap.map.addOverlay(infoWindow);
     LkRosMap.infoWindow = infoWindow;
+  },
+
+  toggleCheckLayer: function(evt) {
+    var index = evt.target.value
+
+    if (LkRosMap.vectorLayers[index].getVisible()) {
+      // hide layer
+      LkRosMap.vectorLayers[index].setVisible(false);
+      $('#LkRosMap\\.checkLayerClasses' + index).hide();
+    } else {
+      // show layer
+      LkRosMap.vectorLayers[index].setVisible(true);
+      $('#LkRosMap\\.checkLayerClasses' + index).show()
+    }
   }
 
 }

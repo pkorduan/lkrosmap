@@ -8,17 +8,17 @@ LkRosMap.controller.geocoder = {
     LkRosMap.loadHeadFile('../js/models/SearchResult.js', 'js');
   },
   
-	loadLayer: function() {
-		this.layer = new ol.layer.Vector({
-	    opacity: 1,
-	    source: new ol.source.Vector({
-				projection: LkRosMap.viewProjection,
-	      features: []
-	    }),
-	    zIndex: 100
-	  });
+  loadLayer: function() {
+    this.layer = new ol.layer.Vector({
+      opacity: 1,
+      source: new ol.source.Vector({
+        projection: LkRosMap.viewProjection,
+        features: []
+      }),
+      zIndex: 100
+    });
     this.layer.setMap(LkRosMap.map);
-	},
+  },
 
   setEventHandlers: function() {
     $("#LkRosMap\\.addressSearchLos").on(
@@ -58,7 +58,7 @@ LkRosMap.controller.geocoder = {
     this.errMsgElement = $('#LkRosMap\\.errorMessage');
 
     this.loadModels();
-		this.loadLayer();
+    this.loadLayer();
 
     ol.inherits(this.addressSearchControl, ol.control.Control);
     LkRosMap.map.addControl(new this.addressSearchControl());
@@ -145,7 +145,10 @@ LkRosMap.controller.geocoder = {
   addressSearchControl: function(opt_options) {
     var options = opt_options || {};
 
-    var button = $('<button class="lkrosmap-address-search-button"/>').attr({ id: 'LkRosMap.addressSearchButton' });
+    var button = $('<button class="lkrosmap-address-search-button"/>').attr({
+      id: 'LkRosMap.addressSearchButton',
+      title: 'Suche nach Orten und Adressen'
+    });
 
     button.html('<i class=\"fa fa-search\"></i>');
 
@@ -156,7 +159,7 @@ LkRosMap.controller.geocoder = {
       $('#LkRosMap\\.addressSearchField').focus();
     });
 
-    var element = $('<div></div>').attr({ class: 'lkrosmap-address-search-control ol-unselectable ol-control'});
+    var element = $('<div></div>').attr({ class: 'lkrosmap-address-search-control ol-unselectable ol-control' });
     element.append(button);
     element.append(LkRosMap.controller.geocoder.views.addressSearch.html);
 

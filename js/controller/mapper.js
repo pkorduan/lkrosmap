@@ -194,7 +194,8 @@ LkRosMap.controller.mapper = {
           }
         }).extend([
           new ol.control.ScaleLine({
-            className: 'ol-scale-line lkrosmap-mapper-scale-line'
+            className: 'ol-scale-line lkrosmap-mapper-scale-line',
+            title: 'Maßstabsbalken'
           }),
           this.mousePositionControl(),
           this.featureInfoControl(),
@@ -275,7 +276,10 @@ LkRosMap.controller.mapper = {
 
   featureInfoControl: function(opt_options) {
     var button = $('<button/>').attr({ id: 'LkRosMap.featureInfoButton' }),
-        element = $('<div></div>').attr({ class: 'lkrosmap-feature-info-control ol-unselectable ol-control'});
+        element = $('<div></div>').attr({
+          class: 'lkrosmap-feature-info-control ol-unselectable ol-control',
+          title: 'Anzeige von Informationen'
+        });
     
     button.html('<i class=\"fa fa-info\"></i>');
     button.click(function() {

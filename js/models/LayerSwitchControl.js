@@ -1,5 +1,8 @@
 LkRosMap.models.layerSwitchControl = function(params) {
-  var buttonElement = $('<button/>').attr({ id: 'LkRosMap.layerSwitcherButton' }),
+  var buttonElement = $('<button/>').attr({
+        id: 'LkRosMap.layerSwitcherButton',
+        title: 'Ein- und Ausschalten von Layern und Legende.'
+      }),
       radioLayers = (typeof(params.radioLayers) == 'undefined' ? [] : params.radioLayers),
       checkLayers = (typeof(params.checkLayers) == 'undefined' ? [] : params.checkLayers),
       switchElement = $('<div>').attr({ id: 'LkRosMap.layerSwitch' }),
@@ -37,7 +40,7 @@ LkRosMap.models.layerSwitchControl = function(params) {
 
   switchElement.append(layersElement);
   
-  controlElement = $('<div>').attr({ class: 'lkrosmap-layerswitcher-control ol-unselectable ol-control' })
+  controlElement = $('<div>').attr({ class: 'lkrosmap-layerswitcher-control ol-unselectable ol-control'})
   controlElement.append(buttonElement);
   controlElement.append(switchElement);
 

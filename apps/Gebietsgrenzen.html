@@ -1,53 +1,31 @@
 <html lang="de">
   <head>
     <meta charset="utf-8">
-    <script type="text/javascript" src="../conf/app.js"></script>
     <script type="text/javascript">
-      LkRosMap.config = {
-        name: 'Gebietsgrenzen',
-        viewProjection: 'EPSG:25833',
-        baseProjection: 'EPSG:4326',
-        backgroundlayers: [{
-          name: 'Orka M-V',
-          url: ''
-        }, {
-          name: 'Luftbilder',
-          url: ''
-        }],
-        mapWidth: '700px',
-        mapHeight: '600px',
-        layers: [{
-					index: 0,
+      LkRosMap = {
+        config: {
           name: 'Gebietsgrenzen',
-          url: '../wfs2json/json/lkrosmap_Gebietsgrenzen.json'
-        }, {
-					index: 1,
-					name: 'Fluren',
-					url: '../wfs2json/json/LRO_Fluren.json'
-				}, {
-					index: 2,
-					name: 'Gemarkungen',
-					url: '../wfs2json/json/LRO_Gemarkungen.json'
-				}, {
-					index: 3,
-					name: 'Gemeindeteile',
-					url: '../wfs2json/json/LRO_Gemeindeteile.json'
-				}, {
-					index: 4,
-					name: 'Gemeinden',
-					url: '../wfs2json/json/LRO_Gemeinden.json'
-				}, {
-					index: 5,
-					name: 'Gemeindeverbaende',
-					url: '../wfs2json/json/LRO_Gemeindeverbaende.json'
-				}, {
-					index: 5,
-					name: 'Kreise',
-					url: '../wfs2json/json/LRO_Kreise.json'
-				}
-			],
-        center: [12.17133, 53.91179],
-        layerExtent: [267289, 5933512, 360042, 6023242]
+          viewProjection: 'EPSG:25833',
+          baseProjection: 'EPSG:4326',
+          backgroundlayers: [{
+            name: 'Orka M-V',
+            url: ''
+          }, {
+            name: 'Luftbilder',
+            url: ''
+          }],
+          mapWidth: '700px',
+          mapHeight: '600px',
+          layers: [{
+  					index: 0,
+  					name: 'Kreise',
+  					url: '../../wfs2json/json/lkrosmap_LRO_Kreise.json',
+            model: 'Kreis',
+            attribution: 'Landkreise Mecklenburg-Vorpommern<br>'
+  				}],
+          center: [12.21, 53.91],
+          layerExtent: [267289, 5933512, 360042, 6023242]
+        }
       };
     </script>
     <script type="text/javascript" src="../js/app.js"></script>

@@ -23,18 +23,34 @@ LkRosMap.models.Feature = function(params) {
   }
 
   // set style
-  feature.setStyle(
-    new ol.style.Style({
-      image: new ol.style.Icon(({
-        anchor: [0.5, 46],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        opacity: 0.75,
-        src: '../img/' + feature.get('class').icon + '.png',
-        scale: 0.25
-      }))
-    })
-  );
+  if (feature.get('typ') == 'PointFeature') {
+    feature.setStyle(
+      new ol.style.Style({
+        image: new ol.style.Icon(({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          opacity: 0.75,
+          src: '../img/' + feature.get('class').icon + '.png',
+          scale: 0.25
+        }))
+      })
+    );
+  }
+
+  if (feature.get('typ') == 'MultiPolygonFeature') {
+    feature.setStyle(
+      new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: feature.get('outlinecolor'),
+          width: 3
+        }),
+        fill: new ol.style.Fill({
+          color: 'rgba(0, 0, 255, ' + feature.get('opacity') + ')'
+        })
+      })
+    )
+  }
 
   // functions that all features models shall have
 /*  feature.d = function(t) {

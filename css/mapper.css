@@ -1,6 +1,8 @@
 .lkrosmap-mapper-scale-line {
   border: 3px solid rgba(255, 255, 255, .6);
   background: rgb(0, 60, 136, .7);
+  bottom: 3px;
+  left: 6px;
 }
 
 .lkrosmap-mapper-scale-line-inner {
@@ -35,6 +37,23 @@
 	display: none;
   float: right;
   margin: 1 5 1 10;
+}
+
+.lkrosmap-legend-control {
+  bottom: 41px;
+  left: 6px;
+}
+
+#LkRosMap\.legendButton {
+  display: inline;
+  width: 70;
+}
+
+#LkRosMap\.legend {
+	display: none;
+  margin: 4 5 1 5;
+  max-height: 500px;
+  overflow: scroll;
 }
 
 .lkrosmap-mouse-position-control {

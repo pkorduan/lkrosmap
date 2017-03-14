@@ -12,20 +12,18 @@ LkRosMap.models.Kreis = function(store) {
     geometry: new ol.geom.Polygon(store.geometry.coordinates),
     classItem: 'type',
     classes: [{
-      name: 'alle',
+      name: '',
       expression: function(value) {
-        result = $.inArray(value, [
-          'B',
-          'Baum',
-          'Kastanien-',
-          'Eichenallee'
-        ]);
-        return result > -1;
+        return true
       },
-      backgroundcolor: 'blue',
-      outlinecolor: 'darkblue',
-      opacity: 0.5
-    }],
+      style: new ol.style.Style({
+        stroke: new ol.style.Stroke({
+          color: 'rgb(40, 40, 40)',
+          width: 1
+        })
+      }),
+      icon: 'kreis'
+    }]
   },
 
   feature = new LkRosMap.models.Feature(params);

@@ -37,7 +37,6 @@ LkRosMap.loadHeadFile('../js/models/LegendControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Feature.js', 'js');
 
 for (var i = 0; i < LkRosMap.config.layers.length; i++) {
-  console.log('Lade Model ' + LkRosMap.config.layers[i].model);
   LkRosMap.loadHeadFile('../js/models/' + LkRosMap.config.layers[i].model + '.js', 'js');
 }
 

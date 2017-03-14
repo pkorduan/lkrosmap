@@ -17,13 +17,14 @@ LkRosMap.models.Feature = function(params) {
       feature.set('class', c);
     }
   });
-  // alle andere setze auf die erste Klasse in Classes
-  if (typeof(feature.get('classes')) == 'undefined') {
+
+  // alle anderen setze auf die erste Klasse in Classes
+  if (typeof(feature.get('class')) == 'undefined') {
     feature.set('class', feature.classes[0]);
   }
 
   // set style
-  if (feature.get('typ') == 'PointFeature') {
+  if (feature.get('type') == 'PointFeature') {
     feature.setStyle(
       new ol.style.Style({
         image: new ol.style.Icon(({
@@ -38,18 +39,8 @@ LkRosMap.models.Feature = function(params) {
     );
   }
 
-  if (feature.get('typ') == 'MultiPolygonFeature') {
-    feature.setStyle(
-      new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: feature.get('outlinecolor'),
-          width: 3
-        }),
-        fill: new ol.style.Fill({
-          color: 'rgba(0, 0, 255, ' + feature.get('opacity') + ')'
-        })
-      })
-    )
+  if (feature.get('type') == 'MultiPolygonFeature') {
+    feature.setStyle(feature.get('class').style);
   }
 
   // functions that all features models shall have

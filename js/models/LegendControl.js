@@ -15,7 +15,7 @@ LkRosMap.models.legendControl = function(params) {
       var html = layer.get('name');
           html += '<div id="LkRosMap.checkLayerClasses' + index + '">';
           html += $.map(layer.getSource().getFeatures()[0].get('classes'), function(c, i) {
-            return '<img src="../img/' + c.icon + '.png" width="15" style="margin-left: 20px"> ' + c.name;
+            return '<img src="../img/' + c.icon + '.png" style="margin-left: 20px"> ' + c.name;
           }).join('<br>');
           html += '</div>';
       return html;

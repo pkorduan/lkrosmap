@@ -66,6 +66,11 @@ LkRosMap.controller.mapper = {
         case 'Naturdenkmal': {
           feature = new LkRosMap.models.Naturdenkmal(store[i]);
         } break;
+
+        case 'Kreis': {
+          feature = new LkRosMap.models.Kreis(store[i]);
+        } break;
+
         default: {
           store[i].icon = 'Default';
           feature = new LkRosMap.models.Feature(store[i]);
@@ -95,11 +100,7 @@ LkRosMap.controller.mapper = {
             });
 
         layer = LkRosMap.controller.mapper.loadFeatures(store, layer, layer_config.model);
-
-//        layer.setMap(LkRosMap.map);
-
-//        LkRosMap.vectorLayers[layer_config.name] = layer;
-          LkRosMap.vectorLayers = [layer];
+        LkRosMap.vectorLayers = [layer];
       });
     });
   },

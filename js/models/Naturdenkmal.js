@@ -41,7 +41,7 @@ LkRosMap.models.Naturdenkmal = function(store) {
         return result > -1;
       },
       icon: 'nd_stein'
-    }],
+    }]
   },
 
   feature = new LkRosMap.models.Feature(params);

@@ -18,7 +18,7 @@ LkRosMap.models.Feature = function(params) {
     }
   });
   // alle andere setze auf die erste Klasse in Classes
-  if (typeof(feature.get('class')) == 'undefined') {
+  if (typeof(feature.get('classes')) == 'undefined') {
     feature.set('class', feature.classes[0]);
   }
 

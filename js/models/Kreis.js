@@ -40,10 +40,10 @@ LkRosMap.models.Kreis = function(store) {
 
     lines.push('<b>Name:</b>&nbsp;' + this.get('kreisname'));
     lines.push('<b>Regionalschlüssel:</b>&nbsp;' + this.get('regionalschluessel'));
-    lines.push('<b>Verwaltungsebene:</b>&nbsp;' + this.get('verwaltungsebene');
-    lines.push('<b>nuts level:</b>&nbsp;' + this.get('nuts_level') + ' <b>code:</b>' + this.get('nuts_code');
-    lines.push('<b>Fläche [km2]:</b>&nbsp;' + this.get('flaeche');
-    lines.push('<b>Aktualität:</b>&nbsp;' + this.get('aktualitaet');
+    lines.push('<b>Verwaltungsebene:</b>&nbsp;' + this.get('verwaltungsebene'));
+    lines.push('<b>nuts level:</b>&nbsp;' + this.get('nuts_level') + ' <b>code:</b>' + this.get('nuts_code'));
+    lines.push('<b>Fläche [km2]:</b>&nbsp;' + this.get('flaeche'));
+    lines.push('<b>Aktualität:</b>&nbsp;' + this.get('aktualitaet'));
     
     return lines.join('<br>');
   };

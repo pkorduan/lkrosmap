@@ -33,7 +33,7 @@ LkRosMap.models.Feature = function(params) {
           anchorYUnits: 'pixels',
           opacity: 0.75,
           src: '../img/' + feature.get('class').icon + '.png',
-          scale: 0.25
+          scale: 0.7
         }))
       })
     );

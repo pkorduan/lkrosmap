@@ -5,56 +5,106 @@ LkRosMap.controller.mapper = {
 
   loadViews: function() {
     var mapper = LkRosMap.views.mapper;
-
-    $('#LkRosMap\\.container').append(mapper.mapHeader.html);
+    $('#LkRosMap\\.container').html(mapper.mapHeader.html);
     $('#LkRosMap\\.container').append(mapper.map.html);
     $('#LkRosMap\\.container').append(mapper.popup.html);
   },
 
-  createTileLayer : function() {
+  createTileLayers : function() {
+    LkRosMap.tileLayers = [];
+
     // create the ORKA-Map Layer
-    LkRosMap.tileLayer = new ol.layer.Tile({
-      name: 'ORKA',
-      source: new ol.source.TileImage({
-        attributions: [
-          new ol.Attribution({
-            html: 'Kartenbild &copy; Hansestadt Rostock (CC BY 4.0) | Kartendaten &copy; OpenStreetMap (ODbL) und LkKfS-MV'
-          })
-        ],
-        projection: LkRosMap.viewProjection,
-        tileGrid: new ol.tilegrid.TileGrid({
-        origin: [-464849.38, 5057815.86858],
-        resolutions: [4891.96981025128, 3459.1450261886484, 2445.9849051256397,
-                      1729.5725130942737,1222.9924525628198, 864.7862565471368,
-                      611.4962262814098, 432.3931282735683, 305.7481131407049,
-                      216.19656413678416, 152.8740565703524, 108.09828206839207,
-                      76.43702828517618, 54.049141034196026, 38.21851414258809,
-                      27.024570517098006, 19.109257071294042, 13.512285258549001,
-                      9.55462853564702, 6.7561426292745, 4.77731426782351,
-                      3.3780713146372494, 2.3886571339117544, 1.6890356573186245,
-                      1.1943285669558772, 0.8445178286593122, 0.5971642834779384,
-                      0.422258914329656, 0.29858214173896913, 0.21112945716482798,
-                      0.14929107086948457, 0.10556472858241398, 0.07464553543474227,
-                      0.05278236429120697, 0.03732276771737113]
-        }),
-        tileUrlFunction: function(tileCoord) {
-          var z = tileCoord[0];
-          var x = tileCoord[1];
-          var y = tileCoord[2];
+    LkRosMap.tileLayers.push(
+      new ol.layer.Tile({
+        name: 'ORKA farbig',
+        source: new ol.source.TileImage({
+          attributions: [
+            new ol.Attribution({
+              html: 'Kartenbild &copy; Hansestadt Rostock (CC BY 4.0) | Kartendaten &copy; OpenStreetMap (ODbL) und LkKfS-MV'
+            })
+          ],
+          projection: LkRosMap.viewProjection,
+          tileGrid: new ol.tilegrid.TileGrid({
+          origin: [-464849.38, 5057815.86858],
+          resolutions: [4891.96981025128, 3459.1450261886484, 2445.9849051256397,
+                        1729.5725130942737,1222.9924525628198, 864.7862565471368,
+                        611.4962262814098, 432.3931282735683, 305.7481131407049,
+                        216.19656413678416, 152.8740565703524, 108.09828206839207,
+                        76.43702828517618, 54.049141034196026, 38.21851414258809,
+                        27.024570517098006, 19.109257071294042, 13.512285258549001,
+                        9.55462853564702, 6.7561426292745, 4.77731426782351,
+                        3.3780713146372494, 2.3886571339117544, 1.6890356573186245,
+                        1.1943285669558772, 0.8445178286593122, 0.5971642834779384,
+                        0.422258914329656, 0.29858214173896913, 0.21112945716482798,
+                        0.14929107086948457, 0.10556472858241398, 0.07464553543474227,
+                        0.05278236429120697, 0.03732276771737113]
+          }),
+          tileUrlFunction: function(tileCoord) {
+            var z = tileCoord[0];
+            var x = tileCoord[1];
+            var y = tileCoord[2];
 
-          if (x < 0 || y < 0) {
-            return '';
+            if (x < 0 || y < 0) {
+              return '';
+            }
+
+            var url = 'http://www.orka-mv.de/geodienste/orkamv/tms/1.0.0/orkamv/epsg_25833/'
+                      + z + '/' + x + '/' + y + '.png';
+
+            return url;
           }
+        }),
+        // user data
+        layerExtent: LkRosMap.config.layerExtent
+      })
+    );
 
-          var url = 'http://www.orka-mv.de/geodienste/orkamv/tms/1.0.0/orkamv/epsg_25833/'
-                    + z + '/' + x + '/' + y + '.png';
+    // create the ORKA-Map Layer
+    LkRosMap.tileLayers.push(
+      new ol.layer.Tile({
+        name: 'ORKA grau',
+        visible: false,
+        source: new ol.source.TileImage({
+          attributions: [
+            new ol.Attribution({
+              html: 'Kartenbild &copy; Hansestadt Rostock (CC BY 4.0) | Kartendaten &copy; OpenStreetMap (ODbL) und LkKfS-MV'
+            })
+          ],
+          projection: LkRosMap.viewProjection,
+          tileGrid: new ol.tilegrid.TileGrid({
+          origin: [-464849.38, 5057815.86858],
+          resolutions: [4891.96981025128, 3459.1450261886484, 2445.9849051256397,
+                        1729.5725130942737,1222.9924525628198, 864.7862565471368,
+                        611.4962262814098, 432.3931282735683, 305.7481131407049,
+                        216.19656413678416, 152.8740565703524, 108.09828206839207,
+                        76.43702828517618, 54.049141034196026, 38.21851414258809,
+                        27.024570517098006, 19.109257071294042, 13.512285258549001,
+                        9.55462853564702, 6.7561426292745, 4.77731426782351,
+                        3.3780713146372494, 2.3886571339117544, 1.6890356573186245,
+                        1.1943285669558772, 0.8445178286593122, 0.5971642834779384,
+                        0.422258914329656, 0.29858214173896913, 0.21112945716482798,
+                        0.14929107086948457, 0.10556472858241398, 0.07464553543474227,
+                        0.05278236429120697, 0.03732276771737113]
+          }),
+          tileUrlFunction: function(tileCoord) {
+            var z = tileCoord[0];
+            var x = tileCoord[1];
+            var y = tileCoord[2];
 
-          return url;
-        }
-      }),
-      // user data
-      layerExtent: LkRosMap.config.layerExtent
-    });
+            if (x < 0 || y < 0) {
+              return '';
+            }
+
+            var url = 'https://www.orka-mv.de/geodienste/orkamv/tms/1.0.0/orkamv-graustufen/epsg_25833/'
+                      + z + '/' + x + '/' + y + '.png';
+
+            return url;
+          }
+        }),
+        // user data
+        layerExtent: LkRosMap.config.layerExtent
+      })
+    );
   },
 
   loadFeatures: function(store, layer, model) {
@@ -77,6 +127,18 @@ LkRosMap.controller.mapper = {
 
         case 'Gemeinde': {
           feature = new LkRosMap.models.Gemeinde(store[i]);
+        } break;
+
+        case 'Gemeindeteil': {
+          feature = new LkRosMap.models.Gemeindeteil(store[i]);
+        } break;
+
+        case 'Gemarkung': {
+          feature = new LkRosMap.models.Gemarkung(store[i]);
+        } break;
+
+        case 'Flur': {
+          feature = new LkRosMap.models.Flur(store[i]);
         } break;
 
         default: {
@@ -163,6 +225,15 @@ LkRosMap.controller.mapper = {
       }
    );
 
+   $.each($('#LkRosMap\\.radioLayerSwitch').children().filter(':input'), function(i, checkbox) {
+     $(checkbox).on(
+       'click',
+       function(evt) {
+         LkRosMap.controller.mapper.toggleRadioLayer(evt);
+       }
+     );
+   });
+
     $.each($('#LkRosMap\\.checkLayerSwitch').children().filter(':input'), function(i, checkbox) {
       $(checkbox).on(
         'click',
@@ -189,7 +260,7 @@ LkRosMap.controller.mapper = {
     proj4.defs("EPSG:25833","+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
     proj4.defs("EPSG:25832","+proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
 
-    this.createTileLayer();
+    this.createTileLayers();
     this.createVectorLayers();
 
     function constrainMapToExtend(map, extent) {
@@ -218,15 +289,14 @@ LkRosMap.controller.mapper = {
           this.mousePositionControl(),
           this.featureInfoControl(),
           new LkRosMap.models.layerSwitchControl({
-            radioLayers: [LkRosMap.tileLayer],
+            radioLayers: LkRosMap.tileLayers,
             checkLayers: LkRosMap.vectorLayers
           }),
           new LkRosMap.models.legendControl({
             checkLayers: LkRosMap.vectorLayers
           })
         ]),
-//      layers: [LkRosMap.tileLayer],
-      layers: [LkRosMap.tileLayer].concat(LkRosMap.vectorLayers),
+      layers: LkRosMap.tileLayers.concat(LkRosMap.vectorLayers),
       view: new ol.View({
         maxResolution: 152.8740565703524,
         minResolution: 0.14929107086948457,
@@ -235,16 +305,16 @@ LkRosMap.controller.mapper = {
       }),
       logo: false
     });
-  
+
     // die map view im LkRosMap Namespace bereitstellen
     LkRosMap.view = map.getView();
   
     // den Center Constraint an die Zoom-Stufe anpassen ...
     // ... initial ...
-    constrainMapToExtend(map, LkRosMap.tileLayer.get('layerExtent'));
+    constrainMapToExtend(map, LkRosMap.tileLayers[0].get('layerExtent'));
     // ... für jeden Zoom-Vorgang
     LkRosMap.view.on('change:resolution', function(event){
-      constrainMapToExtend(map, LkRosMap.tileLayer.get('layerExtent'));
+      constrainMapToExtend(map, LkRosMap.tileLayers[0].get('layerExtent'));
     });
 
     LkRosMap.maxExtent = LkRosMap.view.calculateExtent(map.getSize());
@@ -376,6 +446,14 @@ LkRosMap.controller.mapper = {
       LkRosMap.vectorLayers[index].setVisible(true);
       $('#LkRosMap\\.checkLayerClasses' + index).show()
     }
-  }
+  },
 
+  toggleRadioLayer: function(evt) {
+    var index = evt.target.value
+
+    $.each(LkRosMap.tileLayers, function (i, layer) {
+      layer.setVisible(false);
+    });
+    LkRosMap.tileLayers[index].setVisible(true);
+  }
 }

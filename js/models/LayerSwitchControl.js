@@ -15,7 +15,7 @@ LkRosMap.models.layerSwitchControl = function(params) {
 
   layersElement.append(
     $.map(radioLayers, function(layer, index) {
-      var html = '<input type="radio" name="radioLayerSwitch_' + index + '" value="' + index + '"' + (index == 0 ? ' checked' : '') + '> ' + layer.get('name');
+      var html = '<input type="radio" name="radioLayerSwitch" value="' + index + '"' + (index == 0 ? ' checked' : '') + '> ' + layer.get('name');
       return html;
     }).join('<br>')
   );

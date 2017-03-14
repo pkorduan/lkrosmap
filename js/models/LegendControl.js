@@ -12,8 +12,8 @@ LkRosMap.models.legendControl = function(params) {
   layersElement = $('<div>').attr({ id: 'LkRosMap.checklegend' });
   layersElement.append(
     $.map(checkLayers, function(layer, index) {
-      var html = layer.get('name');
-          html += '<div id="LkRosMap.checkLayerClasses' + index + '">';
+      var html = '<div id="LkRosMap.checkLayerClasses' + index + '">';
+          html += layer.get('name') + '<br>';
           html += $.map(layer.getSource().getFeatures()[0].get('classes'), function(c, i) {
             return '<img src="../img/' + c.icon + '.png" style="margin-left: 20px"> ' + c.name;
           }).join('<br>');
@@ -25,8 +25,8 @@ LkRosMap.models.legendControl = function(params) {
   switchElement.append(layersElement);
   
   controlElement = $('<div>').attr({ class: 'lkrosmap-legend-control ol-unselectable ol-control'})
-  controlElement.append(buttonElement);
   controlElement.append(switchElement);
+  controlElement.append(buttonElement);
 
   return new ol.control.Control({ element: controlElement.get(0)});
 };

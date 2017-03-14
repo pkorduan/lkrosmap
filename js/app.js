@@ -49,7 +49,7 @@ LkRosMap.init = function() {
   LkRosMap.viewProjection = LkRosMap.config.viewProjection;
   // fuer einige Berechnungen muss nach LonLat transformiert werden
   LkRosMap.baseProjection = LkRosMap.config.baseProjection;
-  
+
   // Reihenfolge ist zu beachten
   LkRosMap.controller.mapper.init();
   LkRosMap.controller.helper.init();

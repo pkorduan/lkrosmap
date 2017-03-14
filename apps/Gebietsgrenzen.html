@@ -18,23 +18,42 @@
           mapHeight: '600px',
           layers: [{
             index: 0,
+            name: 'Fluren',
+            url: '../../wfs2json/json/lkrosmap_LRO_Fluren.json',
+            model: 'Flur',
+            attribution: 'Fluren Mecklenburg-Vorpommern<br>'
+          }, {
+            index: 1,
+            name: 'Gemarkung',
+            url: '../../wfs2json/json/lkrosmap_LRO_Gemarkungen.json',
+            model: 'Gemarkung',
+            attribution: 'Gemarkungen Mecklenburg-Vorpommern<br>'
+          }, {
+            index: 2,
+            name: 'Gemeindeteile',
+            url: '../../wfs2json/json/lkrosmap_LRO_Gemeindeteile.json',
+            model: 'Gemeindeteil',
+            attribution: 'Gemeindeteile Mecklenburg-Vorpommern<br>'
+          }, {
+            index: 3,
             name: 'Gemeinden',
             url: '../../wfs2json/json/lkrosmap_LRO_Gemeinden.json',
             model: 'Gemeinde',
             attribution: 'Gemeinden Mecklenburg-Vorpommern<br>'
           }, {
-            index: 1,
+            index: 4,
             name: 'Amtsverwaltungen',
             url: '../../wfs2json/json/lkrosmap_LRO_Gemeindeverbaende.json',
             model: 'Amtsverwaltung',
             attribution: 'Amtsverwaltungen Mecklenburg-Vorpommern<br>'
           }, {
-            index: 2,
+            index: 5,
             name: 'Kreisgrenzen',
             url: '../../wfs2json/json/lkrosmap_LRO_Kreise.json',
             model: 'Kreisgrenze',
             attribution: 'Landkreise Mecklenburg-Vorpommern<br>'
-          }],
+          }
+        ],
           center: [12.21, 53.91],
           layerExtent: [267289, 5933512, 360042, 6023242]
         }
@@ -43,6 +62,12 @@
     <script type="text/javascript" src="../js/app.js"></script>
   </head>
   <body onload="LkRosMap.init();">
-    <div id="LkRosMap.container"></div>
+    <div id="LkRosMap.container">
+  		<div id="LkRosMap.searchOverlay" class="lkrosmap-search-overlay">
+  			<div id="LkRosMap.searchAnimation" class="lkrosmap-search-animation">
+          <span style="font-size: 30px">Lade Gebietsgrenzen</span> <i class="fa fa-3x fa-spinner fa-spin"></i>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

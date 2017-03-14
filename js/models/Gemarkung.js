@@ -1,13 +1,17 @@
-LkRosMap.models.Amtsverwaltung = function(store) {
+LkRosMap.models.Gemarkung = function(store) {
   var params = {
     gid: store.ogc_fid,
     type: 'MultiPolygonFeature',
-    regionalschluessel: store.regionalschluessel,
-    kreisname: store.kreisname,
+    schluesselgesamt: store.schluesselgesamt,
     kreis: store.kreis,
+    kreisname: store.kreisname,
     amt: store.amt,
     amtsname: store.amtsname,
-    anz_gemeinden: store.anz_gemeinden,  
+    gemeinde: store.gemeinde,
+    gemeindename: store.gemeindename,
+    gemarkung: store.gemarkung,
+    gemarkungsname: store.gemarkungsname,
+    anz_flur: store.anz_flur,
     flaeche: store.flaeche,
     geometry: new ol.geom.Polygon(store.geometry.coordinates),
     classItem: 'type',
@@ -18,11 +22,11 @@ LkRosMap.models.Amtsverwaltung = function(store) {
       },
       style: new ol.style.Style({
         stroke: new ol.style.Stroke({
-          color: 'rgb(0, 0, 255)',
+          color: 'rgb(90, 90, 170)',
           width: 1
         })
       }),
-      icon: 'Amtsverwaltung'
+      icon: 'Gemarkung'
     }]
   },
 
@@ -36,17 +40,19 @@ LkRosMap.models.Amtsverwaltung = function(store) {
   feature.dataFormatter = function() {
     var lines = [];
 
-    lines.push('<b>Name:</b>&nbsp;' + this.get('amtsname') + ' (' + this.get('amt') + ')');
-    lines.push('<b>Regionalschlüssel:</b>&nbsp;' + this.get('regionalschluessel'));
+    lines.push('<b>Name:</b>&nbsp;' + this.get('gemarkungsname') + ' (' + this.get('gemarkung')+ ')');
+    lines.push('<b>Schlüssel gesamt:</b>&nbsp;' + this.get('schluesselgesamt'));
     lines.push('<b>im Kreis:</b>&nbsp;' + this.get('kreisname') + ' (' + this.get('kreis') + ')');
-    lines.push('<b>Anzahl Gemeinden:</b>&nbsp;' + this.get('anz_gemeinden'));
+    lines.push('<b>im Amt:</b>&nbsp;' + this.get('amtsname') + ' (' + this.get('amt') + ')');
+    lines.push('<b>in Gemeinde:</b>&nbsp;' + this.get('gemeindename') + ' (' + this.get('gemeinde') + ')');
+    lines.push('<b>Anzahl Fluren:</b>&nbsp;' + this.get('anz_flur'));
     lines.push('<b>Fläche [km2]:</b>&nbsp;' + this.get('flaeche'));
     return lines.join('<br>');
   };
 
   feature.prepareInfoWindow = function() {
     $('#LkRosMap\\.infoWindow').attr('class','lkrosmap-infowindow');
-    $('#LkRosMap\\.infoWindowTitle').html('Amtsverwaltung');
+    $('#LkRosMap\\.infoWindowTitle').html('Gemarkung');
     $('#LkRosMap\\.infoWindowData').html(this.dataFormatter());
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };

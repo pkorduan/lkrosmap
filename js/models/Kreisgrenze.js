@@ -18,7 +18,7 @@ LkRosMap.models.Kreisgrenze = function(store) {
       },
       style: new ol.style.Style({
         stroke: new ol.style.Stroke({
-          color: 'rgb(255 145 83)',
+          color: 'rgb(255, 145, 83)',
           width: 1
         })
       }),
@@ -42,13 +42,13 @@ LkRosMap.models.Kreisgrenze = function(store) {
     lines.push('<b>nuts level:</b>&nbsp;' + this.get('nuts_level') + ' <b>code:</b>' + this.get('nuts_code'));
     lines.push('<b>Fläche [km2]:</b>&nbsp;' + this.get('flaeche'));
     lines.push('<b>Aktualität:</b>&nbsp;' + this.get('aktualitaet'));
-    
+
     return lines.join('<br>');
   };
 
   feature.prepareInfoWindow = function() {
     $('#LkRosMap\\.infoWindow').attr('class','lkrosmap-infowindow');
-    $('#LkRosMap\\.infoWindowTitle').html('Landkreis');
+    $('#LkRosMap\\.infoWindowTitle').html('Kreisgrenze');
     $('#LkRosMap\\.infoWindowData').html(this.dataFormatter());
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };

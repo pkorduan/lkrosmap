@@ -36,13 +36,15 @@
 #LkRosMap\.layerSwitch {
 	display: none;
   float: right;
-  margin: 1 5 1 10;
+  margin-left: 5px;
+  padding: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, .8);
 }
 
 .lkrosmap-legend-control {
   bottom: 41px;
   left: 6px;
-	background: rgba(255,255,255, .8);
 }
 
 #LkRosMap\.legendButton {
@@ -52,9 +54,11 @@
 
 #LkRosMap\.legend {
 	display: none;
-  margin: 4 5 1 5;
   max-height: 500px;
   overflow: scroll;
+  padding: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, .8);
 }
 
 .lkrosmap-mouse-position-control {

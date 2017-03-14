@@ -49,7 +49,7 @@ LkRosMap.models.Gemeinde = function(store) {
 
   feature.prepareInfoWindow = function() {
     $('#LkRosMap\\.infoWindow').attr('class','lkrosmap-infowindow');
-    $('#LkRosMap\\.infoWindowTitle').html('Landkreis');
+    $('#LkRosMap\\.infoWindowTitle').html('Gemeinde');
     $('#LkRosMap\\.infoWindowData').html(this.dataFormatter());
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };

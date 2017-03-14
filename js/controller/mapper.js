@@ -152,15 +152,22 @@ LkRosMap.controller.mapper = {
       }
    );
 
-   $.each($('#LkRosMap\\.checkLayerSwitch').children().filter(':input'), function(i, checkbox) {
-     $(checkbox).on(
-       'click',
-       function(evt) {
-         LkRosMap.controller.mapper.toggleCheckLayer(evt);
-       }
-     );
-   })
+    $.each($('#LkRosMap\\.checkLayerSwitch').children().filter(':input'), function(i, checkbox) {
+      $(checkbox).on(
+        'click',
+        function(evt) {
+          LkRosMap.controller.mapper.toggleCheckLayer(evt);
+        }
+      );
+    });
 
+    $('#LkRosMap\\.legendButton').on(
+      'click',
+      function(evt) {
+        $('#LkRosMap\\.legend').toggle();
+        $('#LkRosMap\\.legendButton').blur();
+      }
+    );
   },
 
   init: function() {
@@ -201,6 +208,9 @@ LkRosMap.controller.mapper = {
           this.featureInfoControl(),
           new LkRosMap.models.layerSwitchControl({
             radioLayers: [LkRosMap.tileLayer],
+            checkLayers: LkRosMap.vectorLayers
+          }),
+          new LkRosMap.models.legendControl({
             checkLayers: LkRosMap.vectorLayers
           })
         ]),

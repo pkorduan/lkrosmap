@@ -19,7 +19,7 @@ LkRosMap.models.legendControl = function(params) {
           }).join('<br>');
           html += '</div>';
       return html;
-    }).join('<br>')
+    }).join('')
   );
 
   switchElement.append(layersElement);

@@ -67,8 +67,16 @@ LkRosMap.controller.mapper = {
           feature = new LkRosMap.models.Naturdenkmal(store[i]);
         } break;
 
-        case 'Kreis': {
-          feature = new LkRosMap.models.Kreis(store[i]);
+        case 'Kreisgrenze': {
+          feature = new LkRosMap.models.Kreisgrenze(store[i]);
+        } break;
+
+        case 'Amtsverwaltung': {
+          feature = new LkRosMap.models.Amtsverwaltung(store[i]);
+        } break;
+
+        case 'Gemeinde': {
+          feature = new LkRosMap.models.Gemeinde(store[i]);
         } break;
 
         default: {
@@ -82,6 +90,8 @@ LkRosMap.controller.mapper = {
   }, 
 
   createVectorLayers: function() {
+    LkRosMap.vectorLayers = [];
+
     $.each(LkRosMap.config.layers, function(index, layer_config) {
       LkRosMap.controller.mapper.loadJSON(layer_config.url, function(response) {
         var store = JSON.parse(response),
@@ -100,7 +110,7 @@ LkRosMap.controller.mapper = {
             });
 
         layer = LkRosMap.controller.mapper.loadFeatures(store, layer, layer_config.model);
-        LkRosMap.vectorLayers = [layer];
+        LkRosMap.vectorLayers.push(layer);
       });
     });
   },

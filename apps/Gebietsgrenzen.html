@@ -18,9 +18,21 @@
           mapHeight: '600px',
           layers: [{
             index: 0,
-            name: 'Kreise',
+            name: 'Gemeinden',
+            url: '../../wfs2json/json/lkrosmap_LRO_Gemeinden.json',
+            model: 'Gemeinde',
+            attribution: 'Gemeinden Mecklenburg-Vorpommern<br>'
+          }, {
+            index: 1,
+            name: 'Amtsverwaltungen',
+            url: '../../wfs2json/json/lkrosmap_LRO_Gemeindeverbaende.json',
+            model: 'Amtsverwaltung',
+            attribution: 'Amtsverwaltungen Mecklenburg-Vorpommern<br>'
+          }, {
+            index: 2,
+            name: 'Kreisgrenzen',
             url: '../../wfs2json/json/lkrosmap_LRO_Kreise.json',
-            model: 'Kreis',
+            model: 'Kreisgrenze',
             attribution: 'Landkreise Mecklenburg-Vorpommern<br>'
           }],
           center: [12.21, 53.91],

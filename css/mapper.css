@@ -42,6 +42,7 @@
 .lkrosmap-legend-control {
   bottom: 41px;
   left: 6px;
+	background: rgba(255,255,255, .8);
 }
 
 #LkRosMap\.legendButton {

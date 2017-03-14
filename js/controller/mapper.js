@@ -185,34 +185,42 @@ LkRosMap.controller.mapper = {
     LkRosMap.map.on(
       'click',
       function(evt) {
-        var target = LkRosMap.map.forEachFeatureAtPixel(evt.pixel,
-            function(feature, layer) {
-              return {
-                feature: feature,
-                layer: layer
-              };
-            });
+        var selectedFeatures = [],
+            selectedLayers = {};
 
-        if (target && target.feature.get('type')) {
-          if (LkRosMap.selectedFeature) {
-            LkRosMap.selectedFeature.unselect();
+        LkRosMap.map.forEachFeatureAtPixel(
+          evt.pixel,
+          function(feature, layer) {
+            if (!(layer.get('name') in selectedLayers)) {
+              layer.selectedFeatures = [];
+              selectedLayers[layer.get('name')] = layer;
+            }
+            selectedLayers[layer.get('name')].selectedFeatures.push(feature);
+
+/*          if (feature.get('type')) {
+              if (LkRosMap.selectedFeature) {
+                LkRosMap.selectedFeature.unselect();
+              }
+              LkRosMap.infoWindow.target = { feature: feature, layer: layer };
+              feature.select();
+            }
+            else {
+              // kein Feature getroffen, unselect fals aktuelle noch eins selectiert ist.
+              if (LkRosMap.selectedFeature) {
+                LkRosMap.selectedFeature.unselect();
+              }
+            }
+*/
           }
-          LkRosMap.infoWindow.target = target;
-          target.feature.select();
-        }
-        else {
-          // kein Feature getroffen, unselect fals aktuelle noch eins selectiert ist.
-          if (LkRosMap.selectedFeature) {
-            LkRosMap.selectedFeature.unselect();
-          }
-        }
+        );
+        LkRosMap.controller.mapper.showInfoWindow(selectedLayers, evt);
       }
     );
 
     $('#LkRosMap\\.infoWindowCloser').on(
       'click',
       function(evt) {
-        LkRosMap.selectedFeature.unselect();
+        LkRosMap.infoWindow.getElement().hide();
         $('#LkRosMap\\.infoWindowCloser').blur();
         return false;
       }
@@ -455,5 +463,20 @@ LkRosMap.controller.mapper = {
       layer.setVisible(false);
     });
     LkRosMap.tileLayers[index].setVisible(true);
+  },
+
+  showInfoWindow: function(selectedLayers, evt) {
+    $('#LkRosMap\\.infoWindowData').html(
+      $.map(selectedLayers, function(layer) {
+        return '<h2>' + layer.get('name') + '</h2>' +
+        $.map(layer.selectedFeatures, function(feature) {
+          return feature.dataFormatter();
+        }).join('<hr>');
+      }).join('<br>')
+    );
+
+    LkRosMap.infoWindow.getElement().show();
+    LkRosMap.infoWindow.setPosition(evt.coordinate);
+    $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   }
 }

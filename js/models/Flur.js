@@ -49,7 +49,7 @@ LkRosMap.models.Flur = function(store) {
     lines.push('<b>in Gemeinde:</b>&nbsp;' + this.get('gemeindename') + ' (' + this.get('gemeinde') + ')');
     lines.push('<b>in Gemarkung:</b>&nbsp;' + this.get('gemarkungsname') + ' (' + this.get('gemarkung') + ')');
     lines.push('<b>Anzahl Flurstücke:</b>&nbsp;' + this.get('anz_fs'));
-    lines.push('<b>Fläche [km2]:</b>&nbsp;' + this.get('flaeche'));
+    lines.push('<b>Fläche:</b>&nbsp;' + this.get('flaeche') / 10000 + ' ha');
     return lines.join('<br>');
   };
 

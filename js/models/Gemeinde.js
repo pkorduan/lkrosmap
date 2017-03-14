@@ -43,7 +43,7 @@ LkRosMap.models.Gemeinde = function(store) {
     lines.push('<b>im Kreis:</b>&nbsp;' + this.get('kreisname') + ' (' + this.get('kreis') + ')');
     lines.push('<b>im Amt:</b>&nbsp;' + this.get('amtsname') + ' (' + this.get('amt') + ')');
     lines.push('<b>Anzahl Gemarkungen:</b>&nbsp;' + this.get('anz_gemarkg'));
-    lines.push('<b>Fläche [km2]:</b>&nbsp;' + this.get('flaeche'));
+    lines.push('<b>Fläche:</b>&nbsp;' + this.get('flaeche') / 10000 + ' ha');
     return lines.join('<br>');
   };
 

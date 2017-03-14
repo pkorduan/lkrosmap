@@ -40,7 +40,7 @@ LkRosMap.models.Amtsverwaltung = function(store) {
     lines.push('<b>Regionalschlüssel:</b>&nbsp;' + this.get('regionalschluessel'));
     lines.push('<b>im Kreis:</b>&nbsp;' + this.get('kreisname') + ' (' + this.get('kreis') + ')');
     lines.push('<b>Anzahl Gemeinden:</b>&nbsp;' + this.get('anz_gemeinden'));
-    lines.push('<b>Fläche [km2]:</b>&nbsp;' + this.get('flaeche'));
+    lines.push('<b>Fläche:</b>&nbsp;' + this.get('flaeche') / 10000 + ' ha');
     return lines.join('<br>');
   };
 

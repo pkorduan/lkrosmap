@@ -46,7 +46,7 @@ LkRosMap.models.Gemarkung = function(store) {
     lines.push('<b>im Amt:</b>&nbsp;' + this.get('amtsname') + ' (' + this.get('amt') + ')');
     lines.push('<b>in Gemeinde:</b>&nbsp;' + this.get('gemeindename') + ' (' + this.get('gemeinde') + ')');
     lines.push('<b>Anzahl Fluren:</b>&nbsp;' + this.get('anz_flur'));
-    lines.push('<b>Fläche [km2]:</b>&nbsp;' + this.get('flaeche'));
+    lines.push('<b>Fläche:</b>&nbsp;' + this.get('flaeche') / 10000 + ' ha');
     return lines.join('<br>');
   };
 

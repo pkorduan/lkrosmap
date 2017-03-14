@@ -54,7 +54,7 @@ LkRosMap.models.Feature = function(params) {
     LkRosMap.selectedFeature = this;
     LkRosMap.infoWindow.getElement().show();
     LkRosMap.infoWindow.setPosition(
-      this.getGeometry().getCoordinates()
+      (this.get('type') == 'PointFeature' ? this.getGeometry().getCoordinates() : ol.extent.getCenter(this.getGeometry().getExtent()))
     );
   };
 

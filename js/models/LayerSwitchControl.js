@@ -1,14 +1,14 @@
 LkRosMap.models.layerSwitchControl = function(params) {
   var buttonElement = $('<button/>').attr({
         id: 'LkRosMap.layerSwitcherButton',
-        title: 'Ein- und Ausschalten von Layern'
+        title: 'Ein- und Ausschalten von Datenebenen'
       }),
       radioLayers = (typeof(params.radioLayers) == 'undefined' ? [] : params.radioLayers),
       checkLayers = (typeof(params.checkLayers) == 'undefined' ? [] : params.checkLayers),
       switchElement = $('<div>').attr({ id: 'LkRosMap.layerSwitch' }),
       layersElement;
 
-  buttonElement.html('<i class=\"fa fa-bars\"></i>');
+  buttonElement.html('<i class=\"fa fa-server fa-rotate-180\"></i>');
 
   layersElement = $('<div>').attr({ id: 'LkRosMap.radioLayerSwitch' });
   layersElement.append('<h2>Hintergrund</h2>');

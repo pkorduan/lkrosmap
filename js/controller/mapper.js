@@ -230,6 +230,7 @@ LkRosMap.controller.mapper = {
       'click',
       function(evt) {
         $('#LkRosMap\\.layerSwitch').toggle();
+        $('#LkRosMap\\.layerSwitcherButton').blur();
       }
    );
 
@@ -295,7 +296,7 @@ LkRosMap.controller.mapper = {
             title: 'Maßstabsbalken'
           }),
           this.mousePositionControl(),
-          this.featureInfoControl(),
+//          this.featureInfoControl(),
           new LkRosMap.models.layerSwitchControl({
             radioLayers: LkRosMap.tileLayers,
             checkLayers: LkRosMap.vectorLayers
@@ -382,7 +383,7 @@ LkRosMap.controller.mapper = {
     
     button.html('<i class=\"fa fa-info\"></i>');
     button.click(function() {
-      $('#LkRosMap\\.addressSearchBox').hide();
+      $('#LkRosMap\\.searchBox').hide();
     });
 
     element.append(button);

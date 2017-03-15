@@ -1,5 +1,5 @@
 LkRosMap.views.geocoder = {};
-LkRosMap.loadHeadFile('../js/views/geocoder/addressSearch.js', 'js');
+LkRosMap.loadHeadFile('../js/views/geocoder/search.js', 'js');
 
 LkRosMap.controller.geocoder = {
   views: LkRosMap.views.geocoder,
@@ -21,25 +21,40 @@ LkRosMap.controller.geocoder = {
   },
 
   setEventHandlers: function() {
-    $("#LkRosMap\\.addressSearchLos").on(
+    $("#LkRosMap\\.searchLos").on(
       'click',
       this,
-      this.searchForAddress
-    );
-    
-    $('#LkRosMap\\.addressSearchField').on(
-      'keyup',
-      this,
-      this.toggleAddressSearchClear
+      function(evt) {
+        if ($('#LkRosMap\\.addressSearchButton').hasClass('lkrosmap-search-type-selected')) {
+          LkRosMap.controller.geocoder.searchForAddress(evt);
+        }
+        else {
+          LkRosMap.controller.geocoder.searchForFeatures(evt);
+        }
+      }
     );
 
-    $("#LkRosMap\\.addressSearchClear").on(
+    $('#LkRosMap\\.searchButton').on(
+      'click',
+      function() {
+        $('#LkRosMap\\.searchBox').toggle();
+        $('#LkRosMap\\.searchField').focus();
+      }
+    )
+    
+    $('#LkRosMap\\.searchField').on(
+      'keyup',
+      this,
+      this.toggleSearchFieldClear
+    );
+
+    $("#LkRosMap\\.searchFieldClear").on(
       'click',
       this,
       function() {
-        $('#LkRosMap\\.addressSearchField').val('');
-        $('#LkRosMap\\.addressSearchField').focus();
-        $('#LkRosMap\\.addressSearchFieldResultBox').hide();
+        $('#LkRosMap\\.searchField').val('');
+        $('#LkRosMap\\.searchField').focus();
+        $('#LkRosMap\\.searchFieldResultBox').hide();
       }
     );
 
@@ -52,6 +67,14 @@ LkRosMap.controller.geocoder = {
         LkRosMap.controller.geocoder.removeSearchResultFeatures();
       }
     );
+
+    $('.lkrosmap-search-type-button').on(
+      'click',
+      function(evt) {
+        $('#LkRosMap\\.addressSearchButton').toggleClass('lkrosmap-search-type-selected');
+        $('#LkRosMap\\.themeSearchButton').toggleClass('lkrosmap-search-type-selected');
+      }
+    );
   },
 
   init: function() {
@@ -60,8 +83,7 @@ LkRosMap.controller.geocoder = {
     this.loadModels();
     this.loadLayer();
 
-    ol.inherits(this.addressSearchControl, ol.control.Control);
-    LkRosMap.map.addControl(new this.addressSearchControl());
+    LkRosMap.map.addControl(new LkRosMap.models.SearchControl());
 
     this.setEventHandlers();
   },
@@ -105,9 +127,14 @@ LkRosMap.controller.geocoder = {
     });
   },
 
+  searchForFeatures: function(event) {
+    console.log('searchforFeatures');
+  },
+
   searchForAddress: function(event) {
+    console.log('searchforAdress');
     var scope = LkRosMap.controller.geocoder,
-        queryStr = $('#LkRosMap\\.addressSearchField').val(),
+        queryStr = $('#LkRosMap\\.searchField').val(),
         url  = 'http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';
 
     $.ajax(url, {
@@ -142,41 +169,14 @@ LkRosMap.controller.geocoder = {
     });
   },
 
-  addressSearchControl: function(opt_options) {
-    var options = opt_options || {};
-
-    var button = $('<button class="lkrosmap-address-search-button"/>').attr({
-      id: 'LkRosMap.addressSearchButton',
-      title: 'Suche nach Orten und Adressen'
-    });
-
-    button.html('<i class=\"fa fa-search\"></i>');
-
-    var this_ = this;
-
-    button.click(function() {
-      $('#LkRosMap\\.addressSearchBox').toggle();
-      $('#LkRosMap\\.addressSearchField').focus();
-    });
-
-    var element = $('<div></div>').attr({ class: 'lkrosmap-address-search-control ol-unselectable ol-control' });
-    element.append(button);
-    element.append(LkRosMap.controller.geocoder.views.addressSearch.html);
-
-    ol.control.Control.call(this, {
-      element: element.get(0),
-      target: options.target
-    });
-  },
-
   showAddressSearchResults: function(event, results) {
-    $('#LkRosMap\\.addressSearchFieldResultBox').html(
+    $('#LkRosMap\\.searchFieldResultBox').html(
       this.searchResultsFormatter(
         event,
         results
       )
     ).show();
-    $('#LkRosMap\\.addressSearchField').focus();
+    $('#LkRosMap\\.searchField').focus();
   },
 
   showErrorMsg: function(event, msg) {
@@ -212,18 +212,18 @@ LkRosMap.controller.geocoder = {
   },
 
   getNoResultCallback: function() {
-    return "$('#LkRosMap\\\\.addressSearchFieldResultBox').hide();";
+    return "$('#LkRosMap\\\\.searchFieldResultBox').hide();";
   },
 
   addSearchResultFeature: function(display_name, lat, lon) {
     var searchResultFeature = new LkRosMap.models.searchResult(display_name, lat, lon),
         source = this.layer.getSource(),
-        searchField = $('#LkRosMap\\.addressSearchField');
+        searchField = $('#LkRosMap\\.searchField');
 
     searchField.val(display_name);
     searchField.focus();
     searchField.attr('coordinates', lat + ', ' + lon);
-    $('#LkRosMap\\.addressSearchFieldResultBox').hide();
+    $('#LkRosMap\\.searchFieldResultBox').hide();
 
     this.removeSearchResultFeatures();
 
@@ -236,7 +236,7 @@ LkRosMap.controller.geocoder = {
       ),
       LkRosMap.map.getSize()
     );
-    $('#LkRosMap\\.addressSearchBox').hide();
+    $('#LkRosMap\\.searchBox').hide();
     searchResultFeature.select();
   },
 
@@ -251,12 +251,12 @@ LkRosMap.controller.geocoder = {
     }
   },
   
-  toggleAddressSearchClear: function(evt) {
+  toggleSearchFieldClear: function(evt) {
     if (evt.target.value.length > 0) {
-      $('#LkRosMap\\.addressSearchClear').show();
+      $('#LkRosMap\\.searchFieldClear').show();
     }
     else {
-      $('#LkRosMap\\.addressSearchClear').hide();
+      $('#LkRosMap\\.searchFieldClear').hide();
     }
   }
 

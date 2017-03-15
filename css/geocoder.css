@@ -1,19 +1,19 @@
-.lkrosmap-address-search-control {
-  top: 82px;
+.lkrosmap-search-control {
+  top: 54px;
   left: 6px;
 }
 
-.lkrosmap-address-search-button {
-  float: left;
+#LkRosMap\.searchButton {
+  display: inline;
 }
 
-#LkRosMap\.addressSearchBox {
+#LkRosMap\.searchBox {
   display: none;
   float: right;
   margin-left: 2;
 }
 
-#LkRosMap\.addressSearchField {
+#LkRosMap\.searchField {
   border-radius: 5px;
   border: 1px solid #ddd;
   padding: 2px;
@@ -22,17 +22,19 @@
   width: 600px;
 }
 
-#LkRosMap\.addressSearchClear {
+#LkRosMap\.searchFieldClear {
   display: none;
   margin-left: -18px;
+  margin-right: 4px;
   color: gray;
 }
 
-#LkRosMap\.addressSearchLos {
+#LkRosMap\.searchLos {
   border-radius: 5px;
   border: 1px solid #ddd;
   margin-top: 2px;
-  margin-left: 8px;
+  margin-left: 4px;
+  margin-right: 2px;
   float: right;
 }
 
@@ -55,9 +57,21 @@
   z-index:999;
 }
 
-.lkrosmap-search-result-box {
+.lkrosmap-address-search-result-box {
   padding: 4px;
   border-radius: 5px;
   border: 1px solid #ddd;
   background-color: #eff8ff;
+}
+
+#LkRosMap\.addressSearchButton {
+  display: inline;
+}
+
+#LkRosMap\.themeSearchButton {
+  display: inline;
+}
+
+.lkrosmap-search-type-selected {
+  background-color: rgba(136, 0, 60, 0.5) !important;
 }

@@ -1,13 +1,13 @@
 LkRosMap.models.legendControl = function(params) {
   var buttonElement = $('<button/>').attr({
         id: 'LkRosMap.legendButton',
-        title: 'Ein- und Ausblenden der Legende'
+        title: 'Ein- und ausblenden der Legende'
       }),
       checkLayers = (typeof(params.checkLayers) == 'undefined' ? [] : params.checkLayers),
-      switchElement = $('<div>').attr({ id: 'LkRosMap.legend' }),
+      switchElement = $('<div><h2>Legende</h2></div>').attr({ id: 'LkRosMap.legend' }),
       layersElement;
 
-  buttonElement.html('Legende');
+  buttonElement.html('<i class="fa fa-bars"></i>');
 
   layersElement = $('<div>').attr({ id: 'LkRosMap.checklegend' });
   layersElement.append(

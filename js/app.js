@@ -34,6 +34,7 @@ LkRosMap.loadHeadFile('../js/controller/geocoder.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/mapper.js', 'js');
 LkRosMap.loadHeadFile('../js/models/LayerSwitchControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/LegendControl.js', 'js');
+LkRosMap.loadHeadFile('../js/models/SearchControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Feature.js', 'js');
 
 for (var i = 0; i < LkRosMap.config.layers.length; i++) {

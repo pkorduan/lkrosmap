@@ -174,6 +174,17 @@ LkRosMap.controller.mapper = {
         layer = LkRosMap.controller.mapper.loadFeatures(store, layer, layer_config.model);
         LkRosMap.vectorLayers.push(layer);
       });
+      // loadIndex:
+      LkRosMap.controller.mapper.loadJSON(layer_config.indexUrl, function(response) {
+        var searchIndex = JSON.parse(response);
+
+          $.each(searchIndex, function(word, identifiers) {
+            if (LkRosMap.searchIndex[word] === undefined) {
+              LkRosMap.searchIndex[word] = [];
+            }
+            LkRosMap.searchIndex[word].push({ index: layer_config.index, feature_ids: identifiers});
+          });
+      });
     });
   },
 
@@ -185,35 +196,26 @@ LkRosMap.controller.mapper = {
     LkRosMap.map.on(
       'click',
       function(evt) {
-        var selectedFeatures = [],
-            selectedLayers = {};
+        var selectedFeatures = {};
 
         LkRosMap.map.forEachFeatureAtPixel(
           evt.pixel,
           function(feature, layer) {
-            if (!(layer.get('name') in selectedLayers)) {
-              layer.selectedFeatures = [];
-              selectedLayers[layer.get('name')] = layer;
+            if (selectedFeatures[layer.get('name')] === undefined) {
+              selectedFeatures[layer.get('name')] = {
+                layer_name: layer,
+                features: []
+              };
             }
-            selectedLayers[layer.get('name')].selectedFeatures.push(feature);
-
-/*          if (feature.get('type')) {
-              if (LkRosMap.selectedFeature) {
-                LkRosMap.selectedFeature.unselect();
-              }
-              LkRosMap.infoWindow.target = { feature: feature, layer: layer };
-              feature.select();
-            }
-            else {
-              // kein Feature getroffen, unselect fals aktuelle noch eins selectiert ist.
-              if (LkRosMap.selectedFeature) {
-                LkRosMap.selectedFeature.unselect();
-              }
-            }
-*/
+            selectedFeatures[layer.get('name')].features.push(feature);
           }
         );
-        LkRosMap.controller.mapper.showInfoWindow(selectedLayers, evt);
+        if (Object.keys(selectedFeatures).length > 0) {
+          LkRosMap.controller.mapper.showInfoWindow(selectedFeatures, evt);
+        }
+        else {
+          LkRosMap.infoWindow.getElement().hide();
+        }
       }
     );
 
@@ -259,6 +261,7 @@ LkRosMap.controller.mapper = {
         $('#LkRosMap\\.legendButton').blur();
       }
     );
+
   },
 
   init: function() {
@@ -466,18 +469,65 @@ LkRosMap.controller.mapper = {
     LkRosMap.tileLayers[index].setVisible(true);
   },
 
-  showInfoWindow: function(selectedLayers, evt) {
+  showInfoWindow: function(selectedFeatures, evt) {
+    console.log('showInfoWindow');
+/*    var layer_ = Object.keys(selectedFeatures);
+
     $('#LkRosMap\\.infoWindowData').html(
-      $.map(selectedLayers, function(layer) {
-        return '<h2>' + layer.get('name') + '</h2>' +
-        $.map(layer.selectedFeatures, function(feature) {
+      $.map(selectedFeatues, function(layer) {
+        return '<h2>' + layer.layer_name + '</h2>' +
+        $.map(layer.features, function(feature) {
           return feature.dataFormatter();
         }).join('<hr>');
       }).join('<br>')
     );
 
+    LkRosMap.infoWindow.target = { feature: feature, layer: layer };
+
     LkRosMap.infoWindow.getElement().show();
     LkRosMap.infoWindow.setPosition(evt.coordinate);
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
+    */
+  },
+
+  searchForFeatures: function(event) {
+    var word = $('#LkRosMap\\.searchField').val(),
+        layers = LkRosMap.searchIndex[word],
+        html = '';
+
+    html = $.map(
+      layers,
+      function(layer) {
+        var source = LkRosMap.vectorLayers[layer.index].getSource(),
+            html = $.map(
+              layer.feature_ids,
+              function(feature_id) {
+                var html = '\
+                  <a href="#" class="search-feature-link" onclick="LkRosMap.controller.mapper.selectFeature(' + layer.index + ', ' + feature_id + ')">' +
+                    LkRosMap.config.layers[layer.index].model + ' ' + feature_id + ': ' + source.getFeatureById(feature_id).titleFormatter() +
+                  '</a>\
+                ';
+                return html;
+              }
+            ).join('<br>');
+        return html;
+      }
+    ).join('<br>');
+    $('#LkRosMap\\.searchFieldResultBox').html(html).show();
+  },
+  
+  selectFeature: function(layer_id, feature_id) {
+    var source = LkRosMap.vectorLayers[layer_id].getSource(),
+        feature = source.getFeatureById(feature_id);
+
+    LkRosMap.map.getView().fit(
+      ol.extent.buffer(
+        feature.getGeometry().getExtent(),
+        1000
+      ),
+      LkRosMap.map.getSize()
+    );
+    $('#LkRosMap\\.searchFieldResultBox').hide();
+    feature.select();
   }
 }

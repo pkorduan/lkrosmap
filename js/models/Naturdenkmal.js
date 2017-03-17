@@ -67,6 +67,10 @@ LkRosMap.models.Naturdenkmal = function(store) {
     return lines.join('<br>');
   };
 
+  feature.titleFormatter = function() {
+    return this.get('kommentar') + ' ' + this.get('standort');
+  };
+
   feature.prepareInfoWindow = function() {
     $('#LkRosMap\\.infoWindow').attr('class','lkrosmap-infowindow');
     $('#LkRosMap\\.infoWindowTitle').html('Naturdenkmal');

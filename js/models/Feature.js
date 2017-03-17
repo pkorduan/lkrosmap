@@ -1,6 +1,7 @@
 LkRosMap.models.Feature = function(params) {
   var feature = new ol.Feature(params);
 
+  feature.setId(feature.get('gid'));
   // set default classes if not exists
   if (typeof(feature.get('classes')) == 'undefined') {
     feature.set('classes', [{
@@ -47,17 +48,17 @@ LkRosMap.models.Feature = function(params) {
 /*  feature.d = function(t) {
     return t;
   }*/
-
+/*
   feature.select = function() {
     this.prepareInfoWindow();
 
     LkRosMap.selectedFeature = this;
     LkRosMap.infoWindow.getElement().show();
-    LkRosMap.infoWindow.setPosition(
+/*    LkRosMap.infoWindow.setPosition(
       (this.get('type') == 'PointFeature' ? this.getGeometry().getCoordinates() : ol.extent.getCenter(this.getGeometry().getExtent()))
     );
-  };
-
+   };
+*/
   feature.unselect = function() {
     LkRosMap.infoWindow.getElement().hide();
     LkRosMap.selectedFeature = false;

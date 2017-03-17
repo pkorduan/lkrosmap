@@ -29,7 +29,7 @@ LkRosMap.controller.geocoder = {
           LkRosMap.controller.geocoder.searchForAddress(evt);
         }
         else {
-          LkRosMap.controller.geocoder.searchForFeatures(evt);
+          LkRosMap.controller.mapper.searchForFeatures(evt);
         }
       }
     );
@@ -72,7 +72,7 @@ LkRosMap.controller.geocoder = {
       'click',
       function(evt) {
         $('#LkRosMap\\.addressSearchButton').toggleClass('lkrosmap-search-type-selected');
-        $('#LkRosMap\\.themeSearchButton').toggleClass('lkrosmap-search-type-selected');
+        $('#LkRosMap\\.featureSearchButton').toggleClass('lkrosmap-search-type-selected');
       }
     );
   },
@@ -127,12 +127,7 @@ LkRosMap.controller.geocoder = {
     });
   },
 
-  searchForFeatures: function(event) {
-    console.log('searchforFeatures');
-  },
-
   searchForAddress: function(event) {
-    console.log('searchforAdress');
     var scope = LkRosMap.controller.geocoder,
         queryStr = $('#LkRosMap\\.searchField').val(),
         url  = 'http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';

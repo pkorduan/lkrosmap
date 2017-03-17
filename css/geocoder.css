@@ -22,6 +22,16 @@
   width: 600px;
 }
 
+.lkrosmap-search-result-box {
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #eff8ff;
+  max-width: 675;
+  max-height: 600;
+  overflow: scroll;
+}
+
 #LkRosMap\.searchFieldClear {
   display: none;
   margin-left: -18px;
@@ -57,18 +67,7 @@
   z-index:999;
 }
 
-.lkrosmap-address-search-result-box {
-  padding: 4px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  background-color: #eff8ff;
-}
-
 #LkRosMap\.addressSearchButton {
-  display: inline;
-}
-
-#LkRosMap\.themeSearchButton {
   display: inline;
 }
 

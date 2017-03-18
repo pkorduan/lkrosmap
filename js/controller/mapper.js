@@ -203,7 +203,7 @@ LkRosMap.controller.mapper = {
           function(feature, layer) {
             if (selectedFeatures[layer.get('name')] === undefined) {
               selectedFeatures[layer.get('name')] = {
-                layer_name: layer,
+                layer: layer,
                 features: []
               };
             }
@@ -470,24 +470,23 @@ LkRosMap.controller.mapper = {
   },
 
   showInfoWindow: function(selectedFeatures, evt) {
-    console.log('showInfoWindow');
-/*    var layer_ = Object.keys(selectedFeatures);
+    var keys = Object.keys(selectedFeatures),
+        firstLayer = selectedFeatures[keys[0]];
 
     $('#LkRosMap\\.infoWindowData').html(
       $.map(selectedFeatues, function(layer) {
-        return '<h2>' + layer.layer_name + '</h2>' +
+        return '<h2>' + layer.layer + '</h2>' +
         $.map(layer.features, function(feature) {
           return feature.dataFormatter();
         }).join('<hr>');
       }).join('<br>')
     );
 
-    LkRosMap.infoWindow.target = { feature: feature, layer: layer };
+    LkRosMap.infoWindow.target = { feature: firstLayer.features[0], layer: firstLayer };
 
     LkRosMap.infoWindow.getElement().show();
     LkRosMap.infoWindow.setPosition(evt.coordinate);
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
-    */
   },
 
   searchForFeatures: function(event) {

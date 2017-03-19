@@ -48,19 +48,19 @@ LkRosMap.models.Feature = function(params) {
 /*  feature.d = function(t) {
     return t;
   }*/
-/*
+
   feature.select = function() {
     this.prepareInfoWindow();
 
     LkRosMap.selectedFeature = this;
-    LkRosMap.infoWindow.getElement().show();
-/*    LkRosMap.infoWindow.setPosition(
+    $(LkRosMap.infoWindow.getElement()).show();
+    LkRosMap.infoWindow.setPosition(
       (this.get('type') == 'PointFeature' ? this.getGeometry().getCoordinates() : ol.extent.getCenter(this.getGeometry().getExtent()))
     );
    };
-*/
+
   feature.unselect = function() {
-    LkRosMap.infoWindow.getElement().hide();
+    $(LkRosMap.infoWindow.getElement()).hide();
     LkRosMap.selectedFeature = false;
   };
 

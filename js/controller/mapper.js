@@ -214,7 +214,7 @@ LkRosMap.controller.mapper = {
           LkRosMap.controller.mapper.showInfoWindow(selectedFeatures, evt);
         }
         else {
-          LkRosMap.infoWindow.getElement().hide();
+          $(LkRosMap.infoWindow.getElement()).hide();
         }
       }
     );
@@ -222,7 +222,7 @@ LkRosMap.controller.mapper = {
     $('#LkRosMap\\.infoWindowCloser').on(
       'click',
       function(evt) {
-        LkRosMap.infoWindow.getElement().hide();
+        $(LkRosMap.infoWindow.getElement()).hide();
         $('#LkRosMap\\.infoWindowCloser').blur();
         return false;
       }
@@ -432,7 +432,7 @@ LkRosMap.controller.mapper = {
 
   initInfoWindow: function() {
     var infoWindow = new ol.Overlay({
-          element: $('#LkRosMap\\.infoWindow'),
+          element: $('#LkRosMap\\.infoWindow')[0],
           offset: [0,-18],
           stopEvent: true,
           autoPan: true,
@@ -474,8 +474,8 @@ LkRosMap.controller.mapper = {
         firstLayer = selectedFeatures[keys[0]];
 
     $('#LkRosMap\\.infoWindowData').html(
-      $.map(selectedFeatues, function(layer) {
-        return '<h2>' + layer.layer + '</h2>' +
+      $.map(selectedFeatures, function(layer) {
+        return '<h2>' + layer.layer.get('name') + '</h2>' +
         $.map(layer.features, function(feature) {
           return feature.dataFormatter();
         }).join('<hr>');
@@ -484,9 +484,9 @@ LkRosMap.controller.mapper = {
 
     LkRosMap.infoWindow.target = { feature: firstLayer.features[0], layer: firstLayer };
 
-    LkRosMap.infoWindow.getElement().show();
-    LkRosMap.infoWindow.setPosition(evt.coordinate);
+    $(LkRosMap.infoWindow.getElement()).show();
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
+    LkRosMap.infoWindow.setPosition(evt.coordinate);
   },
 
   searchForFeatures: function(event) {
@@ -519,6 +519,7 @@ LkRosMap.controller.mapper = {
     var source = LkRosMap.vectorLayers[layer_id].getSource(),
         feature = source.getFeatureById(feature_id);
 
+        console.log('f: %o', feature);
     LkRosMap.map.getView().fit(
       ol.extent.buffer(
         feature.getGeometry().getExtent(),

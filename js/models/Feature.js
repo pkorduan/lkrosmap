@@ -29,9 +29,9 @@ LkRosMap.models.Feature = function(params) {
     feature.setStyle(
       new ol.style.Style({
         image: new ol.style.Icon({
-          anchor: [0.5, 46],
+/*          anchor: [0.5, 46],
           anchorXUnits: 'fraction',
-          anchorYUnits: 'pixels',
+          anchorYUnits: 'pixels',*/
           opacity: 0.75,
           src: '../img/' + feature.get('class').icon + '.png',
           scale: 0.7
@@ -50,6 +50,17 @@ LkRosMap.models.Feature = function(params) {
   }*/
 
   feature.select = function() {
+    this.setStyle(
+      new ol.style.Style({
+        image: new ol.style.Icon({
+          opacity: 0.75,
+          src: '../img/' + this.get('class').icon + '.png',
+          scale: 1.5
+        }),
+        zIndex: 999
+      })
+    );
+
     this.prepareInfoWindow();
 
     LkRosMap.selectedFeature = this;
@@ -63,6 +74,15 @@ LkRosMap.models.Feature = function(params) {
   feature.unselect = function() {
     $(LkRosMap.infoWindow.getElement()).hide();
     LkRosMap.selectedFeature = false;
+    this.setStyle(
+      new ol.style.Style({
+        image: new ol.style.Icon({
+          opacity: 0.75,
+          src: '../img/' + this.get('class').icon + '.png',
+          scale: 0.7
+        })
+      })
+    );
   };
 
   return feature;

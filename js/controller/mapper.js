@@ -216,6 +216,9 @@ LkRosMap.controller.mapper = {
           LkRosMap.controller.mapper.showInfoWindow(selectedFeatures, evt);
         }
         else {
+          if (LkRosMap.selectedFeature) {
+            LkRosMap.selectedFeature.unselect();
+          }
           $(LkRosMap.infoWindow.getElement()).hide();
         }
       }
@@ -477,6 +480,12 @@ LkRosMap.controller.mapper = {
         firstFeature = firstLayer.features[0];
 
     $('#LkRosMap\\.searchBox').hide();
+
+    if (LkRosMap.selectedFeature) {
+      LkRosMap.selectedFeature.unselect();
+    }
+    firstFeature.select();
+
     $('#LkRosMap\\.infoWindowTitle').html('Kartenobjekte');
     $('#LkRosMap\\.infoWindowData').html(
       $.map(selectedFeatures, function(layer) {
@@ -535,6 +544,9 @@ LkRosMap.controller.mapper = {
     var source = LkRosMap.vectorLayers[layer_id].getSource(),
         feature = source.getFeatureById(feature_id);
 
+    if (LkRosMap.selectedFeature) {
+      LkRosMap.selectedFeature.unselect();
+    }
     feature.select();
     LkRosMap.map.getView().fit(
       ol.extent.buffer(

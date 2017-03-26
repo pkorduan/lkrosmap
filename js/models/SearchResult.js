@@ -59,7 +59,7 @@ LkRosMap.models.searchResult = function(name, lat, lon) {
   };
 
   feature.unselect = function() {
-    LkRosMap.infoWindow.getElement().hide();
+    $(LkRosMap.infoWindow.getElement()).hide();
     LkRosMap.selectedFeature = false;
   };
 
@@ -67,7 +67,8 @@ LkRosMap.models.searchResult = function(name, lat, lon) {
     this.prepareInfoWindow();
 
     LkRosMap.selectedFeature = this;
-    LkRosMap.infoWindow.getElement().show();
+
+    $(LkRosMap.infoWindow.getElement()).show();
     LkRosMap.infoWindow.setPosition(
       this.getGeometry().getCoordinates()
     );

@@ -10,6 +10,7 @@ LkRosMap.controller.geocoder = {
   
   loadLayer: function() {
     this.layer = new ol.layer.Vector({
+      name: 'Adresse',
       opacity: 1,
       source: new ol.source.Vector({
         projection: LkRosMap.viewProjection,
@@ -63,7 +64,7 @@ LkRosMap.controller.geocoder = {
       function(evt) {
         var feature = LkRosMap.selectedFeature;
         
-        feature.unselect();
+        $(LkRosMap.infoWindow.getElement()).hide();
         LkRosMap.controller.geocoder.removeSearchResultFeatures();
       }
     );
@@ -73,6 +74,13 @@ LkRosMap.controller.geocoder = {
       function(evt) {
         $('#LkRosMap\\.addressSearchButton').toggleClass('lkrosmap-search-type-selected');
         $('#LkRosMap\\.featureSearchButton').toggleClass('lkrosmap-search-type-selected');
+        if ($('#LkRosMap\\.addressSearchButton').hasClass('lkrosmap-search-type-selected')) {
+          $('#LkRosMap\\.searchField').attr('placeholder', 'Addresse, Gemarkung oder Flurstück eingeben');
+        }
+        else {
+          $('#LkRosMap\\.searchField').attr('placeholder', 'Suchbegriff für Themensuche eingeben');
+        }
+        $('#LkRosMap\\.searchField').focus();
       }
     );
   },
@@ -86,6 +94,7 @@ LkRosMap.controller.geocoder = {
     LkRosMap.map.addControl(new LkRosMap.models.SearchControl());
 
     this.setEventHandlers();
+    $('#LkRosMap\\.searchField').focus();
   },
 
   lookupNominatim: function(e){
@@ -224,6 +233,9 @@ LkRosMap.controller.geocoder = {
 
     source.addFeature( searchResultFeature );
 
+
+    searchResultFeature.select();
+
     LkRosMap.map.getView().fit(
       ol.extent.buffer(
         searchResultFeature.getGeometry().getExtent(),
@@ -232,15 +244,16 @@ LkRosMap.controller.geocoder = {
       LkRosMap.map.getSize()
     );
     $('#LkRosMap\\.searchBox').hide();
-    searchResultFeature.select();
   },
 
   removeSearchResultFeatures : function() {
+    console.log('removeSearchResultFeatures');
     var source = this.layer.getSource(),
         features = source.getFeatures();
 
     if (features != null && features.length > 0) {
       for (x in features) {
+        console.log('remove feature %o', features[x]);
         source.removeFeature( features[x] );
       }
     }

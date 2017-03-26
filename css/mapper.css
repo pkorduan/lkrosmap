@@ -1,3 +1,8 @@
+.ol-zoom {
+  top: 34px;
+  left: 6px;
+}
+
 .lkrosmap-mapper-scale-line {
   border: 3px solid rgba(255, 255, 255, .6);
   background: rgb(0, 60, 136, .7);

@@ -201,13 +201,15 @@ LkRosMap.controller.mapper = {
         LkRosMap.map.forEachFeatureAtPixel(
           evt.pixel,
           function(feature, layer) {
-            if (selectedFeatures[layer.get('name')] === undefined) {
-              selectedFeatures[layer.get('name')] = {
-                layer: layer,
-                features: []
-              };
+            if (layer.get('name') !== undefined) {
+              if (selectedFeatures[layer.get('name')] === undefined) {
+                selectedFeatures[layer.get('name')] = {
+                  layer: layer,
+                  features: []
+                };
+              }
+              selectedFeatures[layer.get('name')].features.push(feature);
             }
-            selectedFeatures[layer.get('name')].features.push(feature);
           }
         );
         if (Object.keys(selectedFeatures).length > 0) {
@@ -265,7 +267,18 @@ LkRosMap.controller.mapper = {
   },
 
   init: function() {
-    var controller = LkRosMap.controller.mapper;
+    var controller = LkRosMap.controller.mapper,
+        selectClick = new ol.interaction.Select({
+          style: function(feature, resolution) {
+            return [new ol.style.Style({
+                image: new ol.style.Icon({
+                  anchor: [0.5, 1],
+                  src: 'pin.png'
+                })
+              })]
+          },
+          condition: ol.events.condition.click
+        });
 
     this.loadViews();
 
@@ -330,6 +343,12 @@ LkRosMap.controller.mapper = {
     });
 
     LkRosMap.maxExtent = LkRosMap.view.calculateExtent(map.getSize());
+
+
+    map.addInteraction(selectClick);
+    selectClick.on('select', function(e) {
+      console.log('select e.target %o', e.target);
+    });
 
     // close the popup on map zoom and pan actions
     function closePopup(){
@@ -473,45 +492,58 @@ LkRosMap.controller.mapper = {
     var keys = Object.keys(selectedFeatures),
         firstLayer = selectedFeatures[keys[0]];
 
+    $('#LkRosMap\\.searchBox').hide();
+    $('#LkRosMap\\.infoWindowTitle').html('Kartenobjekte');
     $('#LkRosMap\\.infoWindowData').html(
       $.map(selectedFeatures, function(layer) {
         return '<h2>' + layer.layer.get('name') + '</h2>' +
         $.map(layer.features, function(feature) {
           return feature.dataFormatter();
-        }).join('<hr>');
+        }).join('<div class="lkrosmap-data-spacer"></div>');
       }).join('<br>')
     );
 
     LkRosMap.infoWindow.target = { feature: firstLayer.features[0], layer: firstLayer };
 
     $(LkRosMap.infoWindow.getElement()).show();
-    $('#LkRosMap\\.infoWindowRemoveFeature').hide();
-    LkRosMap.infoWindow.setPosition(evt.coordinate);
+
+    if (selectedFeatures.hasOwnProperty('Adresse') && selectedFeatures['Adresse'].features.length == 1) {
+      $('#LkRosMap\\.infoWindowRemoveFeature').show();
+    }
+    else {
+      $('#LkRosMap\\.infoWindowRemoveFeature').hide();
+    }
+    LkRosMap.infoWindow.setPosition(firstLayer.features[0].getGeometry().getCoordinates());
   },
 
   searchForFeatures: function(event) {
     var word = $('#LkRosMap\\.searchField').val(),
-        layers = LkRosMap.searchIndex[word],
+        layers = LkRosMap.searchIndex[word.toLowerCase()],
         html = '';
 
-    html = $.map(
-      layers,
-      function(layer) {
-        var source = LkRosMap.vectorLayers[layer.index].getSource(),
-            html = $.map(
-              layer.feature_ids,
-              function(feature_id) {
-                var html = '\
-                  <a href="#" class="search-feature-link" onclick="LkRosMap.controller.mapper.selectFeature(' + layer.index + ', ' + feature_id + ')">' +
-                    LkRosMap.config.layers[layer.index].model + ' ' + feature_id + ': ' + source.getFeatureById(feature_id).titleFormatter() +
-                  '</a>\
-                ';
-                return html;
-              }
-            ).join('<br>');
-        return html;
-      }
-    ).join('<br>');
+    if (typeof(layers) == 'undefined') {
+      html = "<a href=\"#\" onclick=\"" + event.data.getNoResultCallback() + "\">keine Treffer gefunden!</a>";
+    }
+    else {
+      html = $.map(
+        layers,
+        function(layer) {
+          var source = LkRosMap.vectorLayers[layer.index].getSource(),
+              html = $.map(
+                layer.feature_ids,
+                function(feature_id) {
+                  var html = '\
+                    <a href="#" class="search-feature-link" onclick="LkRosMap.controller.mapper.selectFeature(' + layer.index + ', ' + feature_id + ')">' +
+                      LkRosMap.config.layers[layer.index].model + ' ' + feature_id + ': ' + source.getFeatureById(feature_id).titleFormatter() +
+                    '</a>\
+                  ';
+                  return html;
+                }
+              ).join('<br>');
+          return html;
+        }
+      ).join('<br>');
+    }
     $('#LkRosMap\\.searchFieldResultBox').html(html).show();
   },
   
@@ -519,7 +551,7 @@ LkRosMap.controller.mapper = {
     var source = LkRosMap.vectorLayers[layer_id].getSource(),
         feature = source.getFeatureById(feature_id);
 
-        console.log('f: %o', feature);
+    feature.select();
     LkRosMap.map.getView().fit(
       ol.extent.buffer(
         feature.getGeometry().getExtent(),
@@ -528,6 +560,5 @@ LkRosMap.controller.mapper = {
       LkRosMap.map.getSize()
     );
     $('#LkRosMap\\.searchFieldResultBox').hide();
-    feature.select();
   }
 }

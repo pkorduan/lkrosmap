@@ -1,6 +1,7 @@
 .lkrosmap-search-control {
-  top: 54px;
+  top: 6px;
   left: 6px;
+  z-index: 3;
 }
 
 #LkRosMap\.searchButton {
@@ -8,7 +9,6 @@
 }
 
 #LkRosMap\.searchBox {
-  display: none;
   float: right;
   margin-left: 2;
 }
@@ -17,9 +17,9 @@
   border-radius: 5px;
   border: 1px solid #ddd;
   padding: 2px;
-  margin-bottom: 2px;
-  margin-top: 2px;
+/*  margin-bottom: 2px; */
   width: 600px;
+  height: 20px;
 }
 
 .lkrosmap-search-result-box {
@@ -42,9 +42,9 @@
 #LkRosMap\.searchLos {
   border-radius: 5px;
   border: 1px solid #ddd;
-  margin-top: 2px;
-  margin-left: 4px;
-  margin-right: 2px;
+/*  margin-top: 2px;*/
+  margin-left: 2px;
+/*  margin-right: 2px; */
   float: right;
 }
 
@@ -69,6 +69,7 @@
 
 #LkRosMap\.addressSearchButton {
   display: inline;
+  margin-bottom: -5px;
 }
 
 .lkrosmap-search-type-selected {

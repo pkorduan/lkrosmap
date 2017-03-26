@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select features example</title>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.5.0/ol.js"></script>
+
+</head>
+<body>
+<div class="container-fluid" style="margin-top: 10px;">
+
+<div class="row-fluid">
+  <div class="span12">
+    <div id="map" class="map"></div>
+		<div id="docs"><p>Choose between <code>Single-click</code>, <code>Click</code>, <code>Hover</code> and <code>Alt+Click</code> as the event type for selection in the combobox below. When using <code>Single-click</code> or <code>Click</code> you can hold do <code>Shift</code> key to toggle the feature in the selection.</p>
+		        <p>Note: when <code>Single-click</code> is used double-clicks won't select features. This in contrast to <code>Click</code>, where a double-click will both select the feature and zoom the map (because of the <code>DoubleClickZoom</code> interaction). Note that <code>Single-click</code> is less responsive than <code>Click</code> because of the delay it uses to detect double-clicks.</p><p></p>
+		<p></p><p>In this example, a listener is registered for the Select interaction's <code>select</code> event in order to update the selection status below. </p><form class="form-inline">
+		  <label>Action type &nbsp;</label>
+		    <select id="type" class="form-control">
+		      <option value="none">None</option>
+		      <option value="singleclick" selected>Single-click</option>
+		      <option value="click">Click</option>
+		      <option value="pointermove">Hover</option>
+		      <option value="altclick">Alt+Click</option>
+		    </select>
+		    <span id="status">&nbsp;0 selected features</span>
+		</form><p></p>
+		</div>
+  </div>
+</div>
+
+
+</div>
+<script>
+var raster = new ol.layer.Tile({
+  source: new ol.source.OSM()
+});
+
+var polygonLayer = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: 'http://openlayers.org/en/v3.5.0/examples/data/geojson/countries.geojson',
+    format: new ol.format.GeoJSON()
+  })
+});
+
+var pointLayer = new ol.layer.Vector({
+  source: new ol.source.Vector({
+    url: 'http://gdi-service.de/wfs2json/json/point_test.geojson',
+    format: new ol.format.GeoJSON()
+  })
+});
+
+var map = new ol.Map({
+  layers: [raster, pointLayer, polygonLayer],
+  target: 'map',
+  view: new ol.View({
+//    projection: 'EPSG:4326',
+    center: [2000000, 6000000],
+    zoom: 4
+  })
+});
+
+nap = map;
+
+var select = null;  // ref to currently selected interaction
+
+
+var selectStyleFunction = function(feature, resolution) {
+	var fill = new ol.style.Fill({ color: [255, 234, 0, .9] }),
+  		stroke = new ol.style.Stroke({
+      	color: [51, 51, 51],
+        width: 1.5
+      });
+
+  return [
+  	new ol.style.Style({ fill: fill }),
+    new ol.style.Style({ stroke: stroke }),
+    new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 10,
+        fill: fill,
+        stroke: stroke
+      })
+    })
+  ];
+};
+
+// select interaction working only on "singleclick"
+// double click wont select but zoom
+var selectSingleClick = new ol.interaction.Select({
+  layers: [pointLayer, polygonLayer],
+  style: selectStyleFunction
+});
+
+// select interaction working on "click" and "double click"
+var selectClick = new ol.interaction.Select({
+  condition: ol.events.condition.click
+});
+
+// select interaction working on "pointermove"
+var selectPointerMove = new ol.interaction.Select({
+  condition: ol.events.condition.pointerMove
+});
+
+var selectAltClick = new ol.interaction.Select({
+  condition: function(mapBrowserEvent) {
+    return ol.events.condition.click(mapBrowserEvent) &&
+        ol.events.condition.altKeyOnly(mapBrowserEvent);
+  }
+});
+
+var selectElement = document.getElementById('type');
+
+var changeInteraction = function() {
+  if (select !== null) {
+    map.removeInteraction(select);
+  }
+  var value = selectElement.value;
+  if (value == 'singleclick') {
+    select = selectSingleClick;
+  } else if (value == 'click') {
+    select = selectClick;
+  } else if (value == 'pointermove') {
+    select = selectPointerMove;
+  } else if (value == 'altclick') {
+    select = selectAltClick;
+  } else {
+    select = null;
+  }
+  if (select !== null) {
+    map.addInteraction(select);
+    select.on('select', function(e) {
+      $('#status').html('&nbsp;' + e.target.getFeatures().getLength() +
+          ' selected features (last operation selected ' + e.selected.length +
+          ' and deselected ' + e.deselected.length + ' features)');
+    });
+  }
+};
+
+
+/**
+ * onchange callback on the select element.
+ */
+selectElement.onchange = changeInteraction;
+changeInteraction();
+
+</script>
+</body>
+</html>

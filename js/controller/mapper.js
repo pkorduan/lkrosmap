@@ -267,18 +267,7 @@ LkRosMap.controller.mapper = {
   },
 
   init: function() {
-    var controller = LkRosMap.controller.mapper,
-        selectClick = new ol.interaction.Select({
-          style: function(feature, resolution) {
-            return [new ol.style.Style({
-                image: new ol.style.Icon({
-                  anchor: [0.5, 1],
-                  src: 'pin.png'
-                })
-              })]
-          },
-          condition: ol.events.condition.click
-        });
+    var controller = LkRosMap.controller.mapper;
 
     this.loadViews();
 
@@ -343,12 +332,6 @@ LkRosMap.controller.mapper = {
     });
 
     LkRosMap.maxExtent = LkRosMap.view.calculateExtent(map.getSize());
-
-
-    map.addInteraction(selectClick);
-    selectClick.on('select', function(e) {
-      console.log('select e.target %o', e.target);
-    });
 
     // close the popup on map zoom and pan actions
     function closePopup(){
@@ -490,7 +473,8 @@ LkRosMap.controller.mapper = {
 
   showInfoWindow: function(selectedFeatures, evt) {
     var keys = Object.keys(selectedFeatures),
-        firstLayer = selectedFeatures[keys[0]];
+        firstLayer = selectedFeatures[keys[0]],
+        firstFeature = firstLayer.features[0];
 
     $('#LkRosMap\\.searchBox').hide();
     $('#LkRosMap\\.infoWindowTitle').html('Kartenobjekte');
@@ -503,8 +487,9 @@ LkRosMap.controller.mapper = {
       }).join('<br>')
     );
 
-    LkRosMap.infoWindow.target = { feature: firstLayer.features[0], layer: firstLayer };
+    LkRosMap.infoWindow.target = { feature: firstFeature, layer: firstLayer };
 
+    LkRosMap.infoWindow.setPosition(firstFeature.getGeometry().getCoordinates());
     $(LkRosMap.infoWindow.getElement()).show();
 
     if (selectedFeatures.hasOwnProperty('Adresse') && selectedFeatures['Adresse'].features.length == 1) {
@@ -513,7 +498,6 @@ LkRosMap.controller.mapper = {
     else {
       $('#LkRosMap\\.infoWindowRemoveFeature').hide();
     }
-    LkRosMap.infoWindow.setPosition(firstLayer.features[0].getGeometry().getCoordinates());
   },
 
   searchForFeatures: function(event) {

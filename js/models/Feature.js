@@ -28,14 +28,14 @@ LkRosMap.models.Feature = function(params) {
   if (feature.get('type') == 'PointFeature') {
     feature.setStyle(
       new ol.style.Style({
-        image: new ol.style.Icon(({
+        image: new ol.style.Icon({
           anchor: [0.5, 46],
           anchorXUnits: 'fraction',
           anchorYUnits: 'pixels',
           opacity: 0.75,
           src: '../img/' + feature.get('class').icon + '.png',
           scale: 0.7
-        }))
+        })
       })
     );
   }
@@ -53,6 +53,7 @@ LkRosMap.models.Feature = function(params) {
     this.prepareInfoWindow();
 
     LkRosMap.selectedFeature = this;
+
     $(LkRosMap.infoWindow.getElement()).show();
     LkRosMap.infoWindow.setPosition(
       (this.get('type') == 'PointFeature' ? this.getGeometry().getCoordinates() : ol.extent.getCenter(this.getGeometry().getExtent()))

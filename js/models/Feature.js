@@ -50,16 +50,32 @@ LkRosMap.models.Feature = function(params) {
   }*/
 
   feature.select = function() {
-    this.setStyle(
-      new ol.style.Style({
-        image: new ol.style.Icon({
-          opacity: 0.75,
-          src: '../img/' + this.get('class').icon + '.png',
-          scale: 1.5
-        }),
-        zIndex: 999
-      })
-    );
+    if (this.get('type') == 'MultiPolygonFeature') {
+      this.setStyle(
+        new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: 'blue',
+            width: 3
+          }),
+          fill: new ol.style.Fill({
+            color: 'rgba(0, 0, 255, 0.1)'
+          }),
+          zIndex: 999
+        })
+      );
+    }
+    else {
+      this.setStyle(
+        new ol.style.Style({
+          image: new ol.style.Icon({
+            opacity: 0.75,
+            src: '../img/' + this.get('class').icon + '.png',
+            scale: 1.5
+          }),
+          zIndex: 999
+        })
+      );
+    }
 
     this.prepareInfoWindow();
 
@@ -74,15 +90,27 @@ LkRosMap.models.Feature = function(params) {
   feature.unselect = function() {
     $(LkRosMap.infoWindow.getElement()).hide();
     LkRosMap.selectedFeature = false;
-    this.setStyle(
-      new ol.style.Style({
-        image: new ol.style.Icon({
-          opacity: 0.75,
-          src: '../img/' + this.get('class').icon + '.png',
-          scale: 0.7
+
+    // set style
+    if (this.get('type') == 'PointFeature') {
+      this.setStyle(
+        new ol.style.Style({
+          image: new ol.style.Icon({
+  /*          anchor: [0.5, 46],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',*/
+            opacity: 0.75,
+            src: '../img/' + this.get('class').icon + '.png',
+            scale: 0.7
+          })
         })
-      })
-    );
+      );
+    }
+
+    if (this.get('type') == 'MultiPolygonFeature') {
+      this.setStyle(this.get('class').style);
+    }
+
   };
 
   return feature;

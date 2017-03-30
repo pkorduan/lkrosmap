@@ -227,8 +227,7 @@ LkRosMap.controller.mapper = {
     $('#LkRosMap\\.infoWindowCloser').on(
       'click',
       function(evt) {
-        $(LkRosMap.infoWindow.getElement()).hide();
-        $('#LkRosMap\\.infoWindowCloser').blur();
+        LkRosMap.selectedFeature.unselect();
         return false;
       }
     );

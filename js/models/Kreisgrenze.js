@@ -53,5 +53,8 @@ LkRosMap.models.Kreisgrenze = function(store) {
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };
 
+  feature.titleFormatter = function() {
+    return this.get('kreisname');
+  };
   return feature;
 }

@@ -19,6 +19,17 @@ h2 {
 	font-weight: bold;
 	margin: 0 0 0 0;
 }
+hr {
+  border: 1px solid #ccc;
+}
+
+input:focus {
+  outline-width: 0;
+}
+
+button:focus {
+  outline-width: 0;
+}
 
 .box {
 	margin-left: 5%;
@@ -127,18 +138,43 @@ a.lkrosmap-info-overlay-close {
   background-color: white;
   -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
   filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-  padding: 0.7em;
-  padding-right: 2.3em;
+  padding: 5px;
+  padding-right: 7px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  bottom: 2px;
-  left: -80px;
+  bottom: 15px;
+  left: -50px;
   min-width: 200px;
   max-width: 500px;
   width: 300px;
   font-size: 1em;
-  max-height: 500px;
-  overflow: scroll;
+  box-shadow: 5px 5px 5px rgba(128, 128, 128, 0.6);
+  z-index: 2;
+}
+
+.lkrosmap-infowindow:after,
+.ol-popup:before {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.lkrosmap-infowindow:after {
+  border-top-color: white;
+  border-width: 10px;
+  left: 48px;
+  margin-left: -10px;
+}
+
+.lkrosmap-infowindow:before {
+  border-top-color: #ccc;
+  border-width: 11px;
+  left: 48px;
+  margin-left: -11px;
 }
 
 .lkrosmap-infowindow-closer {
@@ -159,6 +195,8 @@ a.lkrosmap-info-overlay-close {
 
 .lkrosmap-infowindow-data {
   padding-bottom: 10px;
+  max-height: 500px;
+  overflow: scroll;
 }
 
 .lkrosmap-infowindow-image {
@@ -169,4 +207,16 @@ a.lkrosmap-info-overlay-close {
 .lkrosmap-infowindow-remove-feature {
   text-decoration: none;
   color: black;
+}
+
+.lkrosmap-infowindow-functions {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid #ccc;
+}
+
+.lkrosmap-data-spacer {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  border-top: 1px solid #ccc;
 }

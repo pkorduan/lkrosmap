@@ -2,6 +2,7 @@ LkRosMap.path3rdParty = 'http://gdi-service.de/3rdparty/';
 LkRosMap.models = {};
 LkRosMap.views = {};
 LkRosMap.controller = {};
+LkRosMap.searchIndex = [];
 
 LkRosMap.loadHeadFile = function(filename, filetype) {
   if (filetype=="js"){ //if filename is a external JavaScript file

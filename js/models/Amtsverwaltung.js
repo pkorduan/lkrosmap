@@ -51,5 +51,8 @@ LkRosMap.models.Amtsverwaltung = function(store) {
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };
 
+  feature.titleFormatter = function() {
+    return this.get('amtsname');
+  };
   return feature;
 }

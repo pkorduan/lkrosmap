@@ -1,6 +1,7 @@
 LkRosMap.models.Feature = function(params) {
   var feature = new ol.Feature(params);
 
+  feature.setId(feature.get('gid'));
   // set default classes if not exists
   if (typeof(feature.get('classes')) == 'undefined') {
     feature.set('classes', [{
@@ -27,14 +28,14 @@ LkRosMap.models.Feature = function(params) {
   if (feature.get('type') == 'PointFeature') {
     feature.setStyle(
       new ol.style.Style({
-        image: new ol.style.Icon(({
-          anchor: [0.5, 46],
+        image: new ol.style.Icon({
+/*          anchor: [0.5, 46],
           anchorXUnits: 'fraction',
-          anchorYUnits: 'pixels',
+          anchorYUnits: 'pixels',*/
           opacity: 0.75,
           src: '../img/' + feature.get('class').icon + '.png',
           scale: 0.7
-        }))
+        })
       })
     );
   }
@@ -49,18 +50,67 @@ LkRosMap.models.Feature = function(params) {
   }*/
 
   feature.select = function() {
+    if (this.get('type') == 'MultiPolygonFeature') {
+      this.setStyle(
+        new ol.style.Style({
+          stroke: new ol.style.Stroke({
+            color: 'blue',
+            width: 3
+          }),
+          fill: new ol.style.Fill({
+            color: 'rgba(0, 0, 255, 0.1)'
+          }),
+          zIndex: 999
+        })
+      );
+    }
+    else {
+      this.setStyle(
+        new ol.style.Style({
+          image: new ol.style.Icon({
+            opacity: 0.75,
+            src: '../img/' + this.get('class').icon + '.png',
+            scale: 1.5
+          }),
+          zIndex: 999
+        })
+      );
+    }
+
     this.prepareInfoWindow();
 
     LkRosMap.selectedFeature = this;
-    LkRosMap.infoWindow.getElement().show();
+
+    $(LkRosMap.infoWindow.getElement()).show();
     LkRosMap.infoWindow.setPosition(
       (this.get('type') == 'PointFeature' ? this.getGeometry().getCoordinates() : ol.extent.getCenter(this.getGeometry().getExtent()))
     );
   };
 
   feature.unselect = function() {
-    LkRosMap.infoWindow.getElement().hide();
+    $(LkRosMap.infoWindow.getElement()).hide();
     LkRosMap.selectedFeature = false;
+
+    // set style
+    if (this.get('type') == 'PointFeature') {
+      this.setStyle(
+        new ol.style.Style({
+          image: new ol.style.Icon({
+  /*          anchor: [0.5, 46],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',*/
+            opacity: 0.75,
+            src: '../img/' + this.get('class').icon + '.png',
+            scale: 0.7
+          })
+        })
+      );
+    }
+
+    if (this.get('type') == 'MultiPolygonFeature') {
+      this.setStyle(this.get('class').style);
+    }
+
   };
 
   return feature;

@@ -1,3 +1,8 @@
+.ol-zoom {
+  top: 34px;
+  left: 6px;
+}
+
 .lkrosmap-mapper-scale-line {
   border: 3px solid rgba(255, 255, 255, .6);
   background: rgb(0, 60, 136, .7);
@@ -21,8 +26,8 @@
 
 /*
 .lkrosmap-feature-info-control {
-	top: 110px;
-	left: 6px;
+  top: 110px;
+  left: 6px;
 }
 */
 
@@ -36,7 +41,7 @@
 }
 
 #LkRosMap\.layerSwitch {
-	display: none;
+  display: none;
   float: right;
   margin-left: 5px;
   padding: 3px;
@@ -54,7 +59,7 @@
 }
 
 #LkRosMap\.legend {
-	display: none;
+  display: none;
   float: right;
   margin-left: 5px;
   padding: 3px;
@@ -64,20 +69,24 @@
 }
 
 .lkrosmap-mouse-position-control {
-	top: 5px;
-	right: 32px;
-	position: absolute;
-	z-index: 1;
-	background: rgba(0,60,136, .4);
-	height: 16px;
-	padding: 3 9 0 9;
-	text-align: center;
-	color: #eee;
-	border: 3px solid rgba(255, 255, 255, .6);
-	border-radius: 4px;
+  top: 5px;
+  right: 32px;
+  position: absolute;
+  z-index: 1;
+  background: rgba(0,60,136, .4);
+  height: 16px;
+  padding: 3 9 0 9;
+  text-align: center;
+  color: #eee;
+  border: 3px solid rgba(255, 255, 255, .6);
+  border-radius: 4px;
 }
 
 .lkrosmap-config-control {
-	top: 5px;
-	right: 5px;
+  top: 5px;
+  right: 5px;
+}
+
+#LkRosMap\.featureSearchButton {
+  display: inline;
 }

@@ -57,5 +57,9 @@ LkRosMap.models.Gemarkung = function(store) {
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };
 
+  feature.titleFormatter = function() {
+    return this.get('gemarkungsname');
+  };
+
   return feature;
 }

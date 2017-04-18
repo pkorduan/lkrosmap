@@ -174,6 +174,17 @@ LkRosMap.controller.mapper = {
         layer = LkRosMap.controller.mapper.loadFeatures(store, layer, layer_config.model);
         LkRosMap.vectorLayers.push(layer);
       });
+      // loadIndex:
+      LkRosMap.controller.mapper.loadJSON(layer_config.indexUrl, function(response) {
+        var searchIndex = JSON.parse(response);
+
+          $.each(searchIndex, function(word, identifiers) {
+            if (LkRosMap.searchIndex[word] === undefined) {
+              LkRosMap.searchIndex[word] = [];
+            }
+            LkRosMap.searchIndex[word].push({ index: layer_config.index, feature_ids: identifiers});
+          });
+      });
     });
   },
 
@@ -185,43 +196,38 @@ LkRosMap.controller.mapper = {
     LkRosMap.map.on(
       'click',
       function(evt) {
-        var selectedFeatures = [],
-            selectedLayers = {};
+        var selectedFeatures = {};
 
         LkRosMap.map.forEachFeatureAtPixel(
           evt.pixel,
           function(feature, layer) {
-            if (!(layer.get('name') in selectedLayers)) {
-              layer.selectedFeatures = [];
-              selectedLayers[layer.get('name')] = layer;
-            }
-            selectedLayers[layer.get('name')].selectedFeatures.push(feature);
-
-/*          if (feature.get('type')) {
-              if (LkRosMap.selectedFeature) {
-                LkRosMap.selectedFeature.unselect();
+            if (layer.get('name') !== undefined) {
+              if (selectedFeatures[layer.get('name')] === undefined) {
+                selectedFeatures[layer.get('name')] = {
+                  layer: layer,
+                  features: []
+                };
               }
-              LkRosMap.infoWindow.target = { feature: feature, layer: layer };
-              feature.select();
+              selectedFeatures[layer.get('name')].features.push(feature);
             }
-            else {
-              // kein Feature getroffen, unselect fals aktuelle noch eins selectiert ist.
-              if (LkRosMap.selectedFeature) {
-                LkRosMap.selectedFeature.unselect();
-              }
-            }
-*/
           }
         );
-        LkRosMap.controller.mapper.showInfoWindow(selectedLayers, evt);
+        if (Object.keys(selectedFeatures).length > 0) {
+          LkRosMap.controller.mapper.showInfoWindow(selectedFeatures, evt);
+        }
+        else {
+          if (LkRosMap.selectedFeature) {
+            LkRosMap.selectedFeature.unselect();
+          }
+          $(LkRosMap.infoWindow.getElement()).hide();
+        }
       }
     );
 
     $('#LkRosMap\\.infoWindowCloser').on(
       'click',
       function(evt) {
-        LkRosMap.infoWindow.getElement().hide();
-        $('#LkRosMap\\.infoWindowCloser').blur();
+        LkRosMap.selectedFeature.unselect();
         return false;
       }
     );
@@ -259,6 +265,7 @@ LkRosMap.controller.mapper = {
         $('#LkRosMap\\.legendButton').blur();
       }
     );
+
   },
 
   init: function() {
@@ -429,7 +436,7 @@ LkRosMap.controller.mapper = {
 
   initInfoWindow: function() {
     var infoWindow = new ol.Overlay({
-          element: $('#LkRosMap\\.infoWindow'),
+          element: $('#LkRosMap\\.infoWindow')[0],
           offset: [0,-18],
           stopEvent: true,
           autoPan: true,
@@ -466,18 +473,87 @@ LkRosMap.controller.mapper = {
     LkRosMap.tileLayers[index].setVisible(true);
   },
 
-  showInfoWindow: function(selectedLayers, evt) {
+  showInfoWindow: function(selectedFeatures, evt) {
+    var keys = Object.keys(selectedFeatures),
+        firstLayer = selectedFeatures[keys[0]],
+        firstFeature = firstLayer.features[0];
+
+    $('#LkRosMap\\.searchBox').hide();
+
+    if (LkRosMap.selectedFeature) {
+      LkRosMap.selectedFeature.unselect();
+    }
+    firstFeature.select();
+
+    $('#LkRosMap\\.infoWindowTitle').html('Kartenobjekte');
     $('#LkRosMap\\.infoWindowData').html(
-      $.map(selectedLayers, function(layer) {
-        return '<h2>' + layer.get('name') + '</h2>' +
-        $.map(layer.selectedFeatures, function(feature) {
+      $.map(selectedFeatures, function(layer) {
+        return '<h2>' + layer.layer.get('name') + '</h2>' +
+        $.map(layer.features, function(feature) {
           return feature.dataFormatter();
-        }).join('<hr>');
+        }).join('<div class="lkrosmap-data-spacer"></div>');
       }).join('<br>')
     );
 
-    LkRosMap.infoWindow.getElement().show();
-    LkRosMap.infoWindow.setPosition(evt.coordinate);
-    $('#LkRosMap\\.infoWindowRemoveFeature').hide();
+    LkRosMap.infoWindow.target = { feature: firstFeature, layer: firstLayer };
+
+    LkRosMap.infoWindow.setPosition(firstFeature.getGeometry().getCoordinates());
+    $(LkRosMap.infoWindow.getElement()).show();
+
+    if (selectedFeatures.hasOwnProperty('Adresse') && selectedFeatures['Adresse'].features.length == 1) {
+      $('#LkRosMap\\.infoWindowRemoveFeature').show();
+    }
+    else {
+      $('#LkRosMap\\.infoWindowRemoveFeature').hide();
+    }
+  },
+
+  searchForFeatures: function(event) {
+    var word = $('#LkRosMap\\.searchField').val(),
+        layers = LkRosMap.searchIndex[word.toLowerCase()],
+        html = '';
+
+    if (typeof(layers) == 'undefined') {
+      html = "<a href=\"#\" onclick=\"" + event.data.getNoResultCallback() + "\">keine Treffer gefunden!</a>";
+    }
+    else {
+      html = $.map(
+        layers,
+        function(layer) {
+          var source = LkRosMap.vectorLayers[layer.index].getSource(),
+              html = $.map(
+                layer.feature_ids,
+                function(feature_id) {
+                  var html = '\
+                    <a href="#" class="search-feature-link" onclick="LkRosMap.controller.mapper.selectFeature(' + layer.index + ', ' + feature_id + ')">' +
+                      LkRosMap.config.layers[layer.index].model + ' ' + feature_id + ': ' + source.getFeatureById(feature_id).titleFormatter() +
+                    '</a>\
+                  ';
+                  return html;
+                }
+              ).join('<br>');
+          return html;
+        }
+      ).join('<br>');
+    }
+    $('#LkRosMap\\.searchFieldResultBox').html(html).show();
+  },
+  
+  selectFeature: function(layer_id, feature_id) {
+    var source = LkRosMap.vectorLayers[layer_id].getSource(),
+        feature = source.getFeatureById(feature_id);
+
+    if (LkRosMap.selectedFeature) {
+      LkRosMap.selectedFeature.unselect();
+    }
+    feature.select();
+    LkRosMap.map.getView().fit(
+      ol.extent.buffer(
+        feature.getGeometry().getExtent(),
+        1000
+      ),
+      LkRosMap.map.getSize()
+    );
+    $('#LkRosMap\\.searchFieldResultBox').hide();
   }
 }

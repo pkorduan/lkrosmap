@@ -60,5 +60,8 @@ LkRosMap.models.Flur = function(store) {
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };
 
+  feature.titleFormatter = function() {
+    return this.get('label');
+  };
   return feature;
 }

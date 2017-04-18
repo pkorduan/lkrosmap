@@ -54,5 +54,8 @@ LkRosMap.models.Gemeinde = function(store) {
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };
 
+  feature.titleFormatter = function() {
+    return this.get('gemeindename');
+  };
   return feature;
 }

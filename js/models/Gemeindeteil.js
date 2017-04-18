@@ -53,5 +53,8 @@ LkRosMap.models.Gemeindeteil = function(store) {
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();
   };
 
+  feature.titleFormatter = function() {
+    return this.get('gemeindeteil');
+  };
   return feature;
 }

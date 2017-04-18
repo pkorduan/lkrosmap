@@ -30,6 +30,7 @@ LkRosMap.loadHeadFile("../css/app.css", "css");
 LkRosMap.loadHeadFile("../css/mapper.css", "css");
 LkRosMap.loadHeadFile("../css/geocoder.css", "css");
 LkRosMap.loadHeadFile('../js/controller/helper.js', 'js');
+LkRosMap.loadHeadFile('../js/controller/router.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/geocoder.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/mapper.js', 'js');
 LkRosMap.loadHeadFile('../js/models/LayerSwitchControl.js', 'js');

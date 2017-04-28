@@ -179,7 +179,7 @@ LkRosMap.controller.mapper = {
         var searchIndex = JSON.parse(response);
 
           $.each(searchIndex, function(word, identifiers) {
-            if (LkRosMap.searchIndex[word] === undefined) {
+            if (LkRosMap.searchIndex !== undefined && LkRosMap.searchIndex[word.toString()] === undefined) {
               LkRosMap.searchIndex[word] = [];
             }
             LkRosMap.searchIndex[word].push({ index: layer_config.index, feature_ids: identifiers});

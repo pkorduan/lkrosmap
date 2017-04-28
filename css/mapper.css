@@ -1,5 +1,5 @@
 .ol-zoom {
-  top: 34px;
+  top: 60px;
   left: 6px;
 }
 
@@ -32,7 +32,7 @@
 */
 
 .lkrosmap-layerswitcher-control {
-  top: 82px;
+  top: 107px;
   left: 6px;
 }
 
@@ -89,4 +89,12 @@
 
 #LkRosMap\.featureSearchButton {
   display: inline;
+}
+
+.lkrosmap-search-button {
+  color: white;
+  background-color: #c0c0c0;
+  padding: 3;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
 }

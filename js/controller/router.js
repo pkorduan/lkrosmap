@@ -1,6 +1,6 @@
 LkRosMap.views.router = {};
 // load view
-LkRosMap.loadHeadFile('../js/views/router/routing_form.js', 'js');
+LkRosMap.loadHeadFile('../js/views/router/search.js', 'js');
 
 LkRosMap.controller.router = {
   views: LkRosMap.views.router,
@@ -22,26 +22,52 @@ LkRosMap.controller.router = {
   },
 
   setEventHandlers: function() {
-    $("#LkRosMap\\.searchLos").on(
+    $('#LkRosMap\\.routeSearchButton').on(
+      'click',
+      function() {
+        $('#LkRosMap\\.searchBox').hide();
+        $('#LkRosMap\\.routingBox').toggle();
+        $('#LkRosMap\\.fromField').focus();
+        $('#LkRosMap\\.routeFromLos').show();
+      }
+    );
+
+    $('#LkRosMap\\.fromField').on(
+      'mousedown',
+      function() {
+        $('#LkRosMap\\.routeToLos').hide();
+        $('#LkRosMap\\.routeFromLos').show();
+      }
+    );
+
+    $('#LkRosMap\\.routeFromLos').on(
       'click',
       this,
       function(evt) {
-/*        if ($('#LkRosMap\\.addressSearchButton').hasClass('lkrosmap-search-type-selected')) {
-          LkRosMap.controller.geocoder.searchForAddress(evt);
-        }
-        else {
-          LkRosMap.controller.geocoder.searchForFeatures(evt);
-        }
-      }*/
+        $('#LkRosMap\\.routeFromLos').hide();
+        $('#LkRosMap\\.toFieldResultBox').hide();
+        $('#LkRosMap\\.fromFieldResultBox').show();
+        LkRosMap.controller.geocoder.searchForAddress(evt, 'fromField');
+      }
     );
 
-    $('#LkRosMap\\.searchButton').on(
-      'click',
+    $('#LkRosMap\\.toField').on(
+      'mousedown',
       function() {
-/*        $('#LkRosMap\\.searchBox').toggle();
-        $('#LkRosMap\\.searchField').focus();*/
+        $('#LkRosMap\\.routeFromLos').hide();
+        $('#LkRosMap\\.routeToLos').show();
       }
-    )
+    );
+
+    $('#LkRosMap\\.routeToLos').on(
+      'click',
+      function(evt) {
+        $('#LkRosMap\\.routeToLos').hide();
+        $('#LkRosMap\\.fromFieldResultBox').hide();
+        $('#LkRosMap\\.toFieldResultBox').show();
+        console.log('search address for from field');
+      }
+    );
   },
 
   init: function() {
@@ -49,6 +75,8 @@ LkRosMap.controller.router = {
 
     this.loadModels();
     this.loadLayer();
+
+    LkRosMap.map.addControl(new LkRosMap.models.RoutingControl());
 
     this.setEventHandlers();
   },
@@ -130,7 +158,7 @@ LkRosMap.controller.router = {
         upper = item.geobounds_upper.split(','),
         lat = (parseFloat(lower[0]) + parseFloat(upper[0])) / 2,
     lon = (parseFloat(lower[1]) + parseFloat(upper[1])) / 2;
-    return "LkRosMap.controller.geocoder.addSearchResultFeature('" + item.display_name + "', " + lat + ", " + lon + ")";
+    return "LkRosMap.controller.router.addSearchResultFeature('" + item.display_name + "', " + lat + ", " + lon + ")";
   },
 
   getNoResultCallback: function() {
@@ -145,7 +173,7 @@ LkRosMap.controller.router = {
     searchField.val(display_name);
     searchField.focus();
     searchField.attr('coordinates', lat + ', ' + lon);
-    $('#LkRosMap\\.searchFieldResultBox').hide();
+    $('#LkRosMap\\.fromFieldResultBox').hide();
 
     this.removeSearchResultFeatures();
 

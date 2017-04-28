@@ -27,7 +27,7 @@ LkRosMap.controller.geocoder = {
       this,
       function(evt) {
         if ($('#LkRosMap\\.addressSearchButton').hasClass('lkrosmap-search-type-selected')) {
-          LkRosMap.controller.geocoder.searchForAddress(evt);
+          LkRosMap.controller.geocoder.searchForAddress(evt, 'searchField');
         }
         else {
           LkRosMap.controller.mapper.searchForFeatures(evt);
@@ -38,6 +38,7 @@ LkRosMap.controller.geocoder = {
     $('#LkRosMap\\.searchButton').on(
       'click',
       function() {
+        $('#LkRosMap\\.routingBox').hide();
         $('#LkRosMap\\.searchBox').toggle();
         $('#LkRosMap\\.searchField').focus();
       }
@@ -69,20 +70,38 @@ LkRosMap.controller.geocoder = {
       }
     );
 
-    $('.lkrosmap-search-type-button').on(
+    $('#LkRosMap\\.addressSearchButton').on(
       'click',
       function(evt) {
-        $('#LkRosMap\\.addressSearchButton').toggleClass('lkrosmap-search-type-selected');
-        $('#LkRosMap\\.featureSearchButton').toggleClass('lkrosmap-search-type-selected');
-        if ($('#LkRosMap\\.addressSearchButton').hasClass('lkrosmap-search-type-selected')) {
-          $('#LkRosMap\\.searchField').attr('placeholder', 'Addresse, Gemarkung oder Flurstück eingeben');
-        }
-        else {
-          $('#LkRosMap\\.searchField').attr('placeholder', 'Suchbegriff für Themensuche eingeben');
-        }
-        $('#LkRosMap\\.searchField').focus();
+        $('.lkrosmap-search-type-button').removeClass('lkrosmap-search-type-selected');
+        $(this).addClass('lkrosmap-search-type-selected');
+        $('#LkRosMap\\.routeSearchFields').hide();
+        $('#LkRosMap\\.searchField').show();
+        $('#LkRosMap\\.searchField').attr('placeholder', 'Addresse, Gemarkung oder Flurstück eingeben').focus();
       }
     );
+
+    $('#LkRosMap\\.featureSearchButton').on(
+      'click',
+      function(evt) {
+        $('.lkrosmap-search-type-button').removeClass('lkrosmap-search-type-selected');
+        $(this).addClass('lkrosmap-search-type-selected');
+        $('#LkRosMap\\.routeSearchFields').hide();
+        $('#LkRosMap\\.searchField').show();
+        $('#LkRosMap\\.searchField').attr('placeholder', 'Suchbegriff für Themensuche eingeben').focus();
+      }
+    );
+
+    $('#LkRosMap\\.routeSearchButton').on(
+      'click',
+      function(evt) {
+        $('.lkrosmap-search-type-button').removeClass('lkrosmap-search-type-selected');
+        $(this).addClass('lkrosmap-search-type-selected');
+        $('#LkRosMap\\.searchField').hide();
+        $('#LkRosMap\\.routeSearchFields').show();
+      }
+    );
+
   },
 
   init: function() {
@@ -96,7 +115,7 @@ LkRosMap.controller.geocoder = {
     this.setEventHandlers();
     $('#LkRosMap\\.searchField').focus();
   },
-
+/*
   lookupNominatim: function(e){
     var scope = LkRosMap.controller.geocoder,
         queryStr = e.target.value,
@@ -135,10 +154,10 @@ LkRosMap.controller.geocoder = {
       complete:  LkRosMap.controller.mapper.searchAnimation.hide
     });
   },
-
-  searchForAddress: function(event) {
+*/
+  searchForAddress: function(event, fieldName) {
     var scope = LkRosMap.controller.geocoder,
-        queryStr = $('#LkRosMap\\.searchField').val(),
+        queryStr = $('#LkRosMap\\.' + fieldName).val(),
         url  = 'http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';
 
     $.ajax(url, {
@@ -156,7 +175,7 @@ LkRosMap.controller.geocoder = {
 
       success: function(response) {
         if (response.success) {
-          scope.showAddressSearchResults(event, response.places);
+          scope.showAddressSearchResults(event, response.places, fieldName);
         }
         else {
           scope.showErrorMsg(scope, 'Die Anfrage ist falsch. Es fehlt der Anfrageparameter <i>q</i>!');
@@ -173,14 +192,14 @@ LkRosMap.controller.geocoder = {
     });
   },
 
-  showAddressSearchResults: function(event, results) {
-    $('#LkRosMap\\.searchFieldResultBox').html(
+  showAddressSearchResults: function(event, results, fieldName) {
+    $('#LkRosMap\\.' + fieldName + 'ResultBox').html(
       this.searchResultsFormatter(
         event,
         results
       )
     ).show();
-    $('#LkRosMap\\.searchField').focus();
+    $('#LkRosMap\\.' + fieldName).focus();
   },
 
   showErrorMsg: function(event, msg) {
@@ -193,7 +212,7 @@ LkRosMap.controller.geocoder = {
 
     if ( typeof results != "undefined" && results != null && results.length > 0) {
       html = results.map(function(item) {
-        item.display_name = controller.displayNameFormatter(item);
+        item.display_name = event.data.displayNameFormatter(item);
         return "<a href=\"#\" onclick=\"" + event.data.getSearchResultCallback(event, item) + "\">" + item.display_name + "</a><br>";
       });
     }

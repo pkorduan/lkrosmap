@@ -30,6 +30,7 @@
   max-width: 675;
   max-height: 600;
   overflow: scroll;
+  display: none;
 }
 
 #LkRosMap\.searchFieldClear {

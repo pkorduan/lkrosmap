@@ -2,7 +2,6 @@ LkRosMap.path3rdParty = 'http://gdi-service.de/3rdparty/';
 LkRosMap.models = {};
 LkRosMap.views = {};
 LkRosMap.controller = {};
-LkRosMap.searchIndex = [];
 
 LkRosMap.loadHeadFile = function(filename, filetype) {
   if (filetype=="js"){ //if filename is a external JavaScript file
@@ -30,6 +29,7 @@ LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "proj4js/proj4.js", "js");
 LkRosMap.loadHeadFile("../css/app.css", "css");
 LkRosMap.loadHeadFile("../css/mapper.css", "css");
 LkRosMap.loadHeadFile("../css/geocoder.css", "css");
+LkRosMap.loadHeadFile("../css/router.css", "css");
 LkRosMap.loadHeadFile('../js/controller/helper.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/router.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/geocoder.js', 'js');
@@ -37,6 +37,7 @@ LkRosMap.loadHeadFile('../js/controller/mapper.js', 'js');
 LkRosMap.loadHeadFile('../js/models/LayerSwitchControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/LegendControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/SearchControl.js', 'js');
+LkRosMap.loadHeadFile('../js/models/RoutingControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Feature.js', 'js');
 
 for (var i = 0; i < LkRosMap.config.layers.length; i++) {
@@ -53,8 +54,11 @@ LkRosMap.init = function() {
   // fuer einige Berechnungen muss nach LonLat transformiert werden
   LkRosMap.baseProjection = LkRosMap.config.baseProjection;
 
+  LkRosMap.searchIndex = {};
+
   // Reihenfolge ist zu beachten
   LkRosMap.controller.mapper.init();
   LkRosMap.controller.helper.init();
   LkRosMap.controller.geocoder.init();
+  LkRosMap.controller.router.init();
 };

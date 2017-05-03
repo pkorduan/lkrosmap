@@ -12,7 +12,7 @@
 #LkRosMap\.routingBox {
   display: none;
   margin-left: 2;
-  width: 400px;
+  width: 600px;
 }
 
 #LkRosMap\.routeSearchFields {
@@ -24,7 +24,7 @@
   border-radius: 5px;
   border: 1px solid #ddd;
   padding: 2px;
-  width: 353px;
+  width: 553px;
   height: 20px;
 }
 
@@ -34,4 +34,12 @@
 
 #LkRosMap\.routeToLos {
   display: none;
+}
+
+#LkRosMap\.routingInfo {
+  display: none;
+  margin-left: 5px;
+  padding: 1 5 1 5;
+  background-color: #ffe3b9;
+  border-radius: 2px;
 }

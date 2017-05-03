@@ -54,5 +54,10 @@ LkRosMap.models.Amtsverwaltung = function(store) {
   feature.titleFormatter = function() {
     return this.get('amtsname');
   };
+
+  feature.addressText = function() {
+    return ('Amtsverwaltung ' + this.get('amtsname')).trim();
+  };
+
   return feature;
 }

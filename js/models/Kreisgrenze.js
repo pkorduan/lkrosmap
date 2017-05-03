@@ -56,5 +56,10 @@ LkRosMap.models.Kreisgrenze = function(store) {
   feature.titleFormatter = function() {
     return this.get('kreisname');
   };
+
+  feature.addressText = function() {
+    return ('Kreis ' + this.get('kreisname')).trim();
+  };
+
   return feature;
 }

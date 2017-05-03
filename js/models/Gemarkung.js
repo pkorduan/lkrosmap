@@ -61,5 +61,9 @@ LkRosMap.models.Gemarkung = function(store) {
     return this.get('gemarkungsname');
   };
 
+  feature.addressText = function() {
+    return ('Gemarkung ' + this.get('gemarkungsname')).trim();
+  };
+
   return feature;
 }

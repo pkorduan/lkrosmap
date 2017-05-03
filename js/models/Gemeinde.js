@@ -57,5 +57,10 @@ LkRosMap.models.Gemeinde = function(store) {
   feature.titleFormatter = function() {
     return this.get('gemeindename');
   };
+
+  feature.addressText = function() {
+    return ('Gemeinde ' + this.get('gemeindename')).trim();
+  };
+
   return feature;
 }

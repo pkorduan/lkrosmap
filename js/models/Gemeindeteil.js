@@ -56,5 +56,9 @@ LkRosMap.models.Gemeindeteil = function(store) {
   feature.titleFormatter = function() {
     return this.get('gemeindeteil');
   };
+
+  feature.addressText = function() {
+    return ('Gemeindeteil ' + this.get('gemeindeteil')).trim();
+  };
   return feature;
 }

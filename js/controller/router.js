@@ -40,6 +40,17 @@ LkRosMap.controller.router = {
       }
     );
 
+    $('#LkRosMap\\.fromField').on(
+      'change',
+      this,
+      function(evt) {
+        $('#LkRosMap\\.routeFromLos').hide();
+        $('#LkRosMap\\.toFieldResultBox').hide();
+        $('#LkRosMap\\.fromFieldResultBox').show();
+        LkRosMap.controller.geocoder.searchForAddress(evt, 'fromField');
+      }
+    );
+
     $('#LkRosMap\\.routeFromLos').on(
       'click',
       this,
@@ -59,15 +70,71 @@ LkRosMap.controller.router = {
       }
     );
 
-    $('#LkRosMap\\.routeToLos').on(
-      'click',
+    $('#LkRosMap\\.toField').on(
+      'change',
+      this,
       function(evt) {
         $('#LkRosMap\\.routeToLos').hide();
         $('#LkRosMap\\.fromFieldResultBox').hide();
         $('#LkRosMap\\.toFieldResultBox').show();
-        console.log('search address for from field');
+        LkRosMap.controller.geocoder.searchForAddress(evt, 'toField');
       }
     );
+
+    $('#LkRosMap\\.routeToLos').on(
+      'click',
+      this,
+      function(evt) {
+        $('#LkRosMap\\.routeToLos').hide();
+        $('#LkRosMap\\.fromFieldResultBox').hide();
+        $('#LkRosMap\\.toFieldResultBox').show();
+        LkRosMap.controller.geocoder.searchForAddress(evt, 'toField');
+      }
+    );
+
+    $('#LkRosMap\\.infowindowRoutingFrom').on(
+      'click',
+      function(evt) {
+        var currFeature = LkRosMap.infoWindow.target.feature,
+            routeField = $('#LkRosMap\\.fromField');
+
+        routeField.attr('coordinates', currFeature.latlng().join(', '));
+        routeField.val(currFeature.addressText());
+        $('#LkRosMap\\.searchBox').hide();
+        $('#LkRosMap\\.routingBox').show();
+        $('#LkRosMap\\.routeFromLos').hide();
+        if (typeof $('LkRosMap\\.toField').attr('coordinates') == typeof undefined) {
+          $('#LkRosMap\\.toField').focus();
+        }
+
+        LkRosMap.controller.router.loadRoute({ data: LkRosMap.controller.router });
+      }
+    );
+
+    $('#LkRosMap\\.infowindowRoutingTo').on(
+      'click',
+      function(evt) {
+        var currFeature = LkRosMap.infoWindow.target.feature,
+            routeField = $('#LkRosMap\\.ToField');
+
+        routeField.attr('coordinates', currFeature.latlng().join(', '));
+        routeField.val(currFeature.addressText());
+        $('#LkRosMap\\.searchBox').hide();
+        $('#LkRosMap\\.routingBox').show();
+        $('#LkRosMap\\.routeToLos').hide();
+        if (typeof $('LkRosMap\\.fromField').attr('coordinates') == typeof undefined) {
+          $('#LkRosMap\\.fromField').focus();
+        }
+        LkRosMap.controller.router.loadRoute({ data: LkRosMap.controller.router });
+      }
+    );
+
+    $('#LkRosMap\\.removeRoute').on(
+      'click',
+      function(evt) {
+        LkRosMap.controller.router.removeRoute();
+      }
+    )
   },
 
   init: function() {
@@ -81,31 +148,56 @@ LkRosMap.controller.router = {
     this.setEventHandlers();
   },
 
-  searchForAddress: function(event) {
-    console.log('searchforAdress');
-    var scope = LkRosMap.controller.geocoder,
-        queryStr = $('#LkRosMap\\.searchField').val(),
-        url  = 'http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';
+  loadRoute : function(e) {
+    //console.log('loadRoute');
+    var scope = e.data,
+        url  = LkRosMap.config.osm2poProxyUrl,
+        from = $('#LkRosMap\\.fromField').attr('coordinates'),
+        to = $('#LkRosMap\\.toField').attr('coordinates'),
+        queryString = 'Route von: ' + from + ' nach: ' + to,
+        hint = '';
 
-    $.ajax(url, {
-      type: 'GET',
 
-      contentType: 'application/json',
+    //console.log('routerUrl: ' + url);
+    //console.log('queryString: ' + queryString);
 
+    if (typeof from == typeof undefined || from == false ||
+        typeof to == typeof undefined || to == false) 
+      return false;
+
+    $.ajax({
+      url: url,
+
+      // The name of the callback parameter, as specified by the YQL service
+      //jsonp: "callback",
+
+      // Tell jQuery we're expecting JSONP
+      //dataType: "json",
+
+      // Tell YQL what we want and that we want JSON
       data: {
-        'q': queryStr
+        cmd: 'fr',
+        format: 'geojson',
+        source: from,
+        target: to
       },
-
-      dataType: 'jsonp',
 
       beforeSend: LkRosMap.controller.mapper.searchAnimation.show,
 
+      // Work with the response
       success: function(response) {
-        if (response.success) {
-          scope.showAddressSearchResults(event, response.places);
+        if (response.indexOf('Error') != -1 || response.indexOf('Fehler') != -1) {
+          if (from == '')
+            hint = 'Keine Angaben für den Startpunkt: ' + from;
+          if (to == '')
+            hint = 'Keine Angaben für den Zielpunkt: ' + to;
+          if (from == to)
+            hint = 'Start: ' + from + ' und Zielpunkt: ' + to + ' sind identisch';
+          scope.showErrorMsg(scope, hint || 'Kein Ergebnis für ' + queryString + '<br>' + response);
         }
         else {
-          scope.showErrorMsg(scope, 'Die Anfrage ist falsch. Es fehlt der Anfrageparameter <i>q</i>!');
+          scope.errMsgElement.innerHTML = '';
+          scope.showRoute(response, scope);
         }
       },
 
@@ -114,9 +206,31 @@ LkRosMap.controller.router = {
           scope.showErrorMsg(scope, thrownError);
         }
       },
-  
-      complete:  LkRosMap.controller.mapper.searchAnimation.hide
+
+      complete: LkRosMap.controller.mapper.searchAnimation.hide
+
     });
+  },
+
+  removeRoute: function(scope) {
+    var source = LkRosMap.controller.router.layer.getSource(),
+        features = source.getFeatures();
+
+    $('#LkRosMap\\.fromFieldResultBox').hide();
+    $('#LkRosMap\\.fromField').attr('coordinates', '');
+    $('#LkRosMap\\.fromField').val('');
+
+    $('#LkRosMap\\.toFieldResultBox').hide();
+    $('#LkRosMap\\.toField').attr('coordinates', '');
+    $('#LkRosMap\\.toField').val('');
+
+    $('#LkRosMap\\.routingInfo').hide();
+
+    if (features != null && features.length > 0) {
+      for (x in features) {
+        source.removeFeature(features[x]);
+      }
+    }
   },
 
   showAddressSearchResults: function(event, results) {
@@ -130,64 +244,91 @@ LkRosMap.controller.router = {
   },
 
   showErrorMsg: function(event, msg) {
-    console.log('err');
+    console.log('error in: %o', event);
+    console.log('errmsg: ' + msg);
   },
 
-  searchResultsFormatter: function(event, results) {
-    var html = '',
-        controller = LkRosMap.controller.geocoder;
+  showRoute: function(result, scope) {
+    var route = new LkRosMap.route(result),
+        source = LkRosMap.controller.router.layer.getSource(),
+        features = source.getFeatures();
 
-    if ( typeof results != "undefined" && results != null && results.length > 0) {
-      html = results.map(function(item) {
-        item.display_name = controller.displayNameFormatter(item);
-        return "<a href=\"#\" onclick=\"" + event.data.getSearchResultCallback(event, item) + "\">" + item.display_name + "</a><br>";
-      });
+    if (features != null && features.length > 0) {
+      for (x in features) {
+        source.removeFeature(features[x]);
+      }
     }
-    else {
-      html = "<a href=\"#\" onclick=\"" + event.data.getNoResultCallback() + "\">keine Treffer gefunden!</a>";
-    }
-    return html;
+
+    source.addFeature(
+      route.line
+    );
+    source.addFeature(
+      route.sourcePoint
+    );
+    source.addFeature(
+      route.targetPoint
+    );
+
+    LkRosMap.map.getView().fit(
+      route.line.getGeometry().getExtent(),
+      LkRosMap.map.getSize()
+    );
+
+    $('#LkRosMap\\.routingInfo').html(
+      'Auto: ' + scope.distanceFormatter(route.distance) + ', ' + scope.durationFormatter(route.duration)
+    ).show();
+
+/*    $('#LkRosMap\\.routingDuration').html(
+      ', ' + scope.durationFormatter(route.duration)
+    ).show();
+    $('#LkRosMap\\.routingDistance').html(
+      'Auto: ' + scope.distanceFormatter(route.distance)
+    ).show();
+*/
   },
 
   displayNameFormatter: function(item) {
     return item.placeName + ' (' + item.primaryType + ')';
   },
 
-  getSearchResultCallback: function(event, item) {
+  distanceFormatter: function(duration) {
+    return (Math.round(duration * 10) / 10) + " km"
+  },
+
+  durationFormatter: function(duration) {
+    var hours = Math.floor(duration),
+      minutes = Math.round((duration - hours) * 60),
+      textParts = [];
+    if (hours > 0)
+      textParts.push(hours + ' Std.');
+    if (minutes > 0)
+      textParts.push(minutes + ' Min.');
+    return textParts.join(' ');
+  },
+
+  getSearchResultCallback: function(event, item, fieldName) {
+    //console.log('getSearchResultCallback in router for field: ' + fieldName);
     var lower = item.geobounds_lower.split(','),
         upper = item.geobounds_upper.split(','),
         lat = (parseFloat(lower[0]) + parseFloat(upper[0])) / 2,
     lon = (parseFloat(lower[1]) + parseFloat(upper[1])) / 2;
-    return "LkRosMap.controller.router.addSearchResultFeature('" + item.display_name + "', " + lat + ", " + lon + ")";
+    return "LkRosMap.controller.router.setSearchResult('" + item.display_name + "', " + lat + ", " + lon + ", '" + fieldName +"')";
   },
 
   getNoResultCallback: function() {
     return "$('#LkRosMap\\\\.searchFieldResultBox').hide();";
   },
 
-  addSearchResultFeature: function(display_name, lat, lon) {
-    var searchResultFeature = new LkRosMap.models.searchResult(display_name, lat, lon),
-        source = this.layer.getSource(),
-        searchField = $('#LkRosMap\\.searchField');
+  setSearchResult: function(display_name, lat, lon, fieldName) {
+    //console.log('setSearchResult for fieldName: ' + fieldName + ' with display_name: ' + display_name + ' and latlng ' + lat + ', ' + lon);
+    var searchField = $('#LkRosMap\\.' + fieldName);
 
     searchField.val(display_name);
     searchField.focus();
     searchField.attr('coordinates', lat + ', ' + lon);
-    $('#LkRosMap\\.fromFieldResultBox').hide();
+    $('#LkRosMap\\.' + fieldName + 'ResultBox').hide();
 
-    this.removeSearchResultFeatures();
-
-    source.addFeature( searchResultFeature );
-
-    LkRosMap.map.getView().fit(
-      ol.extent.buffer(
-        searchResultFeature.getGeometry().getExtent(),
-        300
-      ),
-      LkRosMap.map.getSize()
-    );
-    $('#LkRosMap\\.searchBox').hide();
-    searchResultFeature.select();
+    this.loadRoute({ data: this });
   },
 
   removeSearchResultFeatures : function() {

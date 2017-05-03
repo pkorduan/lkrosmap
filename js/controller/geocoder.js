@@ -22,6 +22,19 @@ LkRosMap.controller.geocoder = {
   },
 
   setEventHandlers: function() {
+    $("#LkRosMap\\.searchField").on(
+      'change',
+      this,
+      function(evt) {
+        if ($('#LkRosMap\\.addressSearchButton').hasClass('lkrosmap-search-type-selected')) {
+          LkRosMap.controller.geocoder.searchForAddress(evt, 'searchField');
+        }
+        else {
+          LkRosMap.controller.mapper.searchForFeatures(evt);
+        }
+      }
+    );
+
     $("#LkRosMap\\.searchLos").on(
       'click',
       this,
@@ -156,6 +169,7 @@ LkRosMap.controller.geocoder = {
   },
 */
   searchForAddress: function(event, fieldName) {
+    //console.log('searchForAdress from fieldname: ' + fieldName);
     var scope = LkRosMap.controller.geocoder,
         queryStr = $('#LkRosMap\\.' + fieldName).val(),
         url  = 'http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';
@@ -193,27 +207,35 @@ LkRosMap.controller.geocoder = {
   },
 
   showAddressSearchResults: function(event, results, fieldName) {
+    //console.log('showAddressSearchResult for field: ' + fieldName);
     $('#LkRosMap\\.' + fieldName + 'ResultBox').html(
       this.searchResultsFormatter(
         event,
-        results
+        results,
+        fieldName
       )
     ).show();
     $('#LkRosMap\\.' + fieldName).focus();
   },
 
   showErrorMsg: function(event, msg) {
-    console.log('err');
+    console.log('error in: %o', event);
+    console.log('errmsg: ' + msg);
   },
 
-  searchResultsFormatter: function(event, results) {
+  searchResultsFormatter: function(event, results, fieldName) {
+/*
+    console.log('searchResultFormatter for fieldName: ' + fieldName);
+    console.log('searchResultFormatter for resilts %o', results);
+    console.log('searchResultFormatter for data %o', event.data);
+*/
     var html = '',
         controller = LkRosMap.controller.geocoder;
 
     if ( typeof results != "undefined" && results != null && results.length > 0) {
       html = results.map(function(item) {
         item.display_name = event.data.displayNameFormatter(item);
-        return "<a href=\"#\" onclick=\"" + event.data.getSearchResultCallback(event, item) + "\">" + item.display_name + "</a><br>";
+        return "<a href=\"#\" onclick=\"" + event.data.getSearchResultCallback(event, item, fieldName) + "\">" + item.display_name + "</a><br>";
       });
     }
     else {
@@ -227,6 +249,7 @@ LkRosMap.controller.geocoder = {
   },
 
   getSearchResultCallback: function(event, item) {
+    //console.log('getSearchResultCallback in geocoder');
     var lower = item.geobounds_lower.split(','),
         upper = item.geobounds_upper.split(','),
         lat = (parseFloat(lower[0]) + parseFloat(upper[0])) / 2,
@@ -266,13 +289,13 @@ LkRosMap.controller.geocoder = {
   },
 
   removeSearchResultFeatures : function() {
-    console.log('removeSearchResultFeatures');
+    //console.log('removeSearchResultFeatures');
     var source = this.layer.getSource(),
         features = source.getFeatures();
 
     if (features != null && features.length > 0) {
       for (x in features) {
-        console.log('remove feature %o', features[x]);
+        //console.log('remove feature %o', features[x]);
         source.removeFeature( features[x] );
       }
     }

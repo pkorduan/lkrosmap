@@ -49,6 +49,19 @@ LkRosMap.models.Feature = function(params) {
     return t;
   }*/
 
+  feature.latlng = function() {
+    var center = [];
+    if (feature.get('type') == 'PointFeature') {
+      center = this.getGeometry().getCoordinates();
+    }
+    else {
+      center = ol.extent.getCenter(this.getGeometry().getExtent());
+    }
+    
+    center = ol.proj.transform(center, LkRosMap.viewProjection, LkRosMap.baseProjection);
+    return [center[1], center[0]];
+  };
+
   feature.select = function() {
     if (this.get('type') == 'MultiPolygonFeature') {
       this.setStyle(

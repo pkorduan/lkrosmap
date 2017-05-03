@@ -24,6 +24,7 @@ LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "font-awesome-4.7.0/css/font-aweso
 LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "OpenLayers/v3.8.2/build/ol-debug.js", "js");
 LkRosMap.loadHeadFile("https://openlayers.org/en/v3.20.1/css/ol.css", "css");
 LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "proj4js/proj4.js", "js");
+LkRosMap.config.osm2poProxyUrl = 'http://gdi-service.de/lkrosmap/osm2poServiceProxy.php';
 
 // Die Reihenfolge der Einbindung ist zu beachten
 LkRosMap.loadHeadFile("../css/app.css", "css");
@@ -39,6 +40,8 @@ LkRosMap.loadHeadFile('../js/models/LegendControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/SearchControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/RoutingControl.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Feature.js', 'js');
+LkRosMap.loadHeadFile('../js/models/Route.js', 'js');
+LkRosMap.loadHeadFile('../js/models/RoutePoint.js', 'js');
 
 for (var i = 0; i < LkRosMap.config.layers.length; i++) {
   LkRosMap.loadHeadFile('../js/models/' + LkRosMap.config.layers[i].model + '.js', 'js');

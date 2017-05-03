@@ -71,8 +71,11 @@ LkRosMap.models.Naturdenkmal = function(store) {
     return this.get('kommentar') + ' ' + this.get('standort');
   };
 
+  feature.addressText = function() {
+    return ('Naturdenkmal ' + this.get('aktenzeichen') + ' ' + this.get('standort')).trim();
+  };
+
   feature.prepareInfoWindow = function() {
-    $('#LkRosMap\\.infoWindow').attr('class','lkrosmap-infowindow');
     $('#LkRosMap\\.infoWindowTitle').html('Naturdenkmal');
     $('#LkRosMap\\.infoWindowData').html(this.dataFormatter());
     $('#LkRosMap\\.infoWindowRemoveFeature').hide();

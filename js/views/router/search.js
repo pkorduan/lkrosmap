@@ -7,15 +7,14 @@ LkRosMap.views.router.search = {
         <div\
           id=\"LkRosMap.fromFieldResultBox\"\
           class=\"lkrosmap-search-result-box\"\
-        >1\
-        </div>\
+        ></div>\
         <input id=\"LkRosMap.toField\" class=\"lkrosmap-route-search-field\" type=\"text\" name=\"to\" size=\"25\" value=\"\" placeholder=\"Zieladresse eingeben\">\
         <i id=\"LkRosMap.routeToLos\" class=\"fa fa-search lkrosmap-search-button\"></i>\
         <div\
           id=\"LkRosMap.toFieldResultBox\"\
           class=\"lkrosmap-search-result-box\"\
-        >2\
-        </div>\
+        ></div>\
+        <input id=\"LkRosMap.removeRoute\" type=\"button\" value=\"Route löschen\"><span id=\"LkRosMap.routingInfo\"></span>\
       </div>\
     </div>\
   "

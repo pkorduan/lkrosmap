@@ -63,5 +63,10 @@ LkRosMap.models.Flur = function(store) {
   feature.titleFormatter = function() {
     return this.get('label');
   };
+
+  feature.addressText = function() {
+    return ('Gemarkung ' + this.get('label')).trim();
+  };
+
   return feature;
 }

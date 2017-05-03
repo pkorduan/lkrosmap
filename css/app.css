@@ -54,6 +54,15 @@ button:focus {
 	border-width: 1px;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  border: 1px solid #ccc;
+	background-color: #d3e9f1;
+}
+
 .lkrosmap-map {
 	margin-left: 0px;
 	background-color: #eee;

@@ -1,4 +1,4 @@
-LkRosMap.models.searchResult = function(name, lat, lon) {
+LkRosMap.models.routingResult = function(name, lat, lon) {
   var feature = new ol.Feature({
         type: 'Addresse',
         geometry: new ol.geom.Point(ol.proj.fromLonLat([lon, lat], LkRosMap.viewProjection)),

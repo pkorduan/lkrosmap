@@ -64,14 +64,20 @@ LkRosMap.models.searchResult = function(name, lat, lon) {
   };
 
   feature.select = function() {
+    //console.log('select SearchResult');
     this.prepareInfoWindow();
 
     LkRosMap.selectedFeature = this;
 
+
+//    LkRosMap.controller.mapper.showInfoWindow([this]);
+    LkRosMap.infoWindow.feature = this;
     $(LkRosMap.infoWindow.getElement()).show();
     LkRosMap.infoWindow.setPosition(
       this.getGeometry().getCoordinates()
     );
+
   };
+
   return feature;
 };

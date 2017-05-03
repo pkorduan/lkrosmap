@@ -262,6 +262,7 @@ LkRosMap.controller.geocoder = {
   },
 
   addSearchResultFeature: function(display_name, lat, lon) {
+    console.log('addSearchResultFeatures display_name: ' + display_name);
     var searchResultFeature = new LkRosMap.models.searchResult(display_name, lat, lon),
         source = this.layer.getSource(),
         searchField = $('#LkRosMap\\.searchField');
@@ -274,7 +275,6 @@ LkRosMap.controller.geocoder = {
     this.removeSearchResultFeatures();
 
     source.addFeature( searchResultFeature );
-
 
     searchResultFeature.select();
 

@@ -95,8 +95,16 @@ LkRosMap.controller.router = {
     $('#LkRosMap\\.infowindowRoutingFrom').on(
       'click',
       function(evt) {
-        var currFeature = LkRosMap.infoWindow.target.feature,
+        var currFeature,
             routeField = $('#LkRosMap\\.fromField');
+
+            debug_e = LkRosMap.infoWindow;
+        if (typeof LkRosMap.infoWindow.target == 'undefined') {
+          currFeature = LkRosMap.infoWindow.feature;
+        }
+        else {
+          currFeature = LkRosMap.infoWindow.target.feature;
+        }
 
         routeField.attr('coordinates', currFeature.latlng().join(', '));
         routeField.val(currFeature.addressText());
@@ -114,7 +122,7 @@ LkRosMap.controller.router = {
     $('#LkRosMap\\.infowindowRoutingTo').on(
       'click',
       function(evt) {
-        var currFeature = LkRosMap.infoWindow.target.feature,
+        var currFeature = LkRosMap.infoWindow.target.feature || LkRosMap.infoWindow.feature,
             routeField = $('#LkRosMap\\.ToField');
 
         routeField.attr('coordinates', currFeature.latlng().join(', '));

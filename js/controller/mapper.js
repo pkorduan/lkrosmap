@@ -213,7 +213,7 @@ LkRosMap.controller.mapper = {
           }
         );
         if (Object.keys(selectedFeatures).length > 0) {
-          LkRosMap.controller.mapper.showInfoWindow(selectedFeatures, evt);
+          LkRosMap.controller.mapper.showInfoWindow(selectedFeatures);
         }
         else {
           if (LkRosMap.selectedFeature) {
@@ -473,7 +473,7 @@ LkRosMap.controller.mapper = {
     LkRosMap.tileLayers[index].setVisible(true);
   },
 
-  showInfoWindow: function(selectedFeatures, evt) {
+  showInfoWindow: function(selectedFeatures) {
     var keys = Object.keys(selectedFeatures),
         firstLayer = selectedFeatures[keys[0]],
         firstFeature = firstLayer.features[0];

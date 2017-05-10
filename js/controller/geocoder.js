@@ -88,7 +88,7 @@ LkRosMap.controller.geocoder = {
       function(evt) {
         $('.lkrosmap-search-type-button').removeClass('lkrosmap-search-type-selected');
         $(this).addClass('lkrosmap-search-type-selected');
-        $('#LkRosMap\\.routeSearchFields').hide();
+      //  $('#LkRosMap\\.routeSearchFields').hide();
         $('#LkRosMap\\.searchField').show();
         $('#LkRosMap\\.searchField').attr('placeholder', 'Addresse, Gemarkung oder Flurstück eingeben').focus();
       }
@@ -99,7 +99,7 @@ LkRosMap.controller.geocoder = {
       function(evt) {
         $('.lkrosmap-search-type-button').removeClass('lkrosmap-search-type-selected');
         $(this).addClass('lkrosmap-search-type-selected');
-        $('#LkRosMap\\.routeSearchFields').hide();
+  //      $('#LkRosMap\\.routeSearchFields').hide();
         $('#LkRosMap\\.searchField').show();
         $('#LkRosMap\\.searchField').attr('placeholder', 'Suchbegriff für Themensuche eingeben').focus();
       }

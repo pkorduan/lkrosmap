@@ -457,8 +457,9 @@ LkRosMap.controller.mapper = {
       // hide layer
       LkRosMap.vectorLayers[index].setVisible(false);
       $('#LkRosMap\\.checkLayerClasses' + index).hide();
-    } else {
-      // show layer
+    }
+    else {
+      $('#LkRosMap\\.checkLayerSwitch_' + index).prop('checked', true)
       LkRosMap.vectorLayers[index].setVisible(true);
       $('#LkRosMap\\.checkLayerClasses' + index).show()
     }
@@ -540,11 +541,15 @@ LkRosMap.controller.mapper = {
   },
   
   selectFeature: function(layer_id, feature_id) {
-    var source = LkRosMap.vectorLayers[layer_id].getSource(),
+    var layer = LkRosMap.vectorLayers[layer_id],
+        source = layer.getSource(),
         feature = source.getFeatureById(feature_id);
 
     if (LkRosMap.selectedFeature) {
       LkRosMap.selectedFeature.unselect();
+    }
+    if (!layer.getVisible()) {
+      LkRosMap.controller.mapper.toggleCheckLayer({ 'target' : { 'value' : layer_id }})
     }
     feature.select();
     LkRosMap.map.getView().fit(

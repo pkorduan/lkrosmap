@@ -26,7 +26,7 @@ LkRosMap.models.layerSwitchControl = function(params) {
   layersElement.append('<h2>Angebote</h2>');
   layersElement.append(
     $.map(checkLayers, function(layer, index) {
-      var html = '<input type="checkbox" name="checkLayerSwitch_' + index + '" value="' + index + '" class="lkrosmap-check-layer-switch" checked> ' + layer.get('name');
+      var html = '<input id="LkRosMap.checkLayerSwitch_' + index + '" type="checkbox" name="checkLayerSwitch_' + index + '" value="' + index + '" class="lkrosmap-check-layer-switch" checked> ' + layer.get('name');
 
 /*      html += '<div id="LkRosMap.checkLayerClasses' + index + '">';
       html += $.map(layer.getSource().getFeatures()[0].get('classes'), function(c, i) {

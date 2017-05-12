@@ -180,6 +180,8 @@ LkRosMap.controller.geocoder = {
       contentType: 'application/json',
 
       data: {
+//        'area': '002b664da72f6147121ee91bef537e30',
+        'sort': '__title',
         'q': queryStr
       },
 

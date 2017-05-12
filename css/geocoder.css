@@ -33,7 +33,7 @@
   display: none;
 }
 
-#LkRosMap\.searchFieldClear {
+.lkrosmap-field-clearer {
   display: none;
   margin-left: -18px;
   margin-right: 4px;

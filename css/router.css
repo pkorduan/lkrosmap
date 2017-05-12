@@ -13,10 +13,10 @@
   display: none;
   margin-left: 2;
   width: 600px;
+  float:left;
 }
 
 #LkRosMap\.routeSearchFields {
-  float: left;
   margin-left: 2px;
 }
 

@@ -51,6 +51,23 @@ LkRosMap.controller.router = {
       }
     );
 
+    $('#LkRosMap\\.fromField').on(
+      'keyup',
+      this,
+      this.toggleSearchFieldClear
+    );
+
+    $("#LkRosMap\\.fromFieldClear").on(
+      'click',
+      this,
+      function() {
+        $('#LkRosMap\\.fromField').val('');
+        $('#LkRosMap\\.fromField').focus();
+        $('#LkRosMap\\.fromFieldResultBox').hide();
+        LkRosMap.controller.router.removeRoute('from');
+      }
+    );
+
     $('#LkRosMap\\.routeFromLos').on(
       'click',
       this,
@@ -81,6 +98,23 @@ LkRosMap.controller.router = {
       }
     );
 
+    $('#LkRosMap\\.toField').on(
+      'keyup',
+      this,
+      this.toggleSearchFieldClear
+    );
+
+    $("#LkRosMap\\.toFieldClear").on(
+      'click',
+      this,
+      function() {
+        $('#LkRosMap\\.toField').val('');
+        $('#LkRosMap\\.toField').focus();
+        $('#LkRosMap\\.toFieldResultBox').hide();
+        LkRosMap.controller.router.removeRoute('to');
+      }
+    );
+
     $('#LkRosMap\\.routeToLos').on(
       'click',
       this,
@@ -98,7 +132,6 @@ LkRosMap.controller.router = {
         var currFeature,
             routeField = $('#LkRosMap\\.fromField');
 
-            debug_e = LkRosMap.infoWindow;
         if (typeof LkRosMap.infoWindow.target == 'undefined') {
           currFeature = LkRosMap.infoWindow.feature;
         }
@@ -140,7 +173,7 @@ LkRosMap.controller.router = {
     $('#LkRosMap\\.removeRoute').on(
       'click',
       function(evt) {
-        LkRosMap.controller.router.removeRoute();
+        LkRosMap.controller.router.removeRoute('both');
       }
     )
   },
@@ -220,21 +253,26 @@ LkRosMap.controller.router = {
     });
   },
 
-  removeRoute: function(scope) {
+  removeRoute: function(point) {
     var source = LkRosMap.controller.router.layer.getSource(),
         features = source.getFeatures();
 
-    $('#LkRosMap\\.fromFieldResultBox').hide();
-    $('#LkRosMap\\.fromField').attr('coordinates', '');
-    $('#LkRosMap\\.fromField').val('');
-
-    $('#LkRosMap\\.toFieldResultBox').hide();
-    $('#LkRosMap\\.toField').attr('coordinates', '');
-    $('#LkRosMap\\.toField').val('');
+    if (point == 'from' || point == 'both') {
+      $('#LkRosMap\\.fromFieldResultBox').hide();
+      $('#LkRosMap\\.fromField').attr('coordinates', '');
+      $('#LkRosMap\\.fromField').val('');
+    }
+    
+    if (point == 'to' || point == 'both') {
+      $('#LkRosMap\\.toFieldResultBox').hide();
+      $('#LkRosMap\\.toField').attr('coordinates', '');
+      $('#LkRosMap\\.toField').val('');
+    }
 
     $('#LkRosMap\\.routingInfo').hide();
 
     if (features != null && features.length > 0) {
+
       for (x in features) {
         source.removeFeature(features[x]);
       }
@@ -351,12 +389,15 @@ LkRosMap.controller.router = {
   },
   
   toggleSearchFieldClear: function(evt) {
+    var target = evt.target,
+        selector = '#' + target.id.replace('.', '\\.') + 'Clear';
+
     if (evt.target.value.length > 0) {
-      $('#LkRosMap\\.searchFieldClear').show();
+      $(selector).show();
     }
     else {
-      $('#LkRosMap\\.searchFieldClear').hide();
+      $(selector).hide();
     }
   }
-
+  
 }

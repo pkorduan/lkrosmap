@@ -487,6 +487,7 @@ LkRosMap.controller.mapper = {
     firstFeature.select();
 
     $('#LkRosMap\\.infoWindowTitle').html('Kartenobjekte');
+
     $('#LkRosMap\\.infoWindowData').html(
       $.map(selectedFeatures, function(layer) {
         return '<h2>' + layer.layer.get('name') + '</h2>' +
@@ -498,8 +499,8 @@ LkRosMap.controller.mapper = {
 
     LkRosMap.infoWindow.target = { feature: firstFeature, layer: firstLayer };
 
-    LkRosMap.infoWindow.setPosition(firstFeature.getGeometry().getCoordinates());
     $(LkRosMap.infoWindow.getElement()).show();
+    LkRosMap.infoWindow.setPosition(firstFeature.getGeometry().getCoordinates());
 
     if (selectedFeatures.hasOwnProperty('Adresse') && selectedFeatures['Adresse'].features.length == 1) {
       $('#LkRosMap\\.infoWindowRemoveFeature').show();

@@ -38,10 +38,10 @@ LkRosMap.loadHeadFile('../js/controller/router.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/geocoder.js', 'js');
 LkRosMap.loadHeadFile('../js/controller/mapper.js', 'js');
 
-LkRosMap.loadHeadFile('../js/controller/controls/LayerSwitchControl.js', 'js');
-LkRosMap.loadHeadFile('../js/controller/controls/LegendControl.js', 'js');
-LkRosMap.loadHeadFile('../js/controller/controls/SearchControl.js', 'js');
-LkRosMap.loadHeadFile('../js/controller/controls/RoutingControl.js', 'js');
+LkRosMap.loadHeadFile('../js/controls/LayerSwitchControl.js', 'js');
+LkRosMap.loadHeadFile('../js/controls/LegendControl.js', 'js');
+LkRosMap.loadHeadFile('../js/controls/SearchControl.js', 'js');
+LkRosMap.loadHeadFile('../js/controls/RoutingControl.js', 'js');
 
 LkRosMap.loadHeadFile('../js/models/Feature.js', 'js');
 LkRosMap.loadHeadFile('../js/models/Route.js', 'js');

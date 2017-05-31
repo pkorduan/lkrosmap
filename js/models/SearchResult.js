@@ -7,7 +7,7 @@ LkRosMap.models.searchResult = function(name, lat, lon) {
       }),
       style = new ol.style.Style({
         image: new ol.style.Icon(({
-          anchor: [0.5, 46],
+          anchor: [0.5, 64],
           anchorXUnits: 'fraction',
           anchorYUnits: 'pixels',
           opacity: 0.75,

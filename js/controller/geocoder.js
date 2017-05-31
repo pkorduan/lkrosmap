@@ -123,7 +123,7 @@ LkRosMap.controller.geocoder = {
     this.loadModels();
     this.loadLayer();
 
-    LkRosMap.map.addControl(new LkRosMap.models.SearchControl());
+    LkRosMap.map.addControl(new LkRosMap.controls.SearchControl());
 
     this.setEventHandlers();
     $('#LkRosMap\\.searchField').focus();

@@ -1,4 +1,4 @@
-LkRosMap.models.RoutingControl = function(params) {
+LkRosMap.controls.RoutingControl = function(params) {
   var button = $('<button/>').attr({
         id: 'LkRosMap.routeSearchButton',
         title: 'Ein- und Ausblenden der Routingmaske'

@@ -1,4 +1,4 @@
-LkRosMap.models.SearchControl = function(params) {
+LkRosMap.controls.SearchControl = function(params) {
   var button = $('<button/>').attr({
         id: 'LkRosMap.searchButton',
         title: 'Ein- und Ausblenden der Suchmaske'

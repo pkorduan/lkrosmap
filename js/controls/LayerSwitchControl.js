@@ -1,4 +1,4 @@
-LkRosMap.models.layerSwitchControl = function(params) {
+LkRosMap.controls.layerSwitchControl = function(params) {
   var buttonElement = $('<button/>').attr({
         id: 'LkRosMap.layerSwitcherButton',
         title: 'Ein- und Ausschalten von Datenebenen'

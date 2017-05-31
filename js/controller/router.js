@@ -184,7 +184,7 @@ LkRosMap.controller.router = {
     this.loadModels();
     this.loadLayer();
 
-    LkRosMap.map.addControl(new LkRosMap.models.RoutingControl());
+    LkRosMap.map.addControl(new LkRosMap.controls.RoutingControl());
 
     this.setEventHandlers();
   },

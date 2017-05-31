@@ -304,11 +304,11 @@ LkRosMap.controller.mapper = {
           }),
           this.mousePositionControl(),
 //          this.featureInfoControl(),
-          new LkRosMap.models.layerSwitchControl({
+          new LkRosMap.controls.layerSwitchControl({
             radioLayers: LkRosMap.tileLayers,
             checkLayers: LkRosMap.vectorLayers
           }),
-          new LkRosMap.models.legendControl({
+          new LkRosMap.controls.legendControl({
             checkLayers: LkRosMap.vectorLayers
           })
         ]),

@@ -1,4 +1,4 @@
-LkRosMap.models.legendControl = function(params) {
+LkRosMap.controls.legendControl = function(params) {
   var buttonElement = $('<button/>').attr({
         id: 'LkRosMap.legendButton',
         title: 'Ein- und ausblenden der Legende'

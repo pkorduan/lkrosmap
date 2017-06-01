@@ -113,6 +113,14 @@ LkRosMap.controller.mapper = {
 
     for (i = 0; i < store.length; i++) {
       switch (model) {
+        case 'Kindertagespflege': {
+          feature = new LkRosMap.models.Kindertagespflege(store[i]);
+        } break;
+
+        case 'Hebamme': {
+          feature = new LkRosMap.models.Hebamme(store[i]);
+        } break;
+
         case 'Naturdenkmal': {
           feature = new LkRosMap.models.Naturdenkmal(store[i]);
         } break;

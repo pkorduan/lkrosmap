@@ -169,6 +169,7 @@ LkRosMap.controller.mapper = {
             layer = new ol.layer.Vector({
               name: layer_config.name,
               opacity: 1,
+              visible: (typeof layer_config.visible !== 'undefined' && !layer_config.visible ? false : true), // hide if layer_config.visible exists and set to false 
               source: new ol.source.Vector({
                 attributions: [
                   new ol.Attribution({

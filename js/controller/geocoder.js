@@ -172,7 +172,7 @@ LkRosMap.controller.geocoder = {
     //console.log('searchForAdress from fieldname: ' + fieldName);
     var scope = LkRosMap.controller.geocoder,
         queryStr = $('#LkRosMap\\.' + fieldName).val(),
-        url  = 'http://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';
+        url  = 'https://www.gaia-mv.de/geoportalsearch/_ajax/searchPlaces/';
 
     $.ajax(url, {
       type: 'GET',

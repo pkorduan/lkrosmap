@@ -48,7 +48,8 @@ LkRosMap.controller.mapper = {
               return '';
             }
 
-            var url = 'http://www.orka-mv.de/geodienste/orkamv/tms/1.0.0/orkamv/epsg_25833/'
+
+            var url = 'https://www.orka-mv.de/geodienste/orkamv/tms/1.0.0/orkamv/epsg_25833/'
                       + z + '/' + x + '/' + y + '.png';
 
             return url;

@@ -163,7 +163,6 @@ LkRosMap.controller.mapper = {
     LkRosMap.vectorLayers = [];
 
     $.each(LkRosMap.config.layers, function(index, layer_config) {
-      console.log('url: ' + layer_config.url);
       LkRosMap.controller.mapper.loadJSON(layer_config.url, function(response) {
         var store = JSON.parse(response),
             layer = new ol.layer.Vector({

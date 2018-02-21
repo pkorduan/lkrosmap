@@ -1,11 +1,11 @@
 LkRosMap.views.geocoder = {};
-LkRosMap.loadHeadFile('../js/views/geocoder/search.js', 'js');
+//LkRosMap.loadHeadFile('../js/views/geocoder/search.js', 'js');
 
 LkRosMap.controller.geocoder = {
   views: LkRosMap.views.geocoder,
 
   loadModels: function() {
-    LkRosMap.loadHeadFile('../js/models/SearchResult.js', 'js');
+   // LkRosMap.loadHeadFile('../js/models/SearchResult.js', 'js');
   },
   
   loadLayer: function() {

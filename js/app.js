@@ -18,15 +18,17 @@ LkRosMap.loadHeadFile = function(filename, filetype) {
   }
   if (typeof fileref!="undefined")
     document.getElementsByTagName("head")[0].appendChild(fileref)
+  
 }
 
 LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "jQuery-1.12.0/jquery-1.12.0.min.js", "js");
 LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "font-awesome-4.6.3/css/font-awesome.min.css", "css");
 LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "OpenLayers/v3.8.2/build/ol-debug.js", "js");
 LkRosMap.loadHeadFile("https://openlayers.org/en/v3.20.1/css/ol.css", "css");
-LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "proj4js/proj4.js", "js");
+LkRosMap.loadHeadFile(LkRosMap.path3rdParty + "proj4js-2.4.3/proj4.js", "js");
 LkRosMap.config.osm2poProxyUrl = '../osm2poServiceProxy.php';
 
+/*
 // Die Reihenfolge der Einbindung ist zu beachten
 LkRosMap.loadHeadFile("../css/app.css", "css");
 LkRosMap.loadHeadFile("../css/mapper.css", "css");
@@ -51,10 +53,10 @@ LkRosMap.loadHeadFile('../js/models/RoutePoint.js', 'js');
 for (var i = 0; i < LkRosMap.config.layers.length; i++) {
   LkRosMap.loadHeadFile('../js/models/' + LkRosMap.config.layers[i].model + '.js', 'js');
 }
-
 LkRosMap.loadHeadFile('../js/views/mapper/mapHeader.js', 'js');
 LkRosMap.loadHeadFile('../js/views/mapper/map.js', 'js');
 LkRosMap.loadHeadFile('../js/views/mapper/popup.js', 'js');
+*/
 
 LkRosMap.init = function() {
   // central setting for the projection of the map view

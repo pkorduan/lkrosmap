@@ -1,12 +1,12 @@
 LkRosMap.views.router = {};
 // load view
-LkRosMap.loadHeadFile('../js/views/router/search.js', 'js');
+//LkRosMap.loadHeadFile('../js/views/router/search.js', 'js');
 
 LkRosMap.controller.router = {
   views: LkRosMap.views.router,
 
   loadModels: function() {
-    LkRosMap.loadHeadFile('../js/models/RoutingResult.js', 'js');
+//    LkRosMap.loadHeadFile('../js/models/RoutingResult.js', 'js');
   },
   
   loadLayer: function() {

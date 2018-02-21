@@ -1,6 +1,6 @@
 LkRosMap.views.helper = {};
-LkRosMap.loadHeadFile('../js/views/helper/sperrDiv.js', 'js');
-LkRosMap.loadHeadFile('../js/views/helper/configuration.js', 'js');
+//LkRosMap.loadHeadFile('../js/views/helper/sperrDiv.js', 'js');
+//LkRosMap.loadHeadFile('../js/views/helper/configuration.js', 'js');
 
 LkRosMap.controller.helper = {
   views: LkRosMap.views.helper,
